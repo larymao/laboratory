@@ -14,4 +14,8 @@
     <PackageReference Include="Microsoft.NetCore.Analyzers" Version="2.6.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Lary.Laboratory.Core\Lary.Laboratory.Core.csproj" />
+  </ItemGroup>
+
 </Project>

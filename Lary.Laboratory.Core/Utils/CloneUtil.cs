@@ -23,19 +23,26 @@ namespace Lary.Laboratory.Core.Utils
         /// <returns>
         ///     The copied object.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        ///     Throw if the input source is null.
+        /// </exception>
         public static T DeepClone<T>(T source)
             where T : class
         {
             var clone = default(T);
 
             // Don't serialize a null object, simply return the default for that object.
-            if (!Object.ReferenceEquals(source, null))
+            if (source is null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+            else
             {
                 var json = JsonConvert.SerializeObject(source);
 
                 clone = JsonConvert.DeserializeObject<T>(json);
             }
-            
+
             return clone;
         }
     }
