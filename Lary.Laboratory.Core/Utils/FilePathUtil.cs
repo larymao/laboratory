@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -107,47 +108,42 @@ namespace Lary.Laboratory.Core.Utils
         }
 
         /// <summary>
-        ///     Locates the specified file.
+        ///     Returns the case sensitive path of the given directory.
         /// </summary>
-        /// <param name="path">
-        ///     The file to locate.
+        /// <param name="dirInfo">
+        ///     The directory to capitalization.
         /// </param>
-        /// <remarks>
-        ///     This method works well on .NET Framework 4.5, but not on .NET Core. I still
-        ///     haven't resolve it, so mark it as obsolete.
-        /// </remarks>
-        [Obsolete("This method works well on .NET Framework 4.5, but not on .NET Core.")]
-        public static void LocateFile(string path)
+        /// <returns>
+        ///     The case sensitive path of the given directory.
+        /// </returns>
+        public static string GetProperDirectoryCapitalization(DirectoryInfo dirInfo)
         {
-            FileManager.SHParseDisplayName(path, IntPtr.Zero, out IntPtr ppidl, 0, out uint psfgaoOut);
+            DirectoryInfo parentDirInfo = dirInfo.Parent;
 
-            var res = FileManager.OpenFolderAndSelectItems(ppidl, 0, IntPtr.Zero, 0);
+            if (parentDirInfo == null)
+            {
+                return dirInfo.Name;
+            }
+
+            return Path.Combine(GetProperDirectoryCapitalization(parentDirInfo),
+                                parentDirInfo.GetDirectories(dirInfo.Name)[0].Name);
         }
 
         /// <summary>
-        ///     Locates the specified file in a new explorer.
+        ///     Returns the case sensitive path of the given file.
         /// </summary>
-        /// <param name="path">
-        ///     The file to locate.
+        /// <param name="filename">
+        ///     The file to capitalization.
         /// </param>
-        public static void LocateFileInNewExplorer(string path)
+        /// <returns>
+        ///     The case sensitive path of the given file.
+        /// </returns>
+        public static string GetProperFilePathCapitalization(string filename)
         {
-            var domain = String.Empty;
-            var psi = new ProcessStartInfo("Explorer.exe")
-            {
-                Arguments = "/c,/select," + path
-            };
-            domain = psi.Domain;
-            var p = Process.Start(psi);
-        }
-
-        internal class FileManager
-        {
-            [DllImport("shell32.dll", EntryPoint = "SHOpenFolderAndSelectItems")]
-            public static extern long OpenFolderAndSelectItems(IntPtr pidlFolder, UInt32 cidl, IntPtr apidl, UInt32 dwFlags);
-
-            [DllImport("shell32.dll", EntryPoint = "SHParseDisplayName")]
-            public static extern void SHParseDisplayName([MarshalAs(UnmanagedType.LPWStr)] string name, IntPtr bindingContext, [Out] out IntPtr pidl, uint sfgaoIn, [Out] out uint psfgaoOut);
+            FileInfo fileInfo = new FileInfo(filename);
+            DirectoryInfo dirInfo = fileInfo.Directory;
+            return Path.Combine(GetProperDirectoryCapitalization(dirInfo),
+                                dirInfo.GetFiles(fileInfo.Name)[0].Name);
         }
     }
 }
