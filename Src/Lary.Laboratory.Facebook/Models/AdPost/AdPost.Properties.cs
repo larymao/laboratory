@@ -7,7 +7,7 @@ namespace Lary.Laboratory.Facebook.Models
     /// <summary>
     ///     Facebook ad post.
     /// </summary>
-    public class AdPost
+    public partial class AdPost
     {
         /// <summary>
         ///     The text message of ad post.

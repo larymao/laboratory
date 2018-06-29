@@ -3,17 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27428.2002
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lary.Laboratory", "Lary.Laboratory\Lary.Laboratory.csproj", "{437A130C-18C0-44B2-B3A0-B600C96C5823}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lary.Laboratory", "Src\Lary.Laboratory\Lary.Laboratory.csproj", "{437A130C-18C0-44B2-B3A0-B600C96C5823}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{717DDC05-2B86-44DE-BDCD-442EB3C1E416}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{717DDC05-2B86-44DE-BDCD-442EB3C1E416}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{7FC48612-5926-425D-B298-D0EB017D58C4}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{7FC48612-5926-425D-B298-D0EB017D58C4}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{33B23FD0-C8D3-43CF-81F0-0CFC1E9D2A5E}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{33B23FD0-C8D3-43CF-81F0-0CFC1E9D2A5E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lary.Laboratory.Core", "Lary.Laboratory.Core\Lary.Laboratory.Core.csproj", "{267C340C-9D3E-4208-B842-8BCADC2678A4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lary.Laboratory.Core", "Src\Lary.Laboratory.Core\Lary.Laboratory.Core.csproj", "{267C340C-9D3E-4208-B842-8BCADC2678A4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lary.Laboratory.Facebook", "Lary.Laboratory.Facebook\Lary.Laboratory.Facebook.csproj", "{FA2AD01C-D4CE-42A4-A927-F8E82E21B048}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lary.Laboratory.Facebook", "Src\Lary.Laboratory.Facebook\Lary.Laboratory.Facebook.csproj", "{FA2AD01C-D4CE-42A4-A927-F8E82E21B048}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lary.Laboratory.Sample.Facebook", "Samples\Lary.Laboratory.Sample.Facebook\Lary.Laboratory.Sample.Facebook.csproj", "{52ACA8E7-C969-4113-AF07-0ABDEBA24A1A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{FA2AD01C-D4CE-42A4-A927-F8E82E21B048}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FA2AD01C-D4CE-42A4-A927-F8E82E21B048}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FA2AD01C-D4CE-42A4-A927-F8E82E21B048}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52ACA8E7-C969-4113-AF07-0ABDEBA24A1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52ACA8E7-C969-4113-AF07-0ABDEBA24A1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52ACA8E7-C969-4113-AF07-0ABDEBA24A1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52ACA8E7-C969-4113-AF07-0ABDEBA24A1A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -41,6 +47,7 @@ Global
 		{437A130C-18C0-44B2-B3A0-B600C96C5823} = {717DDC05-2B86-44DE-BDCD-442EB3C1E416}
 		{267C340C-9D3E-4208-B842-8BCADC2678A4} = {717DDC05-2B86-44DE-BDCD-442EB3C1E416}
 		{FA2AD01C-D4CE-42A4-A927-F8E82E21B048} = {717DDC05-2B86-44DE-BDCD-442EB3C1E416}
+		{52ACA8E7-C969-4113-AF07-0ABDEBA24A1A} = {7FC48612-5926-425D-B298-D0EB017D58C4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7A9D059D-C37B-4085-A114-71771ABB8C06}

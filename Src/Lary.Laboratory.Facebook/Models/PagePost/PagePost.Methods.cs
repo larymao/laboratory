@@ -1,87 +1,55 @@
-﻿using Lary.Laboratory.Core.Utils;
-using Lary.Laboratory.Facebook.Attributes;
+﻿using Lary.Laboratory.Core.Extensions;
+using Lary.Laboratory.Core.Models;
+using Lary.Laboratory.Core.Utils;
+using Lary.Laboratory.Facebook.Helpers;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Lary.Laboratory.Facebook.Models
 {
     /// <summary>
-    ///     Facebook normal page post.
+    /// <see cref="PagePost"/>
     /// </summary>
-    public class PagePost
+    public partial class PagePost
     {
         /// <summary>
-        ///     The text message of normal page post.
+        ///     Publishes current page post as an asynchronous operation.
         /// </summary>
-        [FacebookProperty("message")]
-        public string Message { get; set; }
+        /// <param name="config">
+        ///     <see cref="Config"/>
+        /// </param>
+        /// <returns>
+        ///     <see cref="ResponseMessage{TResult}"/>
+        /// </returns>
+        public async Task<ResponseMessage<string>> PostAsync(Config config)
+        {
+            var result = new ResponseMessage<string>();
 
-        /// <summary>
-        ///     Call to action link address.
-        /// </summary>
-        [FacebookProperty("link")]
-        public string Link { get; set; }
+            var url = $"{Basic.Apis.Gragh.Feed(config.PageId)}?access_token={config.PageAccessToken}";
 
-        /// <summary>
-        ///     The picture link address of normal page post.
-        /// </summary>
-        [FacebookProperty("picture")]
-        public string Picture { get; set; }
+            var request = new HttpRequestMessage()
+            {
+                RequestUri = new Uri(url, UriKind.Absolute),
+                Method = HttpMethod.Post,
+                Content = this.ToFormUrlEncodedContent()
+            };
 
-        /// <summary>
-        ///     The thumbnail of normal page post.
-        /// </summary>
-        [FacebookProperty("thumbnail")]
-        public string Thumbnail { get; set; }
+            using (var client = new HttpClient())
+            {
+                var response = await client.SendAsync(request);
 
-        /// <summary>
-        ///     The video id of normal page post.
-        /// </summary>
-        [FacebookProperty("source")]
-        public string Video { get; set; }
+                result = await response.ToResponseMessageAsync();
+            }
 
-        /// <summary>
-        ///     The Headline of normal page post.
-        /// </summary>
-        [FacebookProperty("name")]
-        public string Headline { get; set; }
-
-        /// <summary>
-        ///     The description of normal page post.
-        /// </summary>
-        [FacebookProperty("description")]
-        public string Description { get; set; }
-
-        /// <summary>
-        ///     The caption of normal page post.
-        /// </summary>
-        [FacebookProperty("caption")]
-        public string Caption { get; set; }
-
-        /// <summary>
-        ///     The call to action of normal page post.
-        /// </summary>
-        [FacebookProperty("call_to_action")]
-        public Call2Action Action { get; set; }
-
-        /// <summary>
-        ///     Indicate whether post should be published.
-        /// </summary>
-        [FacebookProperty("published")]
-        public bool? Published { get; set; }
-
-        /// <summary>
-        ///     The schedule publish time of post.
-        /// </summary>
-        [FacebookProperty("scheduled_publish_time")]
-        public DateTime ScheduledTime { get; set; }
-
+            return result;
+        }
 
         /// <summary>
         ///     Convert current post to its equivalent <see cref="FormUrlEncodedContent"/> object.
@@ -96,7 +64,7 @@ namespace Lary.Laboratory.Facebook.Models
             var properties = typeof(PagePost).GetProperties();
             foreach (var prop in properties)
             {
-                var name = GetFacebookPropertyName(prop);
+                var name = AttributeHelper.GetFacebookPropertyName(prop);
 
                 if (prop.Name == nameof(this.Thumbnail) || prop.Name == nameof(this.Video))
                 {
@@ -153,7 +121,7 @@ namespace Lary.Laboratory.Facebook.Models
             var properties = typeof(PagePost).GetProperties();
             foreach (var prop in properties)
             {
-                var name = GetFacebookPropertyName(prop);
+                var name = AttributeHelper.GetFacebookPropertyName(prop);
 
                 if (prop.GetType() == typeof(String))
                 {
@@ -194,13 +162,6 @@ namespace Lary.Laboratory.Facebook.Models
             }
 
             return content;
-        }
-
-
-        private string GetFacebookPropertyName(MemberInfo element)
-        {
-            var attr = (FacebookPropertyAttribute)Attribute.GetCustomAttribute(element, typeof(FacebookPropertyAttribute));
-            return attr.Name;
         }
     }
 }

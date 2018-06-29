@@ -7,7 +7,7 @@ namespace Lary.Laboratory.Facebook.Basic.Apis
     /// <summary>
     ///     Provides facebook marketing apis.
     /// </summary>
-    internal static class marketing
+    internal static class Marketing
     {
         private const string NormalHost = "graph.facebook.com";
 

@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    <CodeAnalysisRuleSet>..\Lary.Laboratory.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\..\Lary.Laboratory.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
