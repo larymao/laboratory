@@ -13,9 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{33B23FD0
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lary.Laboratory.Core", "Src\Lary.Laboratory.Core\Lary.Laboratory.Core.csproj", "{267C340C-9D3E-4208-B842-8BCADC2678A4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lary.Laboratory.Facebook", "Src\Lary.Laboratory.Facebook\Lary.Laboratory.Facebook.csproj", "{FA2AD01C-D4CE-42A4-A927-F8E82E21B048}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lary.Laboratory.Sample.Facebook", "Samples\Lary.Laboratory.Sample.Facebook\Lary.Laboratory.Sample.Facebook.csproj", "{52ACA8E7-C969-4113-AF07-0ABDEBA24A1A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lary.Laboratory.Sample.Facebook", "Samples\Lary.Laboratory.Sample.Facebook\Lary.Laboratory.Sample.Facebook.csproj", "{52ACA8E7-C969-4113-AF07-0ABDEBA24A1A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,10 +29,6 @@ Global
 		{267C340C-9D3E-4208-B842-8BCADC2678A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{267C340C-9D3E-4208-B842-8BCADC2678A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{267C340C-9D3E-4208-B842-8BCADC2678A4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FA2AD01C-D4CE-42A4-A927-F8E82E21B048}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FA2AD01C-D4CE-42A4-A927-F8E82E21B048}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FA2AD01C-D4CE-42A4-A927-F8E82E21B048}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FA2AD01C-D4CE-42A4-A927-F8E82E21B048}.Release|Any CPU.Build.0 = Release|Any CPU
 		{52ACA8E7-C969-4113-AF07-0ABDEBA24A1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{52ACA8E7-C969-4113-AF07-0ABDEBA24A1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{52ACA8E7-C969-4113-AF07-0ABDEBA24A1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -46,7 +40,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{437A130C-18C0-44B2-B3A0-B600C96C5823} = {717DDC05-2B86-44DE-BDCD-442EB3C1E416}
 		{267C340C-9D3E-4208-B842-8BCADC2678A4} = {717DDC05-2B86-44DE-BDCD-442EB3C1E416}
-		{FA2AD01C-D4CE-42A4-A927-F8E82E21B048} = {717DDC05-2B86-44DE-BDCD-442EB3C1E416}
 		{52ACA8E7-C969-4113-AF07-0ABDEBA24A1A} = {7FC48612-5926-425D-B298-D0EB017D58C4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution

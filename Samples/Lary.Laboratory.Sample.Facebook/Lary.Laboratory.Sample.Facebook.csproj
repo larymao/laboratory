@@ -11,8 +11,4 @@
     <DocumentationFile>bin\Debug\netcoreapp2.1\Facebook.xml</DocumentationFile>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Src\Lary.Laboratory.Facebook\Lary.Laboratory.Facebook.csproj" />
-  </ItemGroup>
-
 </Project>
