@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lary.Laboratory.Core", "Src
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lary.Laboratory.Sample.Facebook", "Samples\Lary.Laboratory.Sample.Facebook\Lary.Laboratory.Sample.Facebook.csproj", "{52ACA8E7-C969-4113-AF07-0ABDEBA24A1A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lary.Laboratory.Facebook", "Src\Lary.Laboratory.Facebook\Lary.Laboratory.Facebook.csproj", "{F1F86109-0025-4F5D-9CF6-70E9E5CD4E7F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{52ACA8E7-C969-4113-AF07-0ABDEBA24A1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{52ACA8E7-C969-4113-AF07-0ABDEBA24A1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{52ACA8E7-C969-4113-AF07-0ABDEBA24A1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1F86109-0025-4F5D-9CF6-70E9E5CD4E7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1F86109-0025-4F5D-9CF6-70E9E5CD4E7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1F86109-0025-4F5D-9CF6-70E9E5CD4E7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1F86109-0025-4F5D-9CF6-70E9E5CD4E7F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -41,6 +47,7 @@ Global
 		{437A130C-18C0-44B2-B3A0-B600C96C5823} = {717DDC05-2B86-44DE-BDCD-442EB3C1E416}
 		{267C340C-9D3E-4208-B842-8BCADC2678A4} = {717DDC05-2B86-44DE-BDCD-442EB3C1E416}
 		{52ACA8E7-C969-4113-AF07-0ABDEBA24A1A} = {7FC48612-5926-425D-B298-D0EB017D58C4}
+		{F1F86109-0025-4F5D-9CF6-70E9E5CD4E7F} = {717DDC05-2B86-44DE-BDCD-442EB3C1E416}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7A9D059D-C37B-4085-A114-71771ABB8C06}
