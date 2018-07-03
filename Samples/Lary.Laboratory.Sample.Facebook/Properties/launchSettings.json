@@ -1,8 +1,7 @@
 {
   "profiles": {
     "Lary.Laboratory.Sample.Facebook": {
-      "commandName": "Project",
-      "commandLineArgs": "image D:\\Lary\\Docs\\FacebookConfig.json D:\\Lary\\Docs\\FacebookData.json"
+      "commandName": "Project"
     }
   }
 }

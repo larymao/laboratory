@@ -31,13 +31,33 @@ namespace Lary.Laboratory.Core.Helpers
         {
             Type type = enumerationValue.GetType();
 
+            return GetDescription(type, enumerationValue.ToString());
+        }
+
+        /// <summary>
+        ///     Get description for eunmeration value.
+        /// </summary>
+        /// <param name="type">
+        ///     The type of enumeration.
+        /// </param>
+        /// <param name="enumerationValue">
+        ///     The string value of enumeration.
+        /// </param>
+        /// <returns>
+        ///     The description of enumeration value.
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        ///     Throw if param enumerationValue is not of Enum type.
+        /// </exception>
+        public static string GetDescription(Type type, string enumerationValue)
+        {
             if (!type.IsEnum)
             {
                 throw new ArgumentException("EnumerationValue must be of Enum type", "enumerationValue");
             }
 
             // Tries to find a DescriptionAttribute for a potential friendly name for the enum.
-            MemberInfo[] memberInfos = type.GetMember(enumerationValue.ToString());
+            MemberInfo[] memberInfos = type.GetMember(enumerationValue);
 
             if (memberInfos != null && memberInfos.Length > 0)
             {
@@ -51,7 +71,7 @@ namespace Lary.Laboratory.Core.Helpers
             }
 
             // If we have no description attribute, just return the ToString of the enum.
-            return enumerationValue.ToString();
+            return enumerationValue;
         }
 
         /// <summary>

@@ -4,7 +4,10 @@ using System.Text;
 
 namespace Lary.Laboratory.Facebook.Gragh
 {
-    public partial class PhotoPost
+    /// <summary>
+    ///     Facebook photo updating request.
+    /// </summary>
+    public partial class PhotoUpdatingRequest
     {
     }
 }

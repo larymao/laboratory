@@ -6,7 +6,10 @@ using System.Text;
 
 namespace Lary.Laboratory.Facebook.Gragh
 {
-    public partial class PhotoPost
+    /// <summary>
+    ///     Facebook photo creating request. The photo must be less than 10MB in size.
+    /// </summary>
+    public partial class PhotoCreatingRequest
     {
         /// <summary>
         ///     Legacy album ID. Deprecated.
