@@ -191,7 +191,7 @@ namespace Lary.Laboratory.Facebook.Gragh
         ///     Any location information attached to the post.
         /// </summary>
         [FacebookProperty("place")]
-        public object Place { get; set; }
+        public Place Place { get; set; }
 
         /// <summary>
         ///     The privacy settings of the post.

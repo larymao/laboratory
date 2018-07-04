@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lary.Laboratory.Core", "Src
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lary.Laboratory.Sample.Facebook", "Samples\Lary.Laboratory.Sample.Facebook\Lary.Laboratory.Sample.Facebook.csproj", "{52ACA8E7-C969-4113-AF07-0ABDEBA24A1A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lary.Laboratory.Facebook", "Src\Lary.Laboratory.Facebook\Lary.Laboratory.Facebook.csproj", "{F1F86109-0025-4F5D-9CF6-70E9E5CD4E7F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lary.Laboratory.Facebook", "Src\Lary.Laboratory.Facebook\Lary.Laboratory.Facebook.csproj", "{F1F86109-0025-4F5D-9CF6-70E9E5CD4E7F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

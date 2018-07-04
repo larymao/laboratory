@@ -85,7 +85,7 @@ namespace Lary.Laboratory.Facebook.Gragh
         ///     The place associated with this album.
         /// </summary>
         [FacebookProperty("place")]
-        public object Place { get; set; }
+        public Place Place { get; set; }
 
         /// <summary>
         ///     The privacy settings for the album.
@@ -103,6 +103,6 @@ namespace Lary.Laboratory.Facebook.Gragh
         ///     The last time the album was updated.
         /// </summary>
         [FacebookProperty("updated_time")]
-        public DateTime? updated_time { get; set; }
+        public DateTime? UpdateTime { get; set; }
     }
 }
