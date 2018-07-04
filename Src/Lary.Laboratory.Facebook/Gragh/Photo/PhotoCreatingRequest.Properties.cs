@@ -26,7 +26,7 @@ namespace Lary.Laboratory.Facebook.Gragh
         ///     is true.
         /// </summary>
         [FacebookProperty("allow_spherical_photo")]
-        public bool? AllowSphericalPhoto { get; set; } = false;
+        public bool AllowSphericalPhoto { get; set; } = false;
 
         /// <summary>
         ///     iTunes App ID. This is used by the native Share dialog that's part of iOS.
@@ -39,14 +39,14 @@ namespace Lary.Laboratory.Facebook.Gragh
         ///     <para/>Number of attempts that have been made to upload this photo
         /// </summary>
         [FacebookProperty("attempt")]
-        public long? Attempt { get; set; } = 0;
+        public long Attempt { get; set; } = 0;
 
         /// <summary>
         ///     <para/>Default value: false
         ///     <para/>Audience exp
         /// </summary>
         [FacebookProperty("audience_exp")]
-        public bool? AudienceExp { get; set; } = false;
+        public bool AudienceExp { get; set; } = false;
 
         /// <summary>
         ///     A user-specified creation time for this photo.
@@ -93,14 +93,14 @@ namespace Lary.Laboratory.Facebook.Gragh
         ///     <para/>Unused?
         /// </summary>
         [FacebookProperty("filter_type")]
-        public long? FilterType { get; set; } = -1L;
+        public long FilterType { get; set; } = -1L;
 
         /// <summary>
         ///     <para/>Default value: false
         ///     <para/>Full res is coming later.
         /// </summary>
         [FacebookProperty("full_res_is_coming_later")]
-        public bool? FullResIsComingLater { get; set; } = false;
+        public bool FullResIsComingLater { get; set; } = false;
 
         /// <summary>
         ///     Manually specify the initial view heading in degrees from 0 to 360. This overrides any value present 
@@ -146,7 +146,7 @@ namespace Lary.Laboratory.Facebook.Gragh
         ///     <para/>Manual privacy
         /// </summary>
         [FacebookProperty("manual_privacy")]
-        public bool? ManualPrivacy { get; set; } = false;
+        public bool ManualPrivacy { get; set; } = false;
 
         /// <summary>
         ///     Deprecated. Please use the caption param instead.
@@ -181,7 +181,7 @@ namespace Lary.Laboratory.Facebook.Gragh
         ///     Offline ID.
         /// </summary>
         [FacebookProperty("offline_id")]
-        public long? OfflineId { get; set; } = 0;
+        public long OfflineId { get; set; } = 0;
 
         /// <summary>
         ///     The Open Graph action type.
@@ -212,7 +212,7 @@ namespace Lary.Laboratory.Facebook.Gragh
         ///     <para/>Flag to set if the post should create a profile badge
         /// </summary>
         [FacebookProperty("og_set_profile_badge")]
-        public bool? OgSetProfileBadge { get; set; } = false;
+        public bool OgSetProfileBadge { get; set; } = false;
 
         /// <summary>
         ///     The Open Graph suggestion.
@@ -308,7 +308,7 @@ namespace Lary.Laboratory.Facebook.Gragh
         ///     <para/>This is a temporary photo. published must be false, and you can't set scheduled_publish_time.
         /// </summary>
         [FacebookProperty("temporary")]
-        public bool? Temporary { get; set; } = false;
+        public bool Temporary { get; set; } = false;
 
         /// <summary>
         ///     Content type of the unpublished content type.

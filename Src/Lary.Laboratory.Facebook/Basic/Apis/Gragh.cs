@@ -54,5 +54,22 @@ namespace Lary.Laboratory.Facebook.Basic.Apis
         {
             return $"https://{BasicHost}/{apiVersion}/{targetId}/photos";
         }
+
+        /// <summary>
+        ///     Get the facebook post publishing api.
+        /// </summary>
+        /// <param name="targetId">
+        ///     The target of post publishing.
+        /// </param>
+        /// <param name="apiVersion">
+        ///     The version of api.
+        /// </param>
+        /// <returns>
+        ///     Facebook post publishing api.
+        /// </returns>
+        internal static string PostPublishing(string targetId, string apiVersion = LatestVersion)
+        {
+            return $"https://{BasicHost}/{apiVersion}/{targetId}/feed";
+        }
     }
 }

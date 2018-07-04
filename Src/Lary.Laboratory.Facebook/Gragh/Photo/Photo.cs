@@ -17,6 +17,5 @@ namespace Lary.Laboratory.Facebook.Gragh
     /// </summary>
     public partial class Photo
     {
-        
     }
 }

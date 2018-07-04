@@ -13,4 +13,8 @@
     <ProjectReference Include="..\Lary.Laboratory.Core\Lary.Laboratory.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Interfaces\" />
+  </ItemGroup>
+
 </Project>

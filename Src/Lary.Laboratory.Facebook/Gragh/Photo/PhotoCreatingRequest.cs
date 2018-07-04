@@ -28,7 +28,7 @@ namespace Lary.Laboratory.Facebook.Gragh
         /// <returns>
         ///     Photo creating result.
         /// </returns>
-        public async Task<ResponseMessage<string>> PostAsync(string targetId, string accessToken)
+        public async Task<ResponseMessage<string>> PublishAsync(string targetId, string accessToken)
         {
             var dic = new Dictionary<string, string>
             {
