@@ -10,15 +10,37 @@ namespace Lary.Laboratory.Facebook.Basic.Apis
     internal static class Gragh
     {
         /// <summary>
-        ///     Basic host of facebook gragh api.
+        ///     Regular host of facebook gragh api.
         /// </summary>
         internal const string BasicHost = "graph.facebook.com";
+
+        /// <summary>
+        ///     Video uploading host of facebook gragh api.
+        /// </summary>
+        internal const string VideoUploadingHost = "graph-video.facebook.com";
 
         /// <summary>
         ///     The latest version of facebook gragh api.
         /// </summary>
         internal const string LatestVersion = "v3.0";
 
+
+        /// <summary>
+        ///     Get the facebook ad video uploading api.
+        /// </summary>
+        /// <param name="adAccountId">
+        ///     The ad account id of user.
+        /// </param>
+        /// <param name="apiVersion">
+        ///     The version of api.
+        /// </param>
+        /// <returns>
+        ///     Facebook ad video uploading api.
+        /// </returns>
+        internal static string AdVideoUploading(string adAccountId, string apiVersion = LatestVersion)
+        {
+            return $"https://{VideoUploadingHost}/{apiVersion}/act_{adAccountId}/advideos";
+        }
 
         /// <summary>
         ///     The base edge of facebook gragh api.
@@ -70,6 +92,40 @@ namespace Lary.Laboratory.Facebook.Basic.Apis
         internal static string PostPublishing(string targetId, string apiVersion = LatestVersion)
         {
             return $"https://{BasicHost}/{apiVersion}/{targetId}/feed";
+        }
+
+        /// <summary>
+        ///     Get the facebook video publishing api.
+        /// </summary>
+        /// <param name="targetId">
+        ///     The target of video publishing. Can be a value of {user_id, event_id, page_id, group_id}
+        /// </param>
+        /// <param name="apiVersion">
+        ///     The version of api.
+        /// </param>
+        /// <returns>
+        ///     Facebook video publishing api.
+        /// </returns>
+        internal static string VideoPublishing(string targetId, string apiVersion = LatestVersion)
+        {
+            return $"https://{BasicHost}/{apiVersion}/{targetId}/videos";
+        }
+
+        /// <summary>
+        ///     Get the facebook video uploading api.
+        /// </summary>
+        /// <param name="targetId">
+        ///     The target of video uploading. Can be a value of {user_id, event_id, page_id, group_id}
+        /// </param>
+        /// <param name="apiVersion">
+        ///     The version of api.
+        /// </param>
+        /// <returns>
+        ///     Facebook video uploading api.
+        /// </returns>
+        internal static string VideoUploading(string targetId, string apiVersion = LatestVersion)
+        {
+            return $"https://{VideoUploadingHost}/{apiVersion}/{targetId}/videos";
         }
     }
 }

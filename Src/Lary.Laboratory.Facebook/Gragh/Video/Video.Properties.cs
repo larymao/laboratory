@@ -35,13 +35,13 @@ namespace Lary.Laboratory.Facebook.Gragh
         ///     Accuracy of the backdated time.
         /// </summary>
         [FacebookProperty("backdated_time_granularity")]
-        public BackdatedTimeGranularity GetBackdatedTimeGranularity { get; set; }
+        public BackdatedTimeGranularity? GetBackdatedTimeGranularity { get; set; }
 
         /// <summary>
         ///     The content category of this video.
         /// </summary>
         [FacebookProperty("content_category")]
-        public VideoContentCategory ContentCategory { get; set; }
+        public VideoContentCategory? ContentCategory { get; set; }
 
         /// <summary>
         ///     Tags that describe the contents of the video.
@@ -150,7 +150,7 @@ namespace Lary.Laboratory.Facebook.Gragh
         ///     The live status of the video.
         /// </summary>
         [FacebookProperty("live_status")]
-        public LiveVideoStatus LiveStatus { get; set; }
+        public LiveVideoStatus? LiveStatus { get; set; }
 
         /// <summary>
         ///     The music video copyright of this video.

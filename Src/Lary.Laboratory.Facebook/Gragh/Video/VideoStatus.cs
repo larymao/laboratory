@@ -21,6 +21,6 @@ namespace Lary.Laboratory.Facebook.Gragh
         ///     "processing" (not ready yet) or "error" (processing failed).
         /// </summary>
         [FacebookProperty("video_status")]
-        public VideoStatus Status { get; set; }
+        public VideoStatusType? Status { get; set; }
     }
 }
