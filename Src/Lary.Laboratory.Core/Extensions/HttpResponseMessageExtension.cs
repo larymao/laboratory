@@ -39,7 +39,7 @@ namespace Lary.Laboratory.Core.Extensions
 
             var result = new ResponseMessage<string>()
             {
-                Code = httpResponse.StatusCode == HttpStatusCode.OK ? 0 : 1,
+                Code = httpResponse.StatusCode == HttpStatusCode.OK ? ResponseCode.SUCCESS : ResponseCode.UNKNOWN_ERROR,
                 ReasonPhrase = $"{(int)httpResponse.StatusCode}, {httpResponse.ReasonPhrase}",
                 Data = await httpResponse.Content.ReadAsStringAsync()
             };
@@ -75,7 +75,7 @@ namespace Lary.Laboratory.Core.Extensions
 
             var result = new ResponseMessage<TResult>()
             {
-                Code = httpResponse.StatusCode == HttpStatusCode.OK ? 0 : 1,
+                Code = httpResponse.StatusCode == HttpStatusCode.OK ? ResponseCode.SUCCESS : ResponseCode.UNKNOWN_ERROR,
                 ReasonPhrase = $"{(int)httpResponse.StatusCode}, {httpResponse.ReasonPhrase}",
                 Data = JsonConvert.DeserializeObject<TResult>(await httpResponse.Content.ReadAsStringAsync())
             };

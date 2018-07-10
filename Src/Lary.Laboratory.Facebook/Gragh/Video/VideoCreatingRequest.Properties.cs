@@ -141,7 +141,7 @@ namespace Lary.Laboratory.Facebook.Gragh
         ///     The local video file path.
         /// </summary>
         [FacebookProperty("source")]
-        public string Source { get; set; }
+        public byte[] Source { get; set; }
 
         /// <summary>
         ///     The start position in byte of the chunk that is being sent, inclusive. Used during chunked upload.
@@ -184,6 +184,6 @@ namespace Lary.Laboratory.Facebook.Gragh
         ///     The chunk of the video, between start_offset and end_offset. Using during chunked upload.
         /// </summary>
         [FacebookProperty("video_file_chunk")]
-        public string VideoFileChunk { get; set; }
+        public byte[] VideoFileChunk { get; set; }
     }
 }

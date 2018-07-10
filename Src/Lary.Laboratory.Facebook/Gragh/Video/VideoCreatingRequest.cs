@@ -3,6 +3,7 @@ using Lary.Laboratory.Core.Helpers;
 using Lary.Laboratory.Core.Models;
 using Lary.Laboratory.Facebook.Helpers;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -23,28 +24,26 @@ namespace Lary.Laboratory.Facebook.Gragh
     public partial class VideoCreatingRequest
     {
         /// <summary>
-        ///     <para/>A simple wrap for uploading a video to facebook by non-resumable upload.
-        ///     <para/>Supports video uploads that are up to 1GB and 20 minutes long.
+        ///     Posts a video creating request to facebook with a special target id.
         /// </summary>
         /// <param name="targetId">
-        ///     The target of video uploading. Can be a value of {user_id, event_id, page_id, group_id}.
+        ///     The target of video creating. Can be a value of {user_id, event_id, page_id, group_id}.
         /// </param>
         /// <param name="accessToken">
         ///     Access token.
         /// </param>
         /// <returns>
-        ///     Video uploading result.
+        ///     Video creating result.
         /// </returns>
         public async Task<ResponseMessage<string>> PostAsync(string targetId, string accessToken)
         {
             var endpoint = new Uri(Basic.Apis.Gragh.VideoUploading(targetId), UriKind.Absolute);
 
-            return await UploadVideoAsync(endpoint, accessToken);
+            return await this.PostAsync(endpoint, accessToken);
         }
 
         /// <summary>
-        ///     <para/>A simple wrap for uploading an ad video to facebook by non-resumable upload.
-        ///     <para/>Supports video uploads that are up to 1GB and 20 minutes long.
+        ///     Posts a video creating request to facebook with the ad account id of user.
         /// </summary>
         /// <param name="adAccountId">
         ///     The ad account id of user.
@@ -53,16 +52,16 @@ namespace Lary.Laboratory.Facebook.Gragh
         ///     Access token.
         /// </param>
         /// <returns>
-        ///     Ad video uploading result.
+        ///     Video creating result.
         /// </returns>
         public async Task<ResponseMessage<string>> PostAsAdVideoAsync(string adAccountId, string accessToken)
         {
             var endpoint = new Uri(Basic.Apis.Gragh.AdVideoUploading(adAccountId), UriKind.Absolute);
 
-            return await UploadVideoAsync(endpoint, accessToken);
+            return await this.PostAsync(endpoint, accessToken);
         }
 
-
+        
         /// <summary>
         ///     Converts current object to its equivalent <see cref="MultipartFormDataContent"/> object.
         /// </summary>
@@ -73,26 +72,6 @@ namespace Lary.Laboratory.Facebook.Gragh
         ///     A <see cref="MultipartFormDataContent"/> object.
         /// </returns>
         private MultipartFormDataContent ToMultipartFormDataContent(params KeyValuePair<string, string>[] attachments)
-        {
-            return ToMultipartFormDataContent(0, -1, attachments);
-        }
-
-        /// <summary>
-        ///     Converts current object to its equivalent <see cref="MultipartFormDataContent"/> object.
-        /// </summary>
-        /// <param name="offset">
-        ///     The offset of video file to upload.
-        /// </param>
-        /// <param name="count">
-        ///     The length of video file to upload.
-        /// </param>
-        /// <param name="attachments">
-        ///     An array of <see cref="KeyValuePair{TKey, TValue}"/> to attch to the <see cref="MultipartFormDataContent"/> object.
-        /// </param>
-        /// <returns>
-        ///     A <see cref="MultipartFormDataContent"/> object.
-        /// </returns>
-        private MultipartFormDataContent ToMultipartFormDataContent(int offset, int count, params KeyValuePair<string, string>[] attachments)
         {
             var result = new MultipartFormDataContent();
             var type = this.GetType();
@@ -109,17 +88,15 @@ namespace Lary.Laboratory.Facebook.Gragh
 
                     if (prop.Name == nameof(this.Source))
                     {
-                        using (var fs = File.OpenRead(this.Source))
-                        {
-                            count = count == -1 ? (int)fs.Length : count;
+                        content = new ByteArrayContent(this.Source, 0, this.Source.Length);
+                    
+                        result.Add(content, name, String.IsNullOrEmpty(this.Name) ? Guid.NewGuid().ToString("N") : this.Name);
+                    }
+                    else if (prop.Name == nameof(this.VideoFileChunk))
+                    {
+                        content = new ByteArrayContent(this.VideoFileChunk, 0, this.VideoFileChunk.Length);
 
-                            var buffer = new byte[count];
-                            var length = fs.Read(buffer, offset, count);
-
-                            content = new ByteArrayContent(buffer, 0, length);
-                        }
-
-                        result.Add(content, name, new FileInfo(this.Source).Name);
+                        result.Add(content, name, String.IsNullOrEmpty(this.Name) ? Guid.NewGuid().ToString("N") : this.Name);
                     }
                     else
                     {
@@ -153,18 +130,18 @@ namespace Lary.Laboratory.Facebook.Gragh
         }
 
         /// <summary>
-        ///     Uploads a video to facebook in non-resumable upload.
+        ///     Posts a video creating request to a facebook api.
         /// </summary>
         /// <param name="endpoint">
-        ///     The uri of target endpoint.
+        ///     The target api to request.
         /// </param>
         /// <param name="accessToken">
         ///     Access token.
         /// </param>
         /// <returns>
-        ///     Video uploading result.
+        ///     Video creating result.
         /// </returns>
-        private async Task<ResponseMessage<string>> UploadVideoAsync(Uri endpoint, string accessToken)
+        private async Task<ResponseMessage<string>> PostAsync(Uri endpoint, string accessToken)
         {
             var dic = new Dictionary<string, string>
             {
@@ -175,7 +152,7 @@ namespace Lary.Laboratory.Facebook.Gragh
             {
                 RequestUri = endpoint,
                 Method = HttpMethod.Post,
-                Content = ToMultipartFormDataContent(dic.ToArray())
+                Content = this.ToMultipartFormDataContent(dic.ToArray())
             };
 
             using (var client = new HttpClient())
