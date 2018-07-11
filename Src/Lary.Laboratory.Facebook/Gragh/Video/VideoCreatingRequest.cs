@@ -2,6 +2,7 @@
 using Lary.Laboratory.Core.Helpers;
 using Lary.Laboratory.Core.Models;
 using Lary.Laboratory.Facebook.Helpers;
+using Lary.Laboratory.Facebook.Uploaders;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -23,8 +24,26 @@ namespace Lary.Laboratory.Facebook.Gragh
     /// </summary>
     public partial class VideoCreatingRequest
     {
+        private readonly string _videoType = String.Empty;
+
         /// <summary>
-        ///     Posts a video creating request to facebook with a special target id.
+        ///     Initializes a new instance of the <see cref="VideoCreatingRequest"/> class.
+        /// </summary>
+        /// <param name="videoType">
+        ///     <para/>The type of video.
+        ///     <para/>The aspect ratio of the video must be between 9x16 and 16x9. We support the following formats 
+        ///     for uploaded videos:
+        ///     <para/>3g2, 3gp, 3gpp, asf, avi, dat, divx, dv, f4v, flv, gif, m2ts, m4v, mkv, mod, mov, mp4, mpe, 
+        ///     mpeg, mpeg4, mpg, mts, nsv, ogm, ogv, qt, tod, ts, vob, and wmv.
+        /// </param>
+        public VideoCreatingRequest(string videoType)
+        {
+            this._videoType = String.IsNullOrEmpty(videoType) ? String.Empty : $".{videoType.TrimStart('.')}";
+        }
+
+        /// <summary>
+        ///     Posts a video creating request to facebook with a special target id. Manually uploading control 
+        ///     is required. See <see cref="VideoUploader"/> to get an easy way to upload.
         /// </summary>
         /// <param name="targetId">
         ///     The target of video creating. Can be a value of {user_id, event_id, page_id, group_id}.
@@ -43,7 +62,8 @@ namespace Lary.Laboratory.Facebook.Gragh
         }
 
         /// <summary>
-        ///     Posts a video creating request to facebook with the ad account id of user.
+        ///     Posts a video creating request to facebook with the ad account id of user. Manually uploading control 
+        ///     is required. See <see cref="VideoUploader"/> to get an easy way to upload.
         /// </summary>
         /// <param name="adAccountId">
         ///     The ad account id of user.
@@ -90,13 +110,13 @@ namespace Lary.Laboratory.Facebook.Gragh
                     {
                         content = new ByteArrayContent(this.Source, 0, this.Source.Length);
                     
-                        result.Add(content, name, String.IsNullOrEmpty(this.Name) ? Guid.NewGuid().ToString("N") : this.Name);
+                        result.Add(content, name, $"{Guid.NewGuid().ToString("N")}{this._videoType}");
                     }
                     else if (prop.Name == nameof(this.VideoFileChunk))
                     {
                         content = new ByteArrayContent(this.VideoFileChunk, 0, this.VideoFileChunk.Length);
 
-                        result.Add(content, name, String.IsNullOrEmpty(this.Name) ? Guid.NewGuid().ToString("N") : this.Name);
+                        result.Add(content, name, $"{Guid.NewGuid().ToString("N")}{this._videoType}");
                     }
                     else
                     {

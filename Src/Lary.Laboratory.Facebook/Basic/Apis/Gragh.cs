@@ -26,6 +26,23 @@ namespace Lary.Laboratory.Facebook.Basic.Apis
 
 
         /// <summary>
+        ///     Get the facebook ad photo uploading api.
+        /// </summary>
+        /// <param name="adAccountId">
+        ///     The ad account id of user.
+        /// </param>
+        /// <param name="apiVersion">
+        ///     The version of api.
+        /// </param>
+        /// <returns>
+        ///     Facebook ad photo uploading api.
+        /// </returns>
+        internal static string AdPhotoUploading(string adAccountId, string apiVersion = LatestVersion)
+        {
+            return $"https://{BasicHost}/{apiVersion}/act_{adAccountId}/adimages";
+        }
+
+        /// <summary>
         ///     Get the facebook ad video uploading api.
         /// </summary>
         /// <param name="adAccountId">
