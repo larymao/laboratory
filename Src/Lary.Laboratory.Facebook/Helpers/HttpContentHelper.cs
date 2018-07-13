@@ -43,11 +43,11 @@ namespace Lary.Laboratory.Facebook.Helpers
                     var key = AttributeHelper.GetFacebookPropertyName(prop);
                     var value = String.Empty;
 
-                    if (TypeHelper.IsSimple(prop.PropertyType))
+                    if (prop.PropertyType.IsSimple(true))
                     {
                         value = originalValue.ToString();
                     }
-                    else if (prop.PropertyType.IsEnum)
+                    else if (prop.PropertyType.IsEnum(true))
                     {
                         value = EnumHelper.GetDescription(prop.PropertyType, originalValue.ToString());
                     }
@@ -101,11 +101,11 @@ namespace Lary.Laboratory.Facebook.Helpers
                     var name = AttributeHelper.GetFacebookPropertyName(prop);
                     HttpContent content;
 
-                    if (TypeHelper.IsSimple(prop.PropertyType))
+                    if (prop.PropertyType.IsSimple(true))
                     {
                         content = new StringContent(originalValue.ToString());
                     }
-                    else if (prop.PropertyType.IsEnum)
+                    else if (prop.PropertyType.IsEnum(true))
                     {
                         content = new StringContent(EnumHelper.GetDescription(prop.PropertyType, originalValue.ToString()));
                     }

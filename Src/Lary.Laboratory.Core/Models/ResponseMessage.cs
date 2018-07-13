@@ -34,7 +34,7 @@ namespace Lary.Laboratory.Core.Models
         [JsonProperty("data")]
         public TResult Data { get; set; }
 
-
+        
         /// <summary>
         ///     Returns a json formatted string that represents the current object.
         /// </summary>
@@ -43,7 +43,7 @@ namespace Lary.Laboratory.Core.Models
         /// </returns>
         public override string ToString()
         {
-            return JsonConvert.SerializeObject(this);
+            return this.ToString(false);
         }
 
         /// <summary>
@@ -100,7 +100,7 @@ namespace Lary.Laboratory.Core.Models
                 }
             }
 
-            return this.ToString();
+            return JsonConvert.SerializeObject(this);
         }
     }
 }

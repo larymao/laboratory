@@ -18,7 +18,7 @@ namespace Lary.Laboratory.Facebook.Uploaders
     public static class PhotoUploader
     {
         /// <summary>
-        ///     Uploads a photo to facebook with a special target id.
+        ///     Uploads a photo to facebook with a special target id as an asynchronous operation.
         /// </summary>
         /// <param name="filename">
         ///     The bytes data of photo.
@@ -33,7 +33,7 @@ namespace Lary.Laboratory.Facebook.Uploaders
         ///     Access token.
         /// </param>
         /// <returns>
-        ///     Photo uploading result.
+        ///     The task object representing the asynchronous operation.
         /// </returns>
         /// <exception cref="FileNotFoundException">
         ///     Throw if the target file doesn't exists.
@@ -64,7 +64,7 @@ namespace Lary.Laboratory.Facebook.Uploaders
         }
 
         /// <summary>
-        ///     Uploads an ad photo to facebook with the ad account id of user.
+        ///     Uploads an ad photo to facebook with the ad account id of user as an asynchronous operation.
         /// </summary>
         /// <param name="filename">
         ///     The full file path of the photo.
@@ -76,7 +76,7 @@ namespace Lary.Laboratory.Facebook.Uploaders
         ///     Access token.
         /// </param>
         /// <returns>
-        ///     Ad photo uploading result.
+        ///     The task object representing the asynchronous operation.
         /// </returns>
         /// <exception cref="FileNotFoundException">
         ///     Throw if the target file doesn't exists.
@@ -107,7 +107,7 @@ namespace Lary.Laboratory.Facebook.Uploaders
 
 
         /// <summary>
-        ///     Uploads a photo to a facebook api.
+        ///     Uploads a photo to a facebook api as an asynchronous operation.
         /// </summary>
         /// <param name="filename">
         ///     The full file path of the photo.
@@ -119,7 +119,7 @@ namespace Lary.Laboratory.Facebook.Uploaders
         ///     The query data to append to the endpoint.
         /// </param>
         /// <returns>
-        ///     Photo uploading result.
+        ///     The task object representing the asynchronous operation.
         /// </returns>
         private static async Task<ResponseMessage<string>> UploadAsync(string filename, Uri endpoint, params KeyValuePair<string, string>[] queries)
         {

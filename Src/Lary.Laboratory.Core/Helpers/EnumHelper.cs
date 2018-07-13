@@ -51,9 +51,14 @@ namespace Lary.Laboratory.Core.Helpers
         /// </exception>
         public static string GetDescription(Type type, string enumerationValue)
         {
-            if (!type.IsEnum)
+            if (!type.IsEnum(true))
             {
                 throw new ArgumentException("EnumerationValue must be of Enum type", "enumerationValue");
+            }
+
+            if (type.IsNullableEnum())
+            {
+                type = Nullable.GetUnderlyingType(type);
             }
 
             // Tries to find a DescriptionAttribute for a potential friendly name for the enum.
@@ -94,11 +99,16 @@ namespace Lary.Laboratory.Core.Helpers
         {
             Type type = typeof(T);
 
-            if (!type.IsEnum)
+            if (!type.IsEnum(true))
             {
                 throw new ArgumentException("EnumerationValue must be of Enum type", "enumerationValue");
             }
-            
+
+            if (type.IsNullableEnum())
+            {
+                type = Nullable.GetUnderlyingType(type);
+            }
+
             MemberInfo[] memberInfos = type.GetMembers();
 
             if (memberInfos != null)

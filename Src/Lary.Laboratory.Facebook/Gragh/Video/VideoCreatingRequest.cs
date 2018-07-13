@@ -42,8 +42,8 @@ namespace Lary.Laboratory.Facebook.Gragh
         }
 
         /// <summary>
-        ///     Posts a video creating request to facebook with a special target id. Manually uploading control 
-        ///     is required. See <see cref="VideoUploader"/> to get an easy way to upload.
+        ///     Posts a video creating request to facebook with a special target id as an asynchronous operation. 
+        ///     Manually uploading control is required. See <see cref="VideoUploader"/> to get an easy way to upload.
         /// </summary>
         /// <param name="targetId">
         ///     The target of video creating. Can be a value of {user_id, event_id, page_id, group_id}.
@@ -52,7 +52,7 @@ namespace Lary.Laboratory.Facebook.Gragh
         ///     Access token.
         /// </param>
         /// <returns>
-        ///     Video creating result.
+        ///     The task object representing the asynchronous operation.
         /// </returns>
         public async Task<ResponseMessage<string>> PostAsync(string targetId, string accessToken)
         {
@@ -62,8 +62,8 @@ namespace Lary.Laboratory.Facebook.Gragh
         }
 
         /// <summary>
-        ///     Posts a video creating request to facebook with the ad account id of user. Manually uploading control 
-        ///     is required. See <see cref="VideoUploader"/> to get an easy way to upload.
+        ///     Posts a video creating request to facebook with the ad account id of user as an asynchronous operation. 
+        ///     Manually uploading control is required. See <see cref="VideoUploader"/> to get an easy way to upload.
         /// </summary>
         /// <param name="adAccountId">
         ///     The ad account id of user.
@@ -72,7 +72,7 @@ namespace Lary.Laboratory.Facebook.Gragh
         ///     Access token.
         /// </param>
         /// <returns>
-        ///     Video creating result.
+        ///     The task object representing the asynchronous operation.
         /// </returns>
         public async Task<ResponseMessage<string>> PostAsAdVideoAsync(string adAccountId, string accessToken)
         {
@@ -120,11 +120,11 @@ namespace Lary.Laboratory.Facebook.Gragh
                     }
                     else
                     {
-                        if (TypeHelper.IsSimple(prop.PropertyType))
+                        if (prop.PropertyType.IsSimple(true))
                         {
                             content = new StringContent(originalValue.ToString());
                         }
-                        else if (prop.PropertyType.IsEnum)
+                        else if (prop.PropertyType.IsEnum(true))
                         {
                             content = new StringContent(EnumHelper.GetDescription(prop.PropertyType, originalValue.ToString()));
                         }
@@ -150,7 +150,7 @@ namespace Lary.Laboratory.Facebook.Gragh
         }
 
         /// <summary>
-        ///     Posts a video creating request to a facebook api.
+        ///     Posts a video creating request to a facebook api as an asynchronous operation.
         /// </summary>
         /// <param name="endpoint">
         ///     The target api to request.
@@ -159,7 +159,7 @@ namespace Lary.Laboratory.Facebook.Gragh
         ///     Access token.
         /// </param>
         /// <returns>
-        ///     Video creating result.
+        ///     The task object representing the asynchronous operation.
         /// </returns>
         private async Task<ResponseMessage<string>> PostAsync(Uri endpoint, string accessToken)
         {

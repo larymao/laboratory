@@ -36,7 +36,7 @@ namespace Lary.Laboratory.Facebook.Gragh
     public partial class Post
     {
         /// <summary>
-        ///     Publishes a post to facebook.
+        ///     Publishes a post to facebook as an asynchronous operation.
         /// </summary>
         /// <param name="targetId">
         ///     The target of post publishing.
@@ -45,7 +45,7 @@ namespace Lary.Laboratory.Facebook.Gragh
         ///     Access token.
         /// </param>
         /// <returns>
-        ///     Post publishing result.
+        ///     The task object representing the asynchronous operation.
         /// </returns>
         public async Task<ResponseMessage<string>> PublishAsync(string targetId, string accessToken)
         {
