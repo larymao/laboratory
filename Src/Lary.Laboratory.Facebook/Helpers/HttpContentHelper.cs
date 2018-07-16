@@ -31,32 +31,36 @@ namespace Lary.Laboratory.Facebook.Helpers
         internal static FormUrlEncodedContent CreateFormUrlEncodedContentFrom<T>(T item, params KeyValuePair<string, string>[] attachments)
         {
             var dic = new Dictionary<string, string>();
-            var type = item.GetType();
-            var props = type.GetProperties();
 
-            foreach (var prop in props)
+            if (item != null)
             {
-                var originalValue = prop.GetValue(item);
+                var type = item.GetType();
+                var props = type.GetProperties();
 
-                if (originalValue != null)
+                foreach (var prop in props)
                 {
-                    var key = AttributeHelper.GetFacebookPropertyName(prop);
-                    var value = String.Empty;
+                    var originalValue = prop.GetValue(item);
 
-                    if (prop.PropertyType.IsSimple(true))
+                    if (originalValue != null)
                     {
-                        value = originalValue.ToString();
-                    }
-                    else if (prop.PropertyType.IsEnum(true))
-                    {
-                        value = EnumHelper.GetDescription(prop.PropertyType, originalValue.ToString());
-                    }
-                    else
-                    {
-                        value = JsonConvert.SerializeObject(originalValue);
-                    }
+                        var key = AttributeHelper.GetFacebookPropertyName(prop);
+                        var value = String.Empty;
 
-                    dic.Add(key, value);
+                        if (prop.PropertyType.IsSimple(true))
+                        {
+                            value = originalValue.ToString();
+                        }
+                        else if (prop.PropertyType.IsEnum(true))
+                        {
+                            value = EnumHelper.GetDescription(prop.PropertyType, originalValue.ToString());
+                        }
+                        else
+                        {
+                            value = JsonConvert.SerializeObject(originalValue);
+                        }
+
+                        dic.Add(key, value);
+                    }
                 }
             }
 
@@ -89,37 +93,41 @@ namespace Lary.Laboratory.Facebook.Helpers
         internal static MultipartFormDataContent CreateMultipartFormDataContentFrom<T>(T item, params KeyValuePair<string, string>[] attachments)
         {
             var result = new MultipartFormDataContent();
-            var type = item.GetType();
-            var props = type.GetProperties();
 
-            foreach (var prop in props)
+            if (item != null)
             {
-                var originalValue = prop.GetValue(item);
+                var type = item.GetType();
+                var props = type.GetProperties();
 
-                if (originalValue != null)
+                foreach (var prop in props)
                 {
-                    var name = AttributeHelper.GetFacebookPropertyName(prop);
-                    HttpContent content;
+                    var originalValue = prop.GetValue(item);
 
-                    if (prop.PropertyType.IsSimple(true))
+                    if (originalValue != null)
                     {
-                        content = new StringContent(originalValue.ToString());
-                    }
-                    else if (prop.PropertyType.IsEnum(true))
-                    {
-                        content = new StringContent(EnumHelper.GetDescription(prop.PropertyType, originalValue.ToString()));
-                    }
-                    else if (prop.PropertyType == typeof(byte[]))
-                    {
-                        var bytes = originalValue as byte[];
-                        content = new ByteArrayContent(bytes, 0, bytes.Length);
-                    }
-                    else
-                    {
-                        content = new StringContent(JsonConvert.SerializeObject(originalValue));
-                    }
+                        var name = AttributeHelper.GetFacebookPropertyName(prop);
+                        HttpContent content;
 
-                    result.Add(content, name);
+                        if (prop.PropertyType.IsSimple(true))
+                        {
+                            content = new StringContent(originalValue.ToString());
+                        }
+                        else if (prop.PropertyType.IsEnum(true))
+                        {
+                            content = new StringContent(EnumHelper.GetDescription(prop.PropertyType, originalValue.ToString()));
+                        }
+                        else if (prop.PropertyType == typeof(byte[]))
+                        {
+                            var bytes = originalValue as byte[];
+                            content = new ByteArrayContent(bytes, 0, bytes.Length);
+                        }
+                        else
+                        {
+                            content = new StringContent(JsonConvert.SerializeObject(originalValue));
+                        }
+
+                        result.Add(content, name);
+                    }
                 }
             }
 

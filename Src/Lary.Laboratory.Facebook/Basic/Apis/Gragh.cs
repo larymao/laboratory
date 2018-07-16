@@ -144,5 +144,22 @@ namespace Lary.Laboratory.Facebook.Basic.Apis
         {
             return $"https://{VideoUploadingHost}/{apiVersion}/{targetId}/videos";
         }
+
+        /// <summary>
+        ///     Facebook gragh api, to get thumbnails of video by its id.
+        /// </summary>
+        /// <param name="videoId">
+        ///     The video to get thumbnails.
+        /// </param>
+        /// <param name="apiVersion">
+        ///     The version of api.
+        /// </param>
+        /// <returns>
+        ///     Facebook video thumbnails api.
+        /// </returns>
+        internal static string VideoThumbnails(string videoId, string apiVersion = LatestVersion)
+        {
+            return $"https://{BasicHost}/{apiVersion}/{videoId}/thumbnails";
+        }
     }
 }
