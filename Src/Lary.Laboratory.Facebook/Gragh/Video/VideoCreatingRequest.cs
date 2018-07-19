@@ -130,7 +130,7 @@ namespace Lary.Laboratory.Facebook.Gragh
                         }
                         else
                         {
-                            content = new StringContent(JsonConvert.SerializeObject(originalValue));
+                            content = new StringContent(JsonConvert.SerializeObject(originalValue, HttpContentHelper.SerializerSettings));
                         }
 
                         result.Add(content, name);

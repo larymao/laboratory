@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
@@ -8,6 +10,7 @@ namespace Lary.Laboratory.Facebook.Marketing
     /// <summary>
     ///     The type of <see cref="Call2Action"/>.
     /// </summary>
+    [JsonConverter(typeof(StringEnumConverter))]
     public enum Call2ActionType
     {
         /// <summary>

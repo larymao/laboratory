@@ -22,7 +22,7 @@ namespace Lary.Laboratory.Facebook.Marketing
         ///     Video data.
         /// </summary>
         [FacebookProperty("video_data")]
-        [JsonProperty("videoData")]
+        [JsonProperty("video_data")]
         public VideoData VideoData { get; set; }
 
         /// <summary>

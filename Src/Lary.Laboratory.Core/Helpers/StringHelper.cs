@@ -34,6 +34,79 @@ namespace Lary.Laboratory.Core.Helpers
             return sb.ToString().TrimEnd();
         }
 
+        /// <summary>
+        ///     Indicates whether the specified pattern finds a match in the specified src string.
+        /// </summary>
+        /// <param name="src">
+        ///     The string to search for a match.
+        /// </param>
+        /// <param name="pattern">
+        ///     The pattern to match.
+        /// </param>
+        /// <returns>
+        ///     True if the pattern finds a match; otherwise, false.
+        /// </returns>
+        public static bool Likes(this string src, string pattern)
+        {
+            bool isMatch = false;
+
+            if (pattern.StartsWith(@"\%"))
+            {
+                if (pattern.EndsWith(@"\%"))
+                {
+                    // \%{content}\%
+                    isMatch = src == $"{pattern.Substring(1, pattern.Length - 3)}%";
+                }
+                else if (pattern.EndsWith("%"))
+                {
+                    // \%{content}%
+                    isMatch = src.StartsWith(pattern.Substring(1, pattern.Length - 2).ToString());
+                }
+                else
+                {
+                    // \%{content}
+                    isMatch = src == pattern.Substring(1, pattern.Length - 1).ToString();
+                }
+            }
+            else if (pattern.StartsWith("%"))
+            {
+                if (pattern.EndsWith(@"\%"))
+                {
+                    // %{content}\%
+                    isMatch = src.EndsWith($"{pattern.Substring(1, pattern.Length - 3).ToString()}%");
+                }
+                else if (pattern.EndsWith("%"))
+                {
+                    // %{content}%
+                    isMatch = src.Contains(pattern.Substring(1, pattern.Length - 2).ToString());
+                }
+                else
+                {
+                    // %{content}
+                    isMatch = src.EndsWith(pattern.Substring(1, pattern.Length - 1).ToString());
+                }
+            }
+            else
+            {
+                if (pattern.EndsWith(@"\%"))
+                {
+                    // {content}\%
+                    isMatch = src == $"{pattern.Remove(pattern.Length - 2).ToString()}%";
+                }
+                else if (pattern.EndsWith("%"))
+                {
+                    // {content}%
+                    isMatch = src.StartsWith(pattern.Remove(pattern.Length - 1).ToString());
+                }
+                else
+                {
+                    // {content}
+                    isMatch = src == pattern;
+                }
+            }
+
+            return isMatch;
+        }
 
         /// <summary>
         ///     Checks if a string is in valid JSON format.

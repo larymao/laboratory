@@ -36,7 +36,7 @@ namespace Lary.Laboratory.Facebook.Marketing
         ///     The headline of the video data.
         /// </summary>
         [FacebookProperty("name")]
-        [JsonProperty("call_to_action")]
+        [JsonProperty("name")]
         public string Headline { get; set; }
 
         /// <summary>

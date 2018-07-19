@@ -31,7 +31,7 @@ namespace Lary.Laboratory.Facebook.Basic.Apis
         /// </returns>
         internal static string AdCreative(string adAccountId, string apiVersion = LatestVersion)
         {
-            return $"https://{GraghHost}/{apiVersion}/{adAccountId}";
+            return $"https://{GraghHost}/{apiVersion}/act_{adAccountId}/adcreatives";
         }
 
         /// <summary>

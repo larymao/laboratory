@@ -14,6 +14,14 @@ namespace Lary.Laboratory.Facebook.Helpers
     internal static class HttpContentHelper
     {
         /// <summary>
+        ///     Json serializer settings for <see cref="HttpContentHelper"/>.
+        /// </summary>
+        internal static readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings
+        {
+            NullValueHandling = NullValueHandling.Ignore
+        };
+
+        /// <summary>
         ///     Converts a item to its equivalent <see cref="FormUrlEncodedContent"/> object.
         /// </summary>
         /// <typeparam name="T">
@@ -56,7 +64,7 @@ namespace Lary.Laboratory.Facebook.Helpers
                         }
                         else
                         {
-                            value = JsonConvert.SerializeObject(originalValue);
+                            value = JsonConvert.SerializeObject(originalValue, SerializerSettings);
                         }
 
                         dic.Add(key, value);
@@ -107,7 +115,7 @@ namespace Lary.Laboratory.Facebook.Helpers
                     {
                         var name = AttributeHelper.GetFacebookPropertyName(prop);
                         HttpContent content;
-
+                        
                         if (prop.PropertyType.IsSimple(true))
                         {
                             content = new StringContent(originalValue.ToString());
@@ -123,7 +131,7 @@ namespace Lary.Laboratory.Facebook.Helpers
                         }
                         else
                         {
-                            content = new StringContent(JsonConvert.SerializeObject(originalValue));
+                            content = new StringContent(JsonConvert.SerializeObject(originalValue, SerializerSettings));
                         }
 
                         result.Add(content, name);

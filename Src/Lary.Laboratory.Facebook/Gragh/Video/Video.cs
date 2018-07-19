@@ -1,4 +1,5 @@
 ﻿using Lary.Laboratory.Core.Extensions;
+using Lary.Laboratory.Core.Helpers;
 using Lary.Laboratory.Core.Models;
 using Lary.Laboratory.Facebook.Helpers;
 using System;
@@ -39,12 +40,11 @@ namespace Lary.Laboratory.Facebook.Gragh
             {
                 { "access_token", accessToken }
             };
-
+            
             var request = new HttpRequestMessage
             {
-                RequestUri = new Uri(Basic.Apis.Gragh.VideoThumbnails(this.Id), UriKind.Absolute),
-                Method = HttpMethod.Post,
-                Content = HttpContentHelper.CreateFormUrlEncodedContentFrom(this, dic.ToArray())
+                RequestUri = new Uri(Basic.Apis.Gragh.VideoThumbnails(this.Id), UriKind.Absolute).AppendQueries(dic),
+                Method = HttpMethod.Get
             };
 
             using (var client = new HttpClient())

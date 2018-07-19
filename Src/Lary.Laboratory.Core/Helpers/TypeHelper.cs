@@ -61,7 +61,9 @@ namespace Lary.Laboratory.Core.Helpers
         {
             var underType = Nullable.GetUnderlyingType(type);
 
-            return IsSimple(underType);
+            return underType == null
+                ? false 
+                : underType.IsSimple();
         }
 
         /// <summary>
@@ -101,7 +103,9 @@ namespace Lary.Laboratory.Core.Helpers
         {
             var underType = Nullable.GetUnderlyingType(type);
 
-            return underType.IsEnum;
+            return underType == null
+                ? false
+                : underType.IsEnum;
         }
     }
 }
