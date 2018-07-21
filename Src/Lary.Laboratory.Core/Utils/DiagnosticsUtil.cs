@@ -30,9 +30,9 @@ namespace Lary.Laboratory.Core.Utils
                     aa.GetMethod()
                 )
                 .Where(bb => (
-                    bb.DeclaringType.FullName.Contains(keyword) &&
-                    bb.Name != currentMethod.Name && // Filter current method.
-                    !bb.DeclaringType.FullName.Contains("++++")) // Filter methods created by system.
+                    bb.DeclaringType.FullName.Contains(keyword)
+                    && bb.Name != currentMethod.Name // Filter current method.
+                    && !bb.DeclaringType.FullName.Contains("++++")) // Filter methods created by system.
                 );
 
             return methods;

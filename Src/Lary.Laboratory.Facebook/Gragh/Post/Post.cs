@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 namespace Lary.Laboratory.Facebook.Gragh
 {
     /// <summary>
-    ///     /// <summary>
     ///     <para/>An individual entry in a profile's feed. The profile could be a user, page, app, or group.
     ///     <para/>For Posts on a User:
     ///     <para/>That User's access token with the user_posts permission, or
@@ -31,7 +30,6 @@ namespace Lary.Laboratory.Facebook.Gragh
     ///     an app User. Please refer to the Breaking Changes changelog for more details.
     ///     <para/>For Posts on an Event:
     ///     <para/>Any valid access token of an Admin of the Event for Event-owned Posts is required after April 30, 2018.
-    /// </summary>
     /// </summary>
     public partial class Post
     {

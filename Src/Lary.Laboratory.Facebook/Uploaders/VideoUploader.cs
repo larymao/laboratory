@@ -253,10 +253,10 @@ namespace Lary.Laboratory.Facebook.Uploaders
             {
                 jobj = JObject.Parse(response.Data);
 
-                if (jobj["video_id"] != null &&
-                    jobj["upload_session_id"] != null &&
-                    !String.IsNullOrEmpty(jobj["video_id"].ToString()) &&
-                    !String.IsNullOrEmpty(jobj["upload_session_id"].ToString()))
+                if (jobj["video_id"] != null 
+                    && jobj["upload_session_id"] != null 
+                    && !String.IsNullOrEmpty(jobj["video_id"].ToString()) 
+                    && !String.IsNullOrEmpty(jobj["upload_session_id"].ToString()))
                 {
                     videoId = jobj["video_id"].ToString();
                     uploadSessionId = jobj["upload_session_id"].ToString();
@@ -303,10 +303,10 @@ namespace Lary.Laboratory.Facebook.Uploaders
                                     {
                                         jobj = JObject.Parse(response.Data);
 
-                                        if (jobj["start_offset"] != null &&
-                                            jobj["end_offset"] != null &&
-                                            !String.IsNullOrEmpty(jobj["start_offset"].ToString()) &&
-                                            !String.IsNullOrEmpty(jobj["end_offset"].ToString()))
+                                        if (jobj["start_offset"] != null 
+                                            && jobj["end_offset"] != null 
+                                            && !String.IsNullOrEmpty(jobj["start_offset"].ToString()) 
+                                            && !String.IsNullOrEmpty(jobj["end_offset"].ToString()))
                                         {
                                             transferRequest.StartOffset = Int64.Parse(jobj["start_offset"].ToString());
                                             transferRequest.EndOffset = Int64.Parse(jobj["end_offset"].ToString());

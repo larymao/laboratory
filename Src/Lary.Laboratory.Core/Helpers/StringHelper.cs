@@ -129,8 +129,8 @@ namespace Lary.Laboratory.Core.Helpers
 
             str = str.Trim();
 
-            if ((str.StartsWith("{") && str.EndsWith("}")) || // For object
-                (str.StartsWith("[") && str.EndsWith("]")) // For array
+            if ((str.StartsWith("{") && str.EndsWith("}")) // For object
+                || (str.StartsWith("[") && str.EndsWith("]")) // For array
                )
             {
                 try

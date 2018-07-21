@@ -22,7 +22,7 @@ namespace Lary.Laboratory.Core.Extensions
         ///     <see cref="HttpStatusCode.OK"/>, otherwise, set to 1.
         /// </summary>
         /// <param name="httpResponse">
-        ///     ///     Current instance of <see cref="HttpResponseMessage"/>.
+        ///     Current instance of <see cref="HttpResponseMessage"/>.
         /// </param>
         /// <returns>
         ///     The task object representing the asynchronous operation.
