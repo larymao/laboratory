@@ -120,6 +120,12 @@ namespace Lary.Laboratory.Facebook.Gragh
         public VideoOriginalProjectionType? OriginalProjectionType { get; set; }
 
         /// <summary>
+        ///     Whether a post about this video is published. The post is not scheduled, draft, or ads_post.
+        /// </summary>
+        [FacebookProperty("published")]
+        public bool? Published { get; set; }
+
+        /// <summary>
         ///     This metadata is used in clip reaction feature.
         /// </summary>
         [FacebookProperty("react_mode_metadata")]
@@ -130,6 +136,12 @@ namespace Lary.Laboratory.Facebook.Gragh
         /// </summary>
         [FacebookProperty("referenced_sticker_id")]
         public string ReferencedStickerId { get; set; }
+
+        /// <summary>
+        ///     The time that the video is scheduled to publish.
+        /// </summary>
+        [FacebookProperty("scheduled_publish_time")]
+        public long? ScheduledPublishTime { get; set; }
 
         /// <summary>
         ///     An object required for slideshow video.

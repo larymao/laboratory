@@ -38,13 +38,13 @@ namespace Lary.Laboratory.Facebook.UnitTests.Gragh
         }
 
         /// <summary>
-        ///     Test for drafting a post that attached with a link to facebook as an asynchronous operation.
+        ///     Test for publishing a post that attached with a link to facebook as an asynchronous operation.
         /// </summary>
         /// <returns>
         ///     The task object representing the asynchronous operation.
         /// </returns>
         [TestMethod]
-        public async Task DraftPostWithLinkAsync()
+        public async Task PublishPostWithLinkAsync()
         {
             var post = new Post
             {

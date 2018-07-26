@@ -17,6 +17,52 @@ namespace Lary.Laboratory.Facebook.UnitTests.Gragh
     public class PhotoTest
     {
         /// <summary>
+        ///     Test for posting a post that attached with an online picture to facebook as an asynchronous operation.
+        /// </summary>
+        /// <returns>
+        ///     The task object representing the asynchronous operation.
+        /// </returns>
+        [TestMethod]
+        public async Task PublishPostWithOnlinePictureAsync()
+        {
+            var post = new PhotoCreatingRequest
+            {
+                Caption = Guid.NewGuid().ToString("N"),
+                Url = TestsBase.OnlinePicture
+            };
+
+            var response = await post.PublishAsync(TestsBase.PageId, TestsBase.PageAccessToken);
+            Assert.IsTrue(response.Code == ResponseCode.SUCCESS, response.ReasonPhrase ?? String.Empty);
+
+            var jobj = JObject.Parse(response.Data);
+            Assert.IsTrue(jobj["id"] != null && !String.IsNullOrEmpty(jobj["id"].ToString()));
+        }
+
+        /// <summary>
+        ///     Test for drafting a post that attached with an online picture to facebook as an asynchronous operation.
+        /// </summary>
+        /// <returns>
+        ///     The task object representing the asynchronous operation.
+        /// </returns>
+        [TestMethod]
+        public async Task DraftPostWithOnlinePictureAsync()
+        {
+            var post = new PhotoCreatingRequest
+            {
+                Caption = Guid.NewGuid().ToString("N"),
+                Url = TestsBase.OnlinePicture,
+                Published = false,
+                UnpublishedContentType = UnpublishedContentType.Draft
+            };
+
+            var response = await post.PublishAsync(TestsBase.PageId, TestsBase.PageAccessToken);
+            Assert.IsTrue(response.Code == ResponseCode.SUCCESS, response.ReasonPhrase ?? String.Empty);
+
+            var jobj = JObject.Parse(response.Data);
+            Assert.IsTrue(jobj["id"] != null && !String.IsNullOrEmpty(jobj["id"].ToString()));
+        }
+
+        /// <summary>
         ///     Test for scheduling a post that attached with an online picture to facebook as an asynchronous operation.
         /// </summary>
         /// <returns>
@@ -30,6 +76,7 @@ namespace Lary.Laboratory.Facebook.UnitTests.Gragh
                 Caption = Guid.NewGuid().ToString("N"),
                 Url = TestsBase.OnlinePicture,
                 Published = false,
+                UnpublishedContentType = UnpublishedContentType.Scheduled,
                 ScheduledPublishTime = DateTimeUtil.CountTimeStamp(DateTime.Now.AddHours(1))
             };
 
