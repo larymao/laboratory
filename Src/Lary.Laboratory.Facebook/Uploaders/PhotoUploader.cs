@@ -128,10 +128,9 @@ namespace Lary.Laboratory.Facebook.Uploaders
 
             // Content.
             var bytes = await File.ReadAllBytesAsync(filename);
-            var displayName = new FileInfo(filename).Name;
             var photoContent = new ByteArrayContent(bytes, 0, bytes.Length);
             photoContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data");
-            photoContent.Headers.ContentDisposition.Parameters.Add(new NameValueHeaderValue("filename", displayName));
+            photoContent.Headers.ContentDisposition.Parameters.Add(new NameValueHeaderValue("filename", $"{Guid.NewGuid().ToString("N")}{Path.GetExtension(filename)}"));
 
             var content = new MultipartFormDataContent
             {
