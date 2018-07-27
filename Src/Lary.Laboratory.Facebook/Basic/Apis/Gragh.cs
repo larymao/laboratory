@@ -77,6 +77,40 @@ namespace Lary.Laboratory.Facebook.Basic.Apis
         }
 
         /// <summary>
+        ///     Returns api for querying the comments of a post by its id.
+        /// </summary>
+        /// <param name="postId">
+        ///     The id of a post to query.
+        /// </param>
+        /// <param name="apiVersion">
+        ///     The version of api.
+        /// </param>
+        /// <returns>
+        ///     Api for querying the comments of a post by its id.
+        /// </returns>
+        internal static string Comments(string postId, string apiVersion = LatestVersion)
+        {
+            return $"https://{BasicHost}/{apiVersion}/{postId}/comments";
+        }
+
+        /// <summary>
+        ///     Returns api for posting a like to a post by its id.
+        /// </summary>
+        /// <param name="postId">
+        ///     The id of a post to like.
+        /// </param>
+        /// <param name="apiVersion">
+        ///     The version of api.
+        /// </param>
+        /// <returns>
+        ///     Api for posting a like to a post by its id.
+        /// </returns>
+        internal static string Likes(string postId, string apiVersion = LatestVersion)
+        {
+            return $"https://{BasicHost}/{apiVersion}/{postId}/likes";
+        }
+
+        /// <summary>
         ///     <para/>When posting to this edge, a Photo will be created.
         ///     <para/>Note: the post_id value is not returned for photos added to Albums.
         /// </summary>
@@ -109,6 +143,23 @@ namespace Lary.Laboratory.Facebook.Basic.Apis
         internal static string PostPublishing(string targetId, string apiVersion = LatestVersion)
         {
             return $"https://{BasicHost}/{apiVersion}/{targetId}/feed";
+        }
+
+        /// <summary>
+        ///     Returns api for getting the reactions of a post by its id.
+        /// </summary>
+        /// <param name="postId">
+        ///     The id of a post to query.
+        /// </param>
+        /// <param name="apiVersion">
+        ///     The version of api.
+        /// </param>
+        /// <returns>
+        ///     Api for getting the reactions of a post by its id.
+        /// </returns>
+        internal static string Reactions(string postId, string apiVersion = LatestVersion)
+        {
+            return $"https://{BasicHost}/{apiVersion}/{postId}/reactions";
         }
 
         /// <summary>

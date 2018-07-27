@@ -1,4 +1,5 @@
 ﻿using Lary.Laboratory.Core.Extensions;
+using Lary.Laboratory.Core.Helpers;
 using Lary.Laboratory.Core.Models;
 using Lary.Laboratory.Facebook.Helpers;
 using System;
@@ -34,7 +35,7 @@ namespace Lary.Laboratory.Facebook.Gragh
     public partial class Post
     {
         /// <summary>
-        ///     Publishes a post to facebook as an asynchronous operation.
+        ///     Publishes current post to facebook as an asynchronous operation.
         /// </summary>
         /// <param name="targetId">
         ///     The target of post publishing.
@@ -55,6 +56,97 @@ namespace Lary.Laboratory.Facebook.Gragh
             var request = new HttpRequestMessage
             {
                 RequestUri = new Uri(Basic.Apis.Gragh.PostPublishing(targetId), UriKind.Absolute),
+                Method = HttpMethod.Post,
+                Content = HttpContentHelper.CreateFormUrlEncodedContentFrom(this, dic.ToArray())
+            };
+
+            using (var client = new HttpClient())
+            {
+                var response = await client.SendAsync(request);
+
+                return await response.ToResponseMessageAsync();
+            }
+        }
+
+        /// <summary>
+        ///     Gets the comments of current post by its id and accessToken as an asynchronous operation.
+        /// </summary>
+        /// <param name="accessToken">
+        ///     Access token.
+        /// </param>
+        /// <returns>
+        ///     The task object representing the asynchronous operation.
+        /// </returns>
+        public async Task<ResponseMessage<string>> GetCommentsAsync(string accessToken)
+        {
+            var dic = new Dictionary<string, string>
+            {
+                { "access_token", accessToken }
+            };
+
+            var request = new HttpRequestMessage
+            {
+                RequestUri = new Uri(Basic.Apis.Gragh.Comments(this.Id), UriKind.Absolute).AppendQueries(dic),
+                Method = HttpMethod.Get
+            };
+
+            using (var client = new HttpClient())
+            {
+                var response = await client.SendAsync(request);
+
+                return await response.ToResponseMessageAsync();
+            }
+        }
+
+        /// <summary>
+        ///     Gets the reactions of current post by its id and accessToken as an asynchronous operation.
+        /// </summary>
+        /// <param name="accessToken">
+        ///     Access token.
+        /// </param>
+        /// <returns>
+        ///     The task object representing the asynchronous operation.
+        /// </returns>
+        public async Task<ResponseMessage<string>> GetReactionsAsync(string accessToken)
+        {
+            var dic = new Dictionary<string, string>
+            {
+                { "access_token", accessToken }
+            };
+
+            var request = new HttpRequestMessage
+            {
+                RequestUri = new Uri(Basic.Apis.Gragh.Reactions(this.Id), UriKind.Absolute).AppendQueries(dic),
+                Method = HttpMethod.Get
+            };
+
+            using (var client = new HttpClient())
+            {
+                var response = await client.SendAsync(request);
+
+                return await response.ToResponseMessageAsync();
+            }
+        }
+
+        /// <summary>
+        ///     Likes current post as an asynchronous operation, postId is required.
+        /// </summary>
+        /// <param name="accessToken">
+        ///     Access token.
+        /// </param>
+        /// <returns>
+        ///     The task object representing the asynchronous operation.
+        /// </returns>
+        public async Task<ResponseMessage<string>> LikeAsync(string accessToken)
+        {
+            var dic = new Dictionary<string, string>
+            {
+                { "access_token", accessToken }
+            };
+
+            var request = new HttpRequestMessage
+            {
+                RequestUri = new Uri(Basic.Apis.Gragh.Likes(this.Id), UriKind.Absolute),
                 Method = HttpMethod.Post,
                 Content = HttpContentHelper.CreateFormUrlEncodedContentFrom(this, dic.ToArray())
             };
