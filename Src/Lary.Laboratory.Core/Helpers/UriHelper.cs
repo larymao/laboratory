@@ -60,5 +60,24 @@ namespace Lary.Laboratory.Core.Helpers
             uriBuilder.Query = queryCollection.ToString();
             return uriBuilder.Uri;
         }
+
+        /// <summary>
+        ///     Gets the basic URI.
+        /// </summary>
+        /// <param name="uri">
+        ///     An instance of <see cref="Uri"/>.
+        /// </param>
+        /// <returns>
+        ///     The basic URI of uri.
+        /// </returns>
+        public static string BasicUri(this Uri uri)
+        {
+            if (string.IsNullOrEmpty(uri.Query))
+            {
+                return uri.AbsoluteUri;
+            }
+
+            return uri.AbsoluteUri.Replace(uri.Query, string.Empty);
+        }
     }
 }
