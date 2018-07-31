@@ -63,6 +63,8 @@ namespace Lary.Laboratory.Twitter.Utils
         public async Task<HttpResponseMessage> ClientAsync(HttpRequestMessage request, IEnumerable<KeyValuePair<string, string>> queries)
         {
             var client = new HttpClient();
+            client.DefaultRequestHeaders.Connection.Add("Keep-Alive");
+
             var authInfo = GenerateAuthorizationString(request.RequestUri, request.Method, queries);
             request.Headers.Add("Authorization", authInfo);
             //request.Headers.Add("User-Agent", "Twitter/1.0.0.0");
@@ -92,6 +94,8 @@ namespace Lary.Laboratory.Twitter.Utils
         public async Task<HttpResponseMessage> GetAsync(Uri uri, IEnumerable<KeyValuePair<string, string>> queries)
         {
             var client = new HttpClient();
+            client.DefaultRequestHeaders.Connection.Add("Keep-Alive");
+            
             var sb_query = new StringBuilder();
 
             foreach (var param in queries)
@@ -122,6 +126,8 @@ namespace Lary.Laboratory.Twitter.Utils
         public async Task<HttpResponseMessage> PostAsync(Uri uri, IEnumerable<KeyValuePair<string, string>> queries)
         {
             var client = new HttpClient();
+            client.DefaultRequestHeaders.Connection.Add("Keep-Alive");
+
             var sb_query = new StringBuilder();
 
             foreach (var param in queries)
@@ -155,6 +161,8 @@ namespace Lary.Laboratory.Twitter.Utils
         public async Task<HttpResponseMessage> PostAsync(Uri uri, IEnumerable<KeyValuePair<string, string>> queries, byte[] data)
         {
             var client = new HttpClient();
+            client.DefaultRequestHeaders.Connection.Add("Keep-Alive");
+
             var sb_query = new StringBuilder();
 
             foreach (var param in queries)
@@ -198,11 +206,11 @@ namespace Lary.Laboratory.Twitter.Utils
         public string GenerateAuthorizationString(Uri uri, HttpMethod httpMethod, IEnumerable<KeyValuePair<string, string>> queries)
         {
             var sb = new StringBuilder();
-            var signatureParams = GenerateOrderedSignatureParams(queries);
+            var additionals = GenerateOrderedAdditionalSignatureParams();
+            var signatureParams = MergeOrderedSignatureParams(queries, additionals);
             var authKeyParams = GenerateAuthKeyParams();
             var signature = GenerateSignature(uri, httpMethod, signatureParams, authKeyParams);
 
-            var additionals = GenerateOrderedAdditionalSignatureParams();
             foreach (var item in additionals)
             {
                 sb.Append($",{item.Key}=\"{item.Value}\"");
@@ -231,11 +239,11 @@ namespace Lary.Laboratory.Twitter.Utils
         public IEnumerable<KeyValuePair<string, string>> GenerateAuthorizationHeaders(Uri uri, HttpMethod httpMethod, IEnumerable<KeyValuePair<string, string>> queries)
         {
             var sb = new StringBuilder();
-            var signatureParams = GenerateOrderedSignatureParams(queries);
+            var additionals = GenerateOrderedAdditionalSignatureParams().ToList();
+            var signatureParams = MergeOrderedSignatureParams(queries, additionals);
             var authKeyParams = GenerateAuthKeyParams();
             var signature = GenerateSignature(uri, httpMethod, signatureParams, authKeyParams);
 
-            var additionals = GenerateOrderedAdditionalSignatureParams().ToList();
             additionals.Add(new KeyValuePair<string, string>("oauth_signature", signature));
 
             return additionals;
@@ -274,6 +282,7 @@ namespace Lary.Laboratory.Twitter.Utils
 
             var url = uri.BasicUri(); 
             var urlParamsStr = sb_urlParams.ToString().Trim(new[] { '&' });
+
             var oAuthRequest = $"{httpMethod.Method}&{CryptoUtil.UrlEncode(url)}&{CryptoUtil.UrlEncode(urlParamsStr)}";
 
             // 2. Auth key.
@@ -291,25 +300,38 @@ namespace Lary.Laboratory.Twitter.Utils
         }
 
         /// <summary>
-        ///     Generates signature parameters for oauth with the queries of the request and sort the result by the key 
-        ///     in ascending order.
+        ///     Merges the additional signature parameters and the queries of the request, as a result, A sorted 
+        ///     <see cref="IEnumerable{T}"/> that contains all signature parameters will be created.
         /// </summary>
         /// <param name="queries">
         ///     The queries of HTTP request.
         /// </param>
+        /// <param name="additionals">
+        ///     An <see cref="IEnumerable{T}"/> that contains ordered additional signature parameters for oauth.
+        ///     If it is set to null or empty, the default additional signature parameters will be created automaticly.
+        /// </param>
         /// <returns>
         ///     An <see cref="IEnumerable{T}"/> that contains ordered signature parameters for oauth.
         /// </returns>
-        private IEnumerable<KeyValuePair<string, string>> GenerateOrderedSignatureParams(IEnumerable<KeyValuePair<string, string>> queries)
+        private IEnumerable<KeyValuePair<string, string>> MergeOrderedSignatureParams(IEnumerable<KeyValuePair<string, string>> queries, IEnumerable<KeyValuePair<string, string>> additionals = null)
         {
-            var signature = GenerateOrderedAdditionalSignatureParams().ToList();
+            List<KeyValuePair<string, string>> signatures;
+
+            if (additionals == null || additionals.Count() == 0)
+            {
+                signatures = GenerateOrderedAdditionalSignatureParams().ToList();
+            }
+            else
+            {
+                signatures = additionals.OrderBy(aa => aa.Key).ToList();
+            }
 
             foreach (var param in queries)
             {
-                signature.Add(param);
+                signatures.Add(param);
             }
 
-            return signature.OrderBy(aa => aa.Key);
+            return signatures.OrderBy(aa => aa.Key);
         }
 
         /// <summary>
@@ -320,8 +342,9 @@ namespace Lary.Laboratory.Twitter.Utils
         /// </returns>
         private IEnumerable<KeyValuePair<string, string>> GenerateOrderedAdditionalSignatureParams()
         {
-            var oauth_nonce = new Random().Next(1_234_567, 9_999_999).ToString(CultureInfo.InvariantCulture);
-            var oauth_timestamp = DateTimeUtil.CountTimeStamp(DateTime.Now).ToString(CultureInfo.InvariantCulture);
+            var cultureInfo = CultureInfo.InvariantCulture;
+            var oauth_nonce = new Random().Next(1_234_567, 9_000_000).ToString(cultureInfo);
+            var oauth_timestamp = DateTimeUtil.CountTimeStamp(DateTime.Now).ToString(cultureInfo);
 
             var additional = new Dictionary<string, string>
             {

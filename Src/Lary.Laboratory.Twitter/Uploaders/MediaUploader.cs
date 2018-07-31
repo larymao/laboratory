@@ -143,7 +143,7 @@ namespace Lary.Laboratory.Twitter.Uploaders
                             var startTime = DateTime.Now;
 #endif
                             response = await AppendChunkedUploadAsync(bytes, mediaId, i);
-
+                            success = response.Code == ResponseCode.SUCCESS ? true : false;
 #if DEBUG
                             var duration = DateTime.Now - startTime;
                             System.Diagnostics.Debug.WriteLine($"Transfering chunk_{i} with media_id {mediaId} returns {response.Code}. Duration: {duration.TotalSeconds.ToString("N2")}s.");
@@ -190,29 +190,33 @@ namespace Lary.Laboratory.Twitter.Uploaders
 
             if (wait4Available)
             {
-                if (response.Code == ResponseCode.SUCCESS 
-                    && jobj["processing_info"] != null 
-                    && jobj["processing_info"]["check_after_secs"] != null)
+                if (response.Code == ResponseCode.SUCCESS)
                 {
-                    var success = Int32.TryParse(jobj["processing_info"]["check_after_secs"].ToString(), out int check_after_secs);
+                    jobj = JObject.Parse(response.Data);
 
-                    if (!success)
+                    if (jobj["processing_info"] != null
+                        && jobj["processing_info"]["check_after_secs"] != null)
                     {
-                        check_after_secs = 5;
+                        var success = Int32.TryParse(jobj["processing_info"]["check_after_secs"].ToString(), out int check_after_secs);
+
+                        if (!success)
+                        {
+                            check_after_secs = 5;
+                        }
+
+                        await Task.Delay(check_after_secs * 1000);
+                    }
+                    else
+                    {
+                        return new ResponseMessage<string>
+                        {
+                            Code = ResponseCode.UNKNOWN_ERROR,
+                            ReasonPhrase = $"Failed to finalize chunked upload. Message: {response.ToString(true)}"
+                        };
                     }
 
-                    await Task.Delay(check_after_secs * 1000);
+                    response = await GetMediaStatusAsync(mediaId);
                 }
-                else
-                {
-                    return new ResponseMessage<string>
-                    {
-                        Code = ResponseCode.UNKNOWN_ERROR,
-                        ReasonPhrase = $"Failed to finalize chunked upload. Message: {response.ToString(true)}"
-                    };
-                }
-
-                response = await GetMediaStatusAsync(mediaId);
             }
 
             return response;
