@@ -2,8 +2,8 @@
 简单封装了Twitter的OAuth验证以及支持视频文件分片上传。
 
 ## 支持的功能
-[x] Twitter OAuth  
-[x] Twitter视频分片上传  
+- [x] Twitter OAuth  
+- [x] Twitter视频分片上传  
 
 ## 样例代码
 请查看`Lary.Laboratory.Twitter.UnitTests`以获取样例更多样例，此处仅提供部分参考：  
