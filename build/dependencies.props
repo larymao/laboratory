@@ -1,0 +1,6 @@
+<Project>
+  <PropertyGroup>
+    <EPPlusPackageVersion>5.7.5</EPPlusPackageVersion>
+    <NewtonsoftJsonPackageVersion>13.0.2</NewtonsoftJsonPackageVersion>
+  </PropertyGroup>
+</Project>

@@ -17,7 +17,7 @@ namespace Lary.Laboratory.Core.Json
         /// <summary>
         /// Initializes a new instance of the <see cref="IgnorePropertiesResolver"/> class.
         /// </summary>
-        /// <param name="propNamesToIgnore">The name of properties to be ignored while data resoving.</param>
+        /// <param name="propNamesToIgnore">The name of properties to be ignored while data resolving.</param>
         public IgnorePropertiesResolver(IEnumerable<string> propNamesToIgnore)
         {
             _ignoreProps = new HashSet<string>(propNamesToIgnore);

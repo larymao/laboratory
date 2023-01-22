@@ -1,7 +1,17 @@
 <Project>
 
+  <Import Project="build\dependencies.props" />
+
   <PropertyGroup>
-    <LangVersion>9.0</LangVersion>
+    <SignAssembly>true</SignAssembly>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+
+    <!-- Don't make missing XML docs a fatal build error, but still surface so we have visibility into undocumented APIs. -->
+    <WarningsNotAsErrors>$(WarningsNotAsErrors);CS1591</WarningsNotAsErrors>
+    <!-- Don't warn if the custom nuget source is in HTTP protocol, see: https://github.com/NuGet/Home/issues/5375 -->
+    <NoWarn>NU1803</NoWarn>
+
+    <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <NeutralLanguage>English</NeutralLanguage>
   </PropertyGroup>
