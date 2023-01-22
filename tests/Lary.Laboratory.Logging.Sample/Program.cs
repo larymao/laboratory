@@ -7,7 +7,7 @@ namespace Lary.Laboratory.Logging.Sample
     {
         public static void Main(string[] args)
         {
-            LoggerInitializer.InitSerilogger();
+            LoggerInitializer.InitSerilogger(AppContext.BaseDirectory, "appsettings.log.json");
 
             try
             {

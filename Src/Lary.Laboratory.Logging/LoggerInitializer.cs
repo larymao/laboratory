@@ -7,7 +7,7 @@ using System.Reflection;
 namespace Lary.Laboratory.Logging
 {
     /// <summary>
-    /// Serilog logger initializer.
+    /// Serilog logger initializer for ASP.NET CORE.
     /// </summary>
     public static class LoggerInitializer
     {
@@ -16,6 +16,7 @@ namespace Lary.Laboratory.Logging
         /// <summary>
         /// Initializes serilog logger with default configurations.
         /// </summary>
+        /// <param name="option">Custom logging config.</param>
         public static void InitSerilogger(LoggingOption? option = null)
         {
             var configFilePath = $"{_assembly.GetName().Name}.appsettings.log.json";
@@ -26,11 +27,13 @@ namespace Lary.Laboratory.Logging
         }
 
         /// <summary>
-        /// init log by path and option config
+        /// Initializes serilog logger with given config file.
         /// </summary>
-        /// <param name="basePath"></param>
-        /// <param name="filePath"></param>
-        /// <param name="option"></param>
+        /// <param name="basePath">The absolute path of file-based providers.</param>
+        /// <param name="filePath">
+        /// Path relative to the base path stored in <see cref="IConfigurationBuilder.Properties"/> of builder.
+        /// </param>
+        /// <param name="option">Custom logging config.</param>
         public static void InitSerilogger(string basePath, string filePath, LoggingOption? option = null)
         {
             var configuration = new ConfigurationBuilder()
@@ -46,7 +49,7 @@ namespace Lary.Laboratory.Logging
             loggingOption ??= new LoggingOption();
             var preLogger = new LoggerConfiguration().ReadFrom.Configuration(configuration);
 
-            #region congi enrich
+            #region configures enriches
 
             var defaultEnriches = LoadDefaultEnrichConfig();
 
@@ -66,9 +69,6 @@ namespace Lary.Laboratory.Logging
                 .CreateLogger();
         }
 
-        /// <summary>
-        /// load default config items / environment ,platform 
-        /// </summary>
         private static Dictionary<string, string> LoadDefaultEnrichConfig()
         {
             var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "NONE";

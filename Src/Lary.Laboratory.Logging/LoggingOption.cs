@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Lary.Laboratory.Logging
 {
@@ -10,7 +8,7 @@ namespace Lary.Laboratory.Logging
     public class LoggingOption
     {
         /// <summary>
-        /// custom enriches 
+        /// Custom enriches.
         /// </summary>
         public Dictionary<string, string> Enriches { get; set; } = new Dictionary<string, string>();
     }
