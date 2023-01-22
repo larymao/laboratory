@@ -1,4 +1,4 @@
-namespace Lary.Laboratory.Office
+namespace Lary.Laboratory.EPPlusWrapper
 {
     /// <summary>
     /// Defines how to behave when error occurred.

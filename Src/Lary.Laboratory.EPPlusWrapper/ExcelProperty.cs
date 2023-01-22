@@ -1,7 +1,7 @@
 using System.Linq;
 using System.Reflection;
 
-namespace Lary.Laboratory.Office
+namespace Lary.Laboratory.EPPlusWrapper
 {
     internal class ExcelProperty
     {

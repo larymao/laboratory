@@ -17,7 +17,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Lary.Laboratory.Office\Lary.Laboratory.Office.csproj" />
+    <ProjectReference Include="..\..\src\Lary.Laboratory.EPPlusWrapper\Lary.Laboratory.EPPlusWrapper.csproj" />
+    <ProjectReference Include="..\..\src\Lary.Laboratory.Office\Lary.Laboratory.EPPlusWrapper.csproj" />
   </ItemGroup>
 
 </Project>

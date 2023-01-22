@@ -1,6 +1,6 @@
 using System;
 
-namespace Lary.Laboratory.Office
+namespace Lary.Laboratory.EPPlusWrapper
 {
     /// <summary>
     /// Instructs the <see cref="ExcelHelper"/> to always parse the member with the specified name.

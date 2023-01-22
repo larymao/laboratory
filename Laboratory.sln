@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30907.101
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{A6E66CAA-28F5-41C3-A022-F56530DE9491}"
 EndProject
@@ -23,9 +23,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lary.Laboratory.Core.Tests"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lary.Laboratory.WebApi", "src\Lary.Laboratory.WebApi\Lary.Laboratory.WebApi.csproj", "{F930B30D-645F-49A1-BF26-59342EBC366F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lary.Laboratory.Office", "src\Lary.Laboratory.Office\Lary.Laboratory.Office.csproj", "{3FFFBB3B-DA65-4675-81B1-9C3145443714}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lary.Laboratory.EPPlusWrapper", "src\Lary.Laboratory.EPPlusWrapper\Lary.Laboratory.EPPlusWrapper.csproj", "{3FFFBB3B-DA65-4675-81B1-9C3145443714}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lary.Laboratory.Office.Tests", "tests\Lary.Laboratory.Office.Tests\Lary.Laboratory.Office.Tests.csproj", "{95A39AB1-1D7A-4561-B5D1-358527F37B8B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lary.Laboratory.EPPlusWrapper.Tests", "tests\Lary.Laboratory.EPPlusWrapper.Tests\Lary.Laboratory.EPPlusWrapper.Tests.csproj", "{95A39AB1-1D7A-4561-B5D1-358527F37B8B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

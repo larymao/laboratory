@@ -10,7 +10,7 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text.RegularExpressions;
 
-namespace Lary.Laboratory.Office
+namespace Lary.Laboratory.EPPlusWrapper
 {
     /// <summary>
     /// Provides methods to convenient the using of excel.

@@ -1,6 +1,6 @@
 using OfficeOpenXml;
 
-namespace Lary.Laboratory.Office
+namespace Lary.Laboratory.EPPlusWrapper
 {
     /// <summary>
     /// Provides methods for <see cref="ExcelWorksheet"/>.

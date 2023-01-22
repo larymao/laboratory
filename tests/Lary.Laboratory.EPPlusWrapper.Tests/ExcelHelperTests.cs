@@ -7,7 +7,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace Lary.Laboratory.Office.Tests
+namespace Lary.Laboratory.EPPlusWrapper.Tests
 {
     /// <summary>
     /// Provides test methods for <see cref="ExcelHelper"/>
