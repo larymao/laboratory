@@ -1,60 +1,59 @@
 using System.Linq;
 using System.Reflection;
 
-namespace Lary.Laboratory.EPPlusWrapper
+namespace Lary.Laboratory.EPPlusWrapper;
+
+internal class ExcelProperty
 {
-    internal class ExcelProperty
+    private PropertyInfo? _propertyInfo;
+    private string? _cellKey;
+
+    public object? ValueProvider { get; set; }
+
+    public PropertyInfo? PropertyInfo
     {
-        private PropertyInfo? _propertyInfo;
-        private string? _cellKey;
-
-        public object? ValueProvider { get; set; }
-
-        public PropertyInfo? PropertyInfo
+        get
         {
-            get
-            {
-                return _propertyInfo;
-            }
-            set
-            {
-                _propertyInfo = value;
+            return _propertyInfo;
+        }
+        set
+        {
+            _propertyInfo = value;
 
-                _cellKey = GetCellKey();
-            }
+            _cellKey = GetCellKey();
+        }
+    }
+
+    public string? CellKey => _cellKey;
+
+    public int CellIndex { get; set; }
+
+    public int CellLength { get; set; }
+
+    public object? GetValue()
+    {
+        if (ValueProvider == null || PropertyInfo == null)
+        {
+            return null;
         }
 
-        public string? CellKey => _cellKey;
+        return PropertyInfo.GetValue(ValueProvider);
+    }
 
-        public int CellIndex { get; set; }
-
-        public int CellLength { get; set; }
-
-        public object? GetValue()
+    private string? GetCellKey()
+    {
+        if (_propertyInfo == null)
         {
-            if (ValueProvider == null || PropertyInfo == null)
-            {
-                return null;
-            }
-
-            return PropertyInfo.GetValue(ValueProvider);
+            return null;
         }
 
-        private string? GetCellKey()
+        var excelPropertyAttrs = _propertyInfo.GetCustomAttributes<ExcelPropertyAttribute>();
+
+        if (excelPropertyAttrs.Any())
         {
-            if (_propertyInfo == null)
-            {
-                return null;
-            }
-
-            var excelPropertyAttrs = _propertyInfo.GetCustomAttributes<ExcelPropertyAttribute>();
-
-            if (excelPropertyAttrs.Any())
-            {
-                return excelPropertyAttrs.Single().PropertyName;
-            }
-
-            return _propertyInfo.Name;
+            return excelPropertyAttrs.Single().PropertyName;
         }
+
+        return _propertyInfo.Name;
     }
 }

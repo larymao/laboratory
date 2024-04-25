@@ -1,55 +1,54 @@
 
 using Serilog;
 
-namespace Lary.Laboratory.Logging.Sample
+namespace Lary.Laboratory.Logging.Sample;
+
+public class Program
 {
-    public class Program
+    public static void Main(string[] args)
     {
-        public static void Main(string[] args)
+        LoggerInitializer.InitSerilogger(AppContext.BaseDirectory, "appsettings.log.json");
+
+        try
         {
-            LoggerInitializer.InitSerilogger(AppContext.BaseDirectory, "appsettings.log.json");
+            var builder = WebApplication.CreateBuilder(args);
 
-            try
+            builder.Logging.ClearProviders();
+            builder.Host.UseSerilog();
+
+            // Add services to the container.
+
+            builder.Services.AddControllers();
+            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen();
+
+            var app = builder.Build();
+
+            // Configure the HTTP request pipeline.
+            if (app.Environment.IsDevelopment())
             {
-                var builder = WebApplication.CreateBuilder(args);
-
-                builder.Logging.ClearProviders();
-                builder.Host.UseSerilog();
-
-                // Add services to the container.
-
-                builder.Services.AddControllers();
-                // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-                builder.Services.AddEndpointsApiExplorer();
-                builder.Services.AddSwaggerGen();
-
-                var app = builder.Build();
-
-                // Configure the HTTP request pipeline.
-                if (app.Environment.IsDevelopment())
-                {
-                    app.UseSwagger();
-                    app.UseSwaggerUI();
-                }
-
-                app.UseHttpsRedirection();
-
-                app.UseAuthorization();
-
-
-                app.MapControllers();
-
-                app.Run();
+                app.UseSwagger();
+                app.UseSwaggerUI();
             }
-            catch (Exception ex)
-            {
-                Log.Fatal(ex, "Project terminated unexpectedly.");
-                throw;
-            }
-            finally
-            {
-                Log.CloseAndFlush();
-            }
+
+            app.UseHttpsRedirection();
+
+            app.UseAuthorization();
+
+
+            app.MapControllers();
+
+            app.Run();
+        }
+        catch (Exception ex)
+        {
+            Log.Fatal(ex, "Project terminated unexpectedly.");
+            throw;
+        }
+        finally
+        {
+            Log.CloseAndFlush();
         }
     }
 }

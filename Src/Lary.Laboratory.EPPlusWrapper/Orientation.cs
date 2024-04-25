@@ -1,18 +1,17 @@
-namespace Lary.Laboratory.EPPlusWrapper
+namespace Lary.Laboratory.EPPlusWrapper;
+
+/// <summary>
+/// Data orientation.
+/// </summary>
+public enum Orientation
 {
     /// <summary>
-    /// Data orientation.
+    /// Indicates that every row is a complete data record.
     /// </summary>
-    public enum Orientation
-    {
-        /// <summary>
-        /// Indicates that every row is a complete data record.
-        /// </summary>
-        Horizontal,
+    Horizontal,
 
-        /// <summary>
-        /// Indicates that every column is a complete data record.
-        /// </summary>
-        Vertical
-    }
+    /// <summary>
+    /// Indicates that every column is a complete data record.
+    /// </summary>
+    Vertical
 }
