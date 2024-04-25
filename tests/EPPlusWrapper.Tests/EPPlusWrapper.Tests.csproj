@@ -3,12 +3,10 @@
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
 
-    <IsPackable>false</IsPackable>
-  </PropertyGroup>
+    <RootNamespace>Lary.Laboratory.EPPlusWrapper.Tests</RootNamespace>
+    <AssemblyName>Lary.Laboratory.EPPlusWrapper.Tests</AssemblyName>
 
-  <PropertyGroup>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <NoWarn>$(NoWarn);1591;SA1600;SA1625</NoWarn>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Lary.Laboratory.Core\Lary.Laboratory.Core.csproj" />
+    <ProjectReference Include="..\..\src\EPPlusWrapper\EPPlusWrapper.csproj" />
   </ItemGroup>
 
 </Project>

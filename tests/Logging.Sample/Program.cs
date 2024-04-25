@@ -1,4 +1,3 @@
-
 using Serilog;
 
 namespace Lary.Laboratory.Logging.Sample;
@@ -35,7 +34,6 @@ public class Program
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 

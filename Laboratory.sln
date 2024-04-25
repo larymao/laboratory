@@ -18,19 +18,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		global.json = global.json
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lary.Laboratory.Core", "src\Lary.Laboratory.Core\Lary.Laboratory.Core.csproj", "{BC94EA9D-8D53-4C28-8DA1-5AEDCB8B16A6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "src\Core\Core.csproj", "{BC94EA9D-8D53-4C28-8DA1-5AEDCB8B16A6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lary.Laboratory.Core.Tests", "tests\Lary.Laboratory.Core.Tests\Lary.Laboratory.Core.Tests.csproj", "{282D4BA7-264E-4C0B-9593-8082B0B4F7C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Tests", "tests\Core.Tests\Core.Tests.csproj", "{282D4BA7-264E-4C0B-9593-8082B0B4F7C8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lary.Laboratory.WebApi", "src\Lary.Laboratory.WebApi\Lary.Laboratory.WebApi.csproj", "{F930B30D-645F-49A1-BF26-59342EBC366F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi", "src\WebApi\WebApi.csproj", "{F930B30D-645F-49A1-BF26-59342EBC366F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lary.Laboratory.EPPlusWrapper", "src\Lary.Laboratory.EPPlusWrapper\Lary.Laboratory.EPPlusWrapper.csproj", "{3FFFBB3B-DA65-4675-81B1-9C3145443714}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EPPlusWrapper", "src\EPPlusWrapper\EPPlusWrapper.csproj", "{3FFFBB3B-DA65-4675-81B1-9C3145443714}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lary.Laboratory.EPPlusWrapper.Tests", "tests\Lary.Laboratory.EPPlusWrapper.Tests\Lary.Laboratory.EPPlusWrapper.Tests.csproj", "{95A39AB1-1D7A-4561-B5D1-358527F37B8B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EPPlusWrapper.Tests", "tests\EPPlusWrapper.Tests\EPPlusWrapper.Tests.csproj", "{95A39AB1-1D7A-4561-B5D1-358527F37B8B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lary.Laboratory.Logging", "src\Lary.Laboratory.Logging\Lary.Laboratory.Logging.csproj", "{C9B99B9D-E6D8-452A-88FB-A935FDC84E15}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logging", "src\Logging\Logging.csproj", "{C9B99B9D-E6D8-452A-88FB-A935FDC84E15}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lary.Laboratory.Logging.Sample", "tests\Lary.Laboratory.Logging.Sample\Lary.Laboratory.Logging.Sample.csproj", "{CF580475-9690-407B-B475-605C13FBA60B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logging.Sample", "tests\Logging.Sample\Logging.Sample.csproj", "{CF580475-9690-407B-B475-605C13FBA60B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

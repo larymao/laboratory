@@ -3,7 +3,12 @@
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
 
+    <RootNamespace>Lary.Laboratory.Core.Tests</RootNamespace>
+    <AssemblyName>Lary.Laboratory.Core.Tests</AssemblyName>
+
     <IsPackable>false</IsPackable>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);1591;SA1600;SA1625</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Lary.Laboratory.EPPlusWrapper\Lary.Laboratory.EPPlusWrapper.csproj" />
+    <ProjectReference Include="..\..\src\Core\Core.csproj" />
   </ItemGroup>
 
 </Project>

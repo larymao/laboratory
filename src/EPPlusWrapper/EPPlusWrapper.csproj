@@ -2,6 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+
+    <RootNamespace>Lary.Laboratory.EPPlusWrapper</RootNamespace>
+    <AssemblyName>Lary.Laboratory.EPPlusWrapper</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
@@ -9,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Lary.Laboratory.Core\Lary.Laboratory.Core.csproj" />
+    <ProjectReference Include="..\Core\Core.csproj" />
   </ItemGroup>
 
 </Project>

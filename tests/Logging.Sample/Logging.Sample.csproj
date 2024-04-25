@@ -2,8 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
+
+    <RootNamespace>Lary.Laboratory.Logging.Sample</RootNamespace>
+    <AssemblyName>Lary.Laboratory.Logging.Sample</AssemblyName>
+
+    <ImplicitUsings>true</ImplicitUsings>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Lary.Laboratory.Logging\Lary.Laboratory.Logging.csproj" />
+    <ProjectReference Include="..\..\src\Logging\Logging.csproj" />
   </ItemGroup>
 
 </Project>
