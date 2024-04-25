@@ -1,7 +1,5 @@
 <Project>
 
-  <Import Project="build\dependencies.props" />
-
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -17,4 +15,3 @@
   </PropertyGroup>
 
 </Project>
-

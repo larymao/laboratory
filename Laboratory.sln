@@ -14,7 +14,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.gitignore = .gitignore
 		Directory.Build.props = Directory.Build.props
 		Directory.Build.targets = Directory.Build.targets
-		global.json = global.json
+		Directory.Packages.props = Directory.Packages.props
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lary.Laboratory.Core", "src\Lary.Laboratory.Core\Lary.Laboratory.Core.csproj", "{BC94EA9D-8D53-4C28-8DA1-5AEDCB8B16A6}"
@@ -29,7 +29,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lary.Laboratory.EPPlusWrapp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lary.Laboratory.Logging", "src\Lary.Laboratory.Logging\Lary.Laboratory.Logging.csproj", "{C9B99B9D-E6D8-452A-88FB-A935FDC84E15}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lary.Laboratory.Logging.Sample", "tests\Lary.Laboratory.Logging.Sample\Lary.Laboratory.Logging.Sample.csproj", "{CF580475-9690-407B-B475-605C13FBA60B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lary.Laboratory.Logging.Sample", "tests\Lary.Laboratory.Logging.Sample\Lary.Laboratory.Logging.Sample.csproj", "{CF580475-9690-407B-B475-605C13FBA60B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
