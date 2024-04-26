@@ -44,4 +44,16 @@ public static class DirectoryHelper
             Directory.Delete(dirPath, recursive);
         }
     }
+
+    /// <summary>
+    /// Creates a directory of the given path by force. If the directory is already exists,
+    /// create it after removing it and its sub items recursively.
+    /// </summary>
+    /// <param name="dirPath">The name of the directory to init.</param>
+    public static void ForceInit(string dirPath)
+    {
+        DeleteIfExists(dirPath, true);
+
+        Directory.CreateDirectory(dirPath);
+    }
 }
