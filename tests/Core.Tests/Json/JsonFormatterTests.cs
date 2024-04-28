@@ -1,7 +1,4 @@
 using Lary.Laboratory.Core.Json;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
-using System;
 
 namespace Lary.Laboratory.Core.Tests.Json;
 

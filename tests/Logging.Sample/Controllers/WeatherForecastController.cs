@@ -1,6 +1,3 @@
-using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-
 namespace Lary.Laboratory.Logging.Sample.Controllers;
 
 [ApiController]

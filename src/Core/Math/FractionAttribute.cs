@@ -1,5 +1,3 @@
-using System;
-
 namespace Lary.Laboratory.Core.Math;
 
 /// <summary>

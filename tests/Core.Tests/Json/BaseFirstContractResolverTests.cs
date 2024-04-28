@@ -1,7 +1,4 @@
 using Lary.Laboratory.Core.Json;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
-using System;
 using System.Text.RegularExpressions;
 
 namespace Lary.Laboratory.Core.Tests.Json;
@@ -28,8 +25,10 @@ public class BaseFirstContractResolverTests
 
         var settings = new JsonSerializerSettings { ContractResolver = new BaseFirstContractResolver() };
         var jsonStr = JsonConvert.SerializeObject(c, settings);
+#pragma warning disable SYSLIB1045 // Convert to 'GeneratedRegexAttribute'.
         Assert.IsTrue(Regex.IsMatch(jsonStr, "AA.*BB.*CC"));
         Assert.IsTrue(Regex.IsMatch(jsonStr, @"""CreateTime"": *""\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}"""));
+#pragma warning restore SYSLIB1045 // Convert to 'GeneratedRegexAttribute'.
 
         Console.WriteLine($"{nameof(BaseFirstContractResolver)}: \n{jsonStr}\n");
         Console.WriteLine($"DefaultResolver: \n{JsonConvert.SerializeObject(c)}\n");

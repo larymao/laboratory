@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace Lary.Laboratory.Logging;
 
 /// <summary>

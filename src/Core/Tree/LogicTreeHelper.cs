@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
 namespace Lary.Laboratory.Core.Tree;
 
 /// <summary>
@@ -25,7 +21,7 @@ public static class LogicTreeHelper
         Func<TNode, TId> parentIdSelector,
         TId? rootId = default)
     {
-        var rootItem = collection.SingleOrDefault(c => idSelector(c) !.Equals(rootId));
+        var rootItem = collection.SingleOrDefault(c => idSelector(c)!.Equals(rootId));
 
         if (rootItem == null)
         {

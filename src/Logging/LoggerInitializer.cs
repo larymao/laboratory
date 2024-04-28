@@ -1,8 +1,4 @@
 using Microsoft.Extensions.Configuration;
-using Serilog;
-using System;
-using System.Collections.Generic;
-using System.Reflection;
 
 namespace Lary.Laboratory.Logging;
 

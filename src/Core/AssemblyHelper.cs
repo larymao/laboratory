@@ -1,7 +1,3 @@
-using System;
-using System.IO;
-using System.Reflection;
-
 namespace Lary.Laboratory.Core;
 
 /// <summary>
@@ -12,7 +8,7 @@ public static class AssemblyHelper
     /// <summary>
     /// RReturns the parent directory information for the specified assembly.
     /// </summary>
-    /// <param name="assembly">Assembly information.</param>
+    /// <param name="assembly">Assembly information.</param>ke
     /// <returns>The path of the parent directory of the given assembly.</returns>
     public static string GetDirectoryName(this Assembly assembly)
     {

@@ -1,8 +1,4 @@
-using Microsoft.AspNetCore.Http;
-using System;
-using System.IO;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Lary.Laboratory.WebApi.Extensions;
 
@@ -21,10 +17,7 @@ public static class HttpContextExtensions
     /// <exception cref="ArgumentOutOfRangeException">Thrown if count is negative</exception>
     public static async Task<string> ReadRequestContentAsync(this HttpContext context, int count = 8 * 1024)
     {
-        if (count < 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(count));
-        }
+        ArgumentOutOfRangeException.ThrowIfNegative(count);
 
         var sbRequestContent = new StringBuilder();
         var request = context.Request;
