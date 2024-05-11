@@ -14,4 +14,9 @@
     <NeutralLanguage>English</NeutralLanguage>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <VSTestLogger>trx%3bLogFileName=$(MSBuildProjectName).trx</VSTestLogger>
+    <VSTestResultsDirectory>$(MSBuildThisFileDirectory)TestResults</VSTestResultsDirectory>
+  </PropertyGroup>
+
 </Project>
