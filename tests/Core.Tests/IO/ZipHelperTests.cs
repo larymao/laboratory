@@ -2,57 +2,133 @@ using Lary.Laboratory.Core.IO;
 
 namespace Lary.Laboratory.Core.Tests.IO;
 
-[TestClass]
-public class ZipHelperTests
+public class ZipHelperTests : IDisposable
 {
-    [TestMethod]
-    public void ZipTest()
+    private bool isDisposed;
+    private readonly string _baseDirPath = Path.Combine(Path.GetTempPath(), nameof(ZipHelperTests));
+
+    public ZipHelperTests()
     {
-        var assembly = Assembly.GetAssembly(typeof(ZipHelperTests))!;
-        var assemblyDir = assembly.GetDirectoryName();
-        var assemblyFileName = $"{assembly.GetName().Name}.dll";
-        var assemblyFilePath = Path.Combine(assemblyDir, assemblyFileName);
-        var testDirPath = Path.Combine(assemblyDir, $"test_dir_{DateTime.Now:yyyyMMddHHmmss}");
-        var testInnerDirPath = Path.Combine(testDirPath, $"test_inner_dir_{DateTime.Now:yyyyMMddHHmmss}");
-        var testFilePath = Path.Combine(testDirPath, assemblyFileName);
-        var fullPackZipPath = Path.Combine(assemblyDir, "full_pack.zip");
-
-        Directory.CreateDirectory(testDirPath);
-        File.Copy(assemblyFilePath, testFilePath);
-        DirectoryHelper.CopyRecursively(testDirPath, testInnerDirPath);
-
-        // file not exists
-        var notExistsFilePath = Path.Combine(testDirPath, Guid.NewGuid().ToString("N"));
-        Assert.ThrowsException<FileNotFoundException>(() => ZipHelper.Compress(notExistsFilePath));
-
-        // empty pack
-        ZipHelper.Compress(Array.Empty<string>(), Path.Combine(testDirPath, "empty_pack.zip"));
-
-        // single file
-        var zipAssemblyPath = ZipHelper.Compress(testFilePath);
-
-        // target file exists
-        Assert.ThrowsException<IOException>(() => ZipHelper.Compress(testFilePath, false));
-
-        // target file exists and force replace
-        ZipHelper.Compress(testFilePath, true);
-
-        // single directory
-        ZipHelper.Compress(testInnerDirPath);
-
-        // multiple files
-        var rootTestFiles = Directory.GetFiles(testDirPath);
-        ZipHelper.Compress(rootTestFiles, Path.Combine(testDirPath, "files_only.zip"));
-
-        // multiple files and directories
-        var combinedPaths = Directory.GetFiles(testDirPath).Concat(Directory.GetDirectories(testDirPath));
-        ZipHelper.Compress(combinedPaths, Path.Combine(testDirPath, "combined.zip"));
-
-        // directory with subfiles and subdirectories
-        ZipHelper.Compress(testDirPath, fullPackZipPath, true);
-
-        // clean test directory
-        DirectoryHelper.DeleteIfExists(testDirPath, true);
-        FileHelper.DeleteIfExists(fullPackZipPath);
+        Directory.CreateDirectory(_baseDirPath);
     }
+
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (isDisposed)
+            return;
+
+        if (disposing)
+            if (Directory.Exists(_baseDirPath))
+                Directory.Delete(_baseDirPath, true);
+
+        isDisposed = true;
+    }
+
+    [Fact]
+    public void ZipHelper_Compress_FileNotFound()
+    {
+        var fakeFilePath = GetRandomFilePath(createIfNotExists: false);
+
+        FluentActions.Invoking(() => ZipHelper.Compress(fakeFilePath))
+            .Should().Throw<FileNotFoundException>();
+    }
+
+    [Fact]
+    public void ZipHelper_Compress_EmptyPack()
+    {
+        string[] srcPaths = [];
+        var zipPath = GetRandomZipPath();
+
+        ZipHelper.Compress(srcPaths, zipPath);
+
+        File.Exists(zipPath).Should().BeTrue();
+        new FileInfo(zipPath).Length.Should().BeLessThan(1024);
+    }
+
+    [Fact]
+    public void ZipHelper_Compress_SingleFile()
+    {
+        var srcFilePath = GetRandomFilePath();
+        var zipPath = Path.ChangeExtension(srcFilePath, ".zip");
+
+        ZipHelper.Compress(srcFilePath);
+
+        File.Exists(zipPath).Should().BeTrue();
+    }
+
+    [Fact]
+    public void ZipHelper_Compress_ZipFileExists()
+    {
+        var srcFilePath = GetRandomFilePath();
+        var zipPath = Path.ChangeExtension(srcFilePath, ".zip");
+        File.Create(zipPath).Dispose();
+
+        FluentActions.Invoking(() => ZipHelper.Compress(srcFilePath))
+            .Should().Throw<IOException>();
+    }
+
+    [Fact]
+    public void ZipHelper_Compress_OverwriteZipFile()
+    {
+        var srcFilePath = GetRandomFilePath();
+        var zipPath = Path.ChangeExtension(srcFilePath, ".zip");
+        File.Create(zipPath).Dispose();
+        var createTime = new FileInfo(zipPath).LastWriteTime;
+
+        ZipHelper.Compress(srcFilePath, true);
+
+        new FileInfo(zipPath).LastWriteTime.Should().BeAfter(createTime);
+    }
+
+    [Fact]
+    public void ZipHelper_Compress_SingleDirectory()
+    {
+        var srcDirPath = Path.Combine(_baseDirPath, Path.GetRandomFileName());
+        _ = GetRandomFilePath(srcDirPath);
+        var zipPath = $"{srcDirPath}.zip";
+
+        ZipHelper.Compress(srcDirPath);
+
+        File.Exists(zipPath).Should().BeTrue();
+    }
+
+    [Fact]
+    public void ZipHelper_Compress_MixedPaths()
+    {
+        var subDirPath = Path.Combine(_baseDirPath, Path.GetRandomFileName());
+        GetRandomFilePath(subDirPath);
+        GetRandomFilePath(subDirPath);
+        string[] srcPaths = [
+            subDirPath,
+            GetRandomFilePath(),
+            GetRandomFilePath(),
+            GetRandomFilePath(Path.Combine(_baseDirPath, Path.GetRandomFileName()))
+        ];
+        var zipPath = GetRandomZipPath();
+
+        ZipHelper.Compress(srcPaths, zipPath);
+
+        File.Exists(zipPath).Should().BeTrue();
+    }
+
+    private string GetRandomFilePath(string? baseDirPath = null, bool createIfNotExists = true)
+    {
+        baseDirPath = string.IsNullOrWhiteSpace(baseDirPath) ? _baseDirPath : baseDirPath;
+        Directory.CreateDirectory(baseDirPath);
+        var filePath = Path.Combine(baseDirPath, Path.GetRandomFileName());
+
+        if (createIfNotExists && !File.Exists(filePath))
+            File.Create(filePath).Dispose();
+
+        return filePath;
+    }
+
+    private string GetRandomZipPath()
+        => Path.Combine(_baseDirPath, Path.ChangeExtension(Path.GetRandomFileName(), ".zip"));
 }

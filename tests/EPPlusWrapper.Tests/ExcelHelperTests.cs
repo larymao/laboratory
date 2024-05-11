@@ -1,83 +1,116 @@
 namespace Lary.Laboratory.EPPlusWrapper.Tests;
 
-/// <summary>
-/// Provides test methods for <see cref="ExcelHelper"/>
-/// </summary>
-[TestClass]
 public class ExcelHelperTests
 {
-    /// <summary>
-    /// Tests excel operations.
-    /// </summary>
-    [TestMethod]
-    [DataRow(Orientation.Horizontal)]
-    // [DataRow(Orientation.Vertical)]
-    public async Task ExcelOperationsTest(Orientation orientation)
+    private static readonly Foo[] _data2Export = [
+        new(1, new("Adam", "test data 1", false, DateTime.Now.AddDays(-1), new(1, "inner test data 1"))),
+        new(2, new("Bob", "test data 2", true, DateTime.Now.AddDays(-2), new(2, "inner test data 2"))),
+        new(3, new("Cindy", "test data 3", true, DateTime.Now.AddDays(-3), new(3, "inner test data 3"))),
+        new(4, new("Douglas", "test data 4", CreateTime: DateTime.Now.AddDays(-4))),
+        new(5)
+    ];
+
+    public static TheoryData<int, int, string> ExportCellValueTheoryData => new()
     {
-        var fileName = $"test_foo_{DateTime.Now: yyyyMMddHHmmss}.xlsx";
-        var file = File.Create(fileName);
+        { 1, 1, nameof(Foo.Id) },
+        { 2, 1, nameof(Foo.Id) },
+        { 1, 2, nameof(Foo.InnerFoo) },
+        { 1, 7, nameof(Foo.InnerFoo) },
+        { 3, 7, GetExcelPropertyName<DeepInnerFoo>(nameof(DeepInnerFoo.InnerDescription)) },
+        { 4, 2, _data2Export[0].InnerFoo!.Name },
+        { 5, 4, _data2Export[1].InnerFoo!.IsEnabled.ToString() },
+        { 8, 2, string.Empty }
+    };
 
-        try
-        {
-            var data = new List<Foo>
-            {
-                new() { Id = 1, InnerFoo = new InnerFoo { Name = "Adam", Description = "test data 1", CreateTime = DateTime.Now.AddDays(-1), DeepInnerFoo = new DeepInnerFoo { InnerId = 1, InnerDescription = "inner test data 1" } } },
-                new() { Id = 2, InnerFoo = new InnerFoo { Name = "Bob", Description = "test data 2", CreateTime = DateTime.Now.AddDays(-2), DeepInnerFoo = new DeepInnerFoo { InnerId = 2, InnerDescription = "inner test data 2" } } },
-                new() { Id = 3, InnerFoo = new InnerFoo { Name = "Cindy", Description = "test data 3", CreateTime = DateTime.Now.AddDays(-3), DeepInnerFoo = new DeepInnerFoo { InnerId = 3, InnerDescription = "inner test data 3" } } },
-                new() { Id = 4, InnerFoo = new InnerFoo { Name = "Douglas", Description = "test data 4", CreateTime = DateTime.Now.AddDays(-4) } },
-                new() { Id = 5 }
-            };
+    [Fact]
+    public void ExcelHelper_Export_ReturnDefaultSheet()
+    {
+        using var excel = ExcelHelper.Export(_data2Export, orientation: Orientation.Horizontal);
+        var worksheets = excel.Workbook.Worksheets;
 
-            var excelPackage = ExcelHelper.Export(data, orientation: orientation);
-
-            // beautifies layout
-            excelPackage.Workbook.Worksheets["Sheet1"].DataRange().AutoFitColumns();
-
-            await excelPackage.SaveAsAsync(file);
-            file.Dispose();
-
-            Debug.Write($"File exported at {Path.GetFullPath(fileName)}");
-        }
-        finally
-        {
-            File.Delete(fileName);
-        }
+        worksheets.Count.Should().Be(1);
+        worksheets.Single().Name.Should().Be("Sheet1");
     }
 
-    internal class Foo
+    [Fact]
+    public void ExcelHelper_Export_InvalidSheetName()
     {
-        public int Id { get; set; }
-
-        public InnerFoo? InnerFoo { get; set; }
-
-        [ExcelIngore]
-        [ExcelProperty("忽略")]
-        public string? Ignore { get; set; }
+        FluentActions.Invoking(() => ExcelHelper.Export(_data2Export, string.Empty, orientation: Orientation.Horizontal))
+            .Should().Throw<ArgumentException>();
     }
 
-    internal class InnerFoo
+    [Theory]
+    [InlineData("Sheet1", "Sheet1")]
+    [InlineData("data", "data")]
+    public void ExcelHelper_Export_ReturnCorrectSheetName(string sheetName, string expected)
     {
-        [ExcelProperty("名字")]
-        public string Name { get; set; } = default!;
+        using var excel = ExcelHelper.Export(_data2Export, sheetName, orientation: Orientation.Horizontal);
+        var worksheets = excel.Workbook.Worksheets;
 
-        [ExcelProperty("描述")]
-        public string? Description { get; set; }
-
-        [ExcelProperty("内部信息")]
-        public DeepInnerFoo? DeepInnerFoo { get; set; }
-
-        [ExcelProperty("启用")]
-        public bool IsEnabled { get; set; }
-
-        [ExcelProperty("创建时间")]
-        public DateTime CreateTime { get; set; }
+        worksheets.Count.Should().Be(1);
+        worksheets.Single().Name.Should().Be(expected);
     }
 
-    internal class DeepInnerFoo
+    [Fact]
+    public void ExcelHelper_Export_ReturnCorrectCellRange()
     {
-        public int InnerId { get; set; }
+        using var excel = ExcelHelper.Export(_data2Export, orientation: Orientation.Horizontal);
+        var worksheet = excel.Workbook.Worksheets["Sheet1"];
 
-        [ExcelProperty("内部描述")]
-        public string? InnerDescription { get; set; }
+        worksheet.Rows.Count().Should().Be(8);
+        worksheet.Columns.Count().Should().Be(7);
     }
+
+    [Theory, MemberData(nameof(ExportCellValueTheoryData))]
+    public void ExcelHelper_Export_ReturnHorizontalAddressedCellValue(
+        int row, int column, string expected)
+    {
+        using var excel = ExcelHelper.Export(_data2Export, orientation: Orientation.Horizontal);
+        var worksheet = excel.Workbook.Worksheets["Sheet1"];
+        var cell = worksheet.Cells[GetExcelAddress(row, column)];
+
+        cell.Value.Should().Be(expected);
+    }
+
+    [Theory, MemberData(nameof(ExportCellValueTheoryData))]
+    public void ExcelHelper_Export_ReturnVerticalAddressedCellValue(
+        int column, int row, string expected)
+    {
+        using var excel = ExcelHelper.Export(_data2Export, orientation: Orientation.Vertical);
+        var worksheet = excel.Workbook.Worksheets["Sheet1"];
+        var cell = worksheet.Cells[GetExcelAddress(row, column)];
+
+        cell.Value.Should().Be(expected);
+    }
+
+    private static string GetExcelPropertyName<T>(string property)
+    {
+        return typeof(T)
+            .GetProperty(property)!
+            .GetCustomAttribute<ExcelPropertyAttribute>()!
+            .PropertyName;
+    }
+
+    private static string GetExcelAddress(int row, int column)
+    {
+        return $"{ExcelCellBase.GetAddressCol(column)}{row}";
+    }
+
+    internal record Foo(
+        int Id,
+        InnerFoo? InnerFoo = null,
+        [property: ExcelIngore, ExcelProperty("won't output")] string? Ignore = null);
+
+    internal record InnerFoo(
+        [property: ExcelProperty("say my name")] string Name,
+        [property: ExcelProperty("tell me something")] string? Description = null,
+        [property: ExcelProperty("is enabled")] bool IsEnabled = false,
+        [property: ExcelProperty("create time")] DateTime CreateTime = default,
+        [property: ExcelProperty("inner stuff")] DeepInnerFoo? DeepInnerFoo = null);
+
+    internal record DeepInnerFoo(
+        int InnerId,
+        [property: ExcelProperty("actual description")] string? InnerDescription = null);
+
+    internal record CellValidatorDto(int XCoordinate, int YCoordinate, bool IsMerged, string Value);
 }

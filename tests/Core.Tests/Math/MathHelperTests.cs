@@ -1,61 +1,52 @@
 using Lary.Laboratory.Core.Math;
+using Newtonsoft.Json;
 
-namespace Lary.Laboratory.Core.Tests.Utils;
+namespace Lary.Laboratory.Core.Tests.Math;
 
-/// <summary>
-/// Provides tests for <see cref="MathHelper"/>.
-/// </summary>
-[TestClass]
 public class MathHelperTests
 {
-    [TestMethod]
-    public void RoundObject()
+    [Fact]
+    public void MatchHelper_Round_AllPropertiesRounded()
     {
-        var bb = new B
+        var dt = DateTime.Now;
+        var obj = new B
         {
             PropA1 = 1.2345M,
             PropA2 = null,
             PropA3 = 1.2345f,
-            PropA4 =
-            [
-                2.34567M,
-                3.45678M,
-                4.56789M
-            ],
+            PropA4 = [2.34567M, 3.45678M, 4.56789M],
             PropA5 = "hello world",
             PropA6 = 1,
-            PropA7 = DateTime.Now,
-            PropB1 =
-            [
-                9.87654M,
-                8.76543M
-            ],
-            PropB2 =
-            [
-                9.87654d,
-                8.76543d
-            ],
-            PropB3 =
-            [
-                9.87654f,
-                8.76543f,
-                null
-            ],
-            PropB4 =
-            [
-                "hello class b"
-            ],
-            PropB5 =
-            [
-                new C { PropC1 = 1.91734134 }
-            ]
+            PropA7 = dt,
+            PropB1 = [9.87654M, 8.76543M],
+            PropB2 = [9.87654d, 8.76543d],
+            PropB3 = [9.87654f, 8.76543f, null],
+            PropB4 = ["hello class b"],
+            PropB5 = [new C { PropC1 = 1.91734134 }]
+        };
+        var expected = new B
+        {
+            PropA1 = 1.2345M,
+            PropA2 = null,
+            PropA3 = 1.2f,
+            PropA4 = [2.3457M, 3.4568M, 4.5679M],
+            PropA5 = "hello world",
+            PropA6 = 1,
+            PropA7 = dt,
+            PropB1 = [9.88M, 8.77M],
+            PropB2 = [9.88d, 8.77d],
+            PropB3 = [9.88f, 8.77f, null],
+            PropB4 = ["hello class b"],
+            PropB5 = [new C { PropC1 = 1.92 }]
         };
 
-        var newBB = MathHelper.Round(bb);
-        Console.WriteLine(JsonConvert.SerializeObject(newBB, Formatting.Indented));
+        var roundedObj = MathHelper.Round(obj);
+
+        JsonConvert.SerializeObject(roundedObj)
+            .Should().Be(JsonConvert.SerializeObject(expected));
     }
 
-    internal class A
+    internal record class A
     {
         [Fraction(7)]
         public decimal PropA1 { get; set; }
@@ -75,7 +66,7 @@ public class MathHelperTests
         public DateTime PropA7 { get; set; }
     }
 
-    internal class B : A
+    internal record class B : A
     {
         public List<decimal>? PropB1 { get; set; }
 
@@ -88,7 +79,7 @@ public class MathHelperTests
         public C[] PropB5 { get; set; } = default!;
     }
 
-    internal class C
+    internal record class C
     {
         public double PropC1 { get; set; }
     }
