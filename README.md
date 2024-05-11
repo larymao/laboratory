@@ -1,6 +1,6 @@
 # Laboratory
 
-[![.NET](https://github.com/larymao/laboratory/actions/workflows/dotnet.yml/badge.svg)](https://github.com/larymao/laboratory/actions/workflows/dotnet.yml)
+[![.NET](https://github.com/larymao/laboratory/actions/workflows/dotnet.yml/badge.svg)](https://github.com/larymao/laboratory/actions/workflows/dotnet.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/larymao/laboratory/blob/master/LICENSE)
 
 **Laboratory** 是[小醉魔](https://lary.me)同学的一个小小实验室，用于存放他日常编码中所积累的比较好玩的代码。
 
