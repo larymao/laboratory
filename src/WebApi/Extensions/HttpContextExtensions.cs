@@ -19,57 +19,49 @@ public static class HttpContextExtensions
     {
         ArgumentOutOfRangeException.ThrowIfNegative(count);
 
-        var sbRequestContent = new StringBuilder();
         var request = context.Request;
 
-        if (request.ContentLength.HasValue)
+        if (!request.ContentLength.HasValue || request.Body.CanSeek)
+            return string.Empty;
+
+        var sbRequestContent = new StringBuilder();
+
+        try
+        {
+            request.Body.Seek(0, SeekOrigin.Begin);
+
+            var bufferLength = 4 * 1024;
+            var buffer = new byte[bufferLength];
+            int length;
+
+            if (request.ContentLength > count)
+            {
+                var cachedLength = 0;
+
+                while ((length = await request.Body.ReadAsync(buffer.AsMemory(0, bufferLength))) > 0)
+                {
+                    length = Math.Min(count - cachedLength, length);
+
+                    sbRequestContent.Append(Encoding.UTF8.GetString(buffer), 0, length);
+
+                    cachedLength += bufferLength;
+
+                    if (cachedLength >= count)
+                        break;
+                }
+
+                sbRequestContent.Append("...");
+            }
+            else
+            {
+                while ((length = await request.Body.ReadAsync(buffer.AsMemory(0, bufferLength))) > 0)
+                    sbRequestContent.Append(Encoding.UTF8.GetString(buffer), 0, length);
+            }
+        }
+        finally
         {
             if (request.Body.CanSeek)
-            {
-                try
-                {
-                    request.Body.Seek(0, SeekOrigin.Begin);
-
-                    var bufferLength = 4 * 1024;
-                    var buffer = new byte[bufferLength];
-                    int length;
-
-                    if (request.ContentLength > count)
-                    {
-                        var cachedLength = 0;
-
-                        while ((length = await request.Body.ReadAsync(buffer.AsMemory(0, bufferLength))) > 0)
-                        {
-                            length = Math.Min(count - cachedLength, length);
-
-                            sbRequestContent.Append(Encoding.UTF8.GetString(buffer), 0, length);
-
-                            cachedLength += bufferLength;
-
-                            if (cachedLength >= count)
-                            {
-                                break;
-                            }
-                        }
-
-                        sbRequestContent.Append("...");
-                    }
-                    else
-                    {
-                        while ((length = await request.Body.ReadAsync(buffer.AsMemory(0, bufferLength))) > 0)
-                        {
-                            sbRequestContent.Append(Encoding.UTF8.GetString(buffer), 0, length);
-                        }
-                    }
-                }
-                finally
-                {
-                    if (request.Body.CanSeek)
-                    {
-                        request.Body.Seek(0, SeekOrigin.Begin);
-                    }
-                }
-            }
+                request.Body.Seek(0, SeekOrigin.Begin);
         }
 
         return sbRequestContent.ToString();
