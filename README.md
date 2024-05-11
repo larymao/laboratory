@@ -1,4 +1,7 @@
 # Laboratory
+
+[![.NET](https://github.com/larymao/laboratory/actions/workflows/dotnet.yml/badge.svg)](https://github.com/larymao/laboratory/actions/workflows/dotnet.yml)
+
 **Laboratory** 是[小醉魔](https://lary.me)同学的一个小小实验室，用于存放他日常编码中所积累的比较好玩的代码。
 
 目前项目主要分为两个部分：
