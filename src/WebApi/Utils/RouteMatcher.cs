@@ -48,9 +48,7 @@ public static class RouteMatcher
         foreach (var parameter in parsedTemplate.Parameters)
         {
             if (parameter != null && parameter.Name != null && parameter.DefaultValue != null)
-            {
                 result.Add(parameter!.Name, parameter!.DefaultValue);
-            }
         }
 
         return result;

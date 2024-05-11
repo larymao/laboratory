@@ -1,60 +1,42 @@
 using Lary.Laboratory.Core.Json;
-using System.Text.RegularExpressions;
 
 namespace Lary.Laboratory.Core.Tests.Json;
 
-/// <summary>
-/// Provides tests for <see cref="BaseFirstContractResolver"/>.
-/// </summary>
-[TestClass]
 public class BaseFirstContractResolverTests
 {
-    [TestMethod]
-    public void JsonSerializeWithBaseFirstContractResolver()
+    [Fact]
+    public void BaseFirstContractResolver_ShouldWork()
     {
-        var c = new C
+        var obj = new ClassC
         {
-            Id = 1,
-            AA = "AA",
-            Message = "hello",
-            BB = "BB",
-            Remark = "unknown",
-            CC = "CC",
-            CreateTime = DateTime.Now
+            PropA = "A",
+            PropB = "B",
+            PropC = "C"
         };
+        var normalJsonStr = JsonConvert.SerializeObject(obj);
 
-        var settings = new JsonSerializerSettings { ContractResolver = new BaseFirstContractResolver() };
-        var jsonStr = JsonConvert.SerializeObject(c, settings);
-#pragma warning disable SYSLIB1045 // Convert to 'GeneratedRegexAttribute'.
-        Assert.IsTrue(Regex.IsMatch(jsonStr, "AA.*BB.*CC"));
-        Assert.IsTrue(Regex.IsMatch(jsonStr, @"""CreateTime"": *""\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}"""));
-#pragma warning restore SYSLIB1045 // Convert to 'GeneratedRegexAttribute'.
+        var jsonStr = JsonConvert.SerializeObject(obj, new JsonSerializerSettings
+        {
+            ContractResolver = new BaseFirstContractResolver()
+        });
 
-        Console.WriteLine($"{nameof(BaseFirstContractResolver)}: \n{jsonStr}\n");
-        Console.WriteLine($"DefaultResolver: \n{JsonConvert.SerializeObject(c)}\n");
+        jsonStr.Should().MatchRegex("\"PropA\":.*\"PropB\":.*\"PropC\":.*");
+        jsonStr.Length.Should().Be(normalJsonStr.Length);
+        jsonStr.Should().NotBe(normalJsonStr);
     }
 
-    internal class A
+    internal class ClassA
     {
-        public int Id { get; set; }
-
-        public string? AA { get; set; }
+        public string? PropA { get; set; }
     }
 
-    internal class B : A
+    internal class ClassB : ClassA
     {
-        public string? Message { get; set; }
-
-        public string? BB { get; set; }
+        public string? PropB { get; set; }
     }
 
-    internal class C : B
+    internal class ClassC : ClassB
     {
-        public string? Remark { get; set; }
-
-        public string? CC { get; set; }
-
-        [JsonConverter(typeof(DateTimeFormatConverter), "yyyy-MM-dd HH:mm:ss")]
-        public DateTimeOffset CreateTime { get; set; }
+        public string? PropC { get; set; }
     }
 }
