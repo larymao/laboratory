@@ -65,7 +65,7 @@ internal static class ReflectionHelper
             var innerValueProvider = valueProvider == null ? null : prop.GetValue(valueProvider);
             var subTree = BuildSubProperties(prop.PropertyType, innerValueProvider);
             currentNode.AddChildren(subTree);
-            currentNode.Value!.CellLength = subTree.Length == 0 ? 1 : currentNode.LeafCount();
+            currentNode.Value!.CellLength = subTree.Length == 0 ? 1 : currentNode.AllLeaves().Count();
 
             result.Add(currentNode);
         }

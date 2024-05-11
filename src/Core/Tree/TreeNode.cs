@@ -101,13 +101,17 @@ public class TreeNode<T>(T value)
         return _children.Remove(node);
     }
 
+    /// <summary>
+    /// Gets all leaf nodes.
+    /// </summary>
+    /// <returns>A collection of all leaf nodes.</returns>
     public IEnumerable<TreeNode<T>> AllLeaves()
     {
         return Flatten().Where(n => n.IsLeaf);
     }
 
     /// <summary>
-    /// Traverses the sub tree from current tree node.
+    /// Traverses the tree from current tree node.
     /// </summary>
     /// <param name="action">The action to apply to each tree node.</param>
     public void Traverse(Action<TreeNode<T>> action)
@@ -121,18 +125,18 @@ public class TreeNode<T>(T value)
     }
 
     /// <summary>
-    /// Flattens the sub tree from current tree node.
+    /// Flattens the tree from current tree node.
     /// </summary>
-    /// <returns>An <see cref="IEnumerable{T}"/> whose elements are the values of all leaf nodes.</returns>
+    /// <returns>The flattened tree node collection.</returns>
     public IEnumerable<TreeNode<T>> Flatten()
     {
         return new[] { this }.Concat(_children.SelectMany(x => x.Flatten()));
     }
 
     /// <summary>
-    /// Calculates the max depth of the sub tree of current node.
+    /// Calculates the max depth of the tree built from current node.
     /// </summary>
-    /// <returns>The max depth of the sub tree of current node.</returns>
+    /// <returns>The max depth of the tree built from current node.</returns>
     public int MaxDepth()
     {
         return MaxDepth(this, 1);
@@ -145,16 +149,6 @@ public class TreeNode<T>(T value)
     public int CurrentLevel()
     {
         return ParentLevel(this) + 1;
-    }
-
-    /// <summary>
-    /// Calculates the total count of leaf nodes.
-    /// </summary>
-    /// <returns>The total count of leaf nodes.</returns>
-    public int LeafCount()
-    {
-        return _children.Sum(subTree =>
-            subTree.Flatten().Count(node => node.Children == null || node.Children.Count == 0));
     }
 
     private int MaxDepth(TreeNode<T> currentNode, int currentDepth)
