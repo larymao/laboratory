@@ -1,6 +1,6 @@
 # Laboratory
 
-[![.NET](https://github.com/larymao/laboratory/actions/workflows/dotnet.yml/badge.svg)](https://github.com/larymao/laboratory/actions/workflows/dotnet.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/larymao/laboratory/blob/master/LICENSE)
+[![.NET](https://github.com/larymao/laboratory/actions/workflows/ci.yml/badge.svg)](https://github.com/larymao/laboratory/actions/workflows/ci.yml) [![codecov](https://codecov.io/gh/larymao/laboratory/graph/badge.svg?token=FEW6BGBKE9)](https://codecov.io/gh/larymao/laboratory) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/larymao/laboratory/blob/master/LICENSE)
 
 **Laboratory** 是[小醉魔](https://lary.me)同学的一个小小实验室，用于存放他日常编码中所积累的比较好玩的代码。
 

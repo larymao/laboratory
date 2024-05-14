@@ -33,7 +33,7 @@ jobs:
       run: dotnet build --no-restore
 
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test --no-build --verbosity normal --collect:"XPlat Code Coverage"
 
     - name: Test Report
       uses: dorny/test-reporter@v1
@@ -43,3 +43,12 @@ jobs:
         path: "TestResults/*.trx"
         reporter: dotnet-trx
         fail-on-error: true
+
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v4
+      with:
+        fail_ci_if_error: true
+        files: TestResults/**/coverage.cobertura.xml
+        name: codecov-umbrella
+        token: ${{ secrets.CODECOV_TOKEN }}
+        verbose: true
