@@ -2,41 +2,19 @@ using Lary.Laboratory.Core.IO;
 
 namespace Lary.Laboratory.Core.Tests.IO;
 
-public class ZipHelperTests : IDisposable
+public class ZipHelperTests(
+    IOFixture ioFixture)
+    : IClassFixture<IOFixture>
 {
-    private bool isDisposed;
-    private readonly string _baseDirPath = Path.Combine(Path.GetTempPath(), nameof(ZipHelperTests));
-
-    public ZipHelperTests()
-    {
-        Directory.CreateDirectory(_baseDirPath);
-    }
-
-    public void Dispose()
-    {
-        Dispose(true);
-        GC.SuppressFinalize(this);
-    }
-
-    protected virtual void Dispose(bool disposing)
-    {
-        if (isDisposed)
-            return;
-
-        if (disposing)
-            if (Directory.Exists(_baseDirPath))
-                Directory.Delete(_baseDirPath, true);
-
-        isDisposed = true;
-    }
+    private readonly IOFixture _ioFixture = ioFixture;
 
     [Fact]
     public void ZipHelper_Compress_FileNotFound()
     {
-        var fakeFilePath = GetRandomFilePath(createIfNotExists: false);
+        var fakeFilePath = _ioFixture.GetRandomFilePath(createIfNotExists: false);
 
         FluentActions.Invoking(() => ZipHelper.Compress(fakeFilePath))
-            .Should().Throw<FileNotFoundException>();
+            .Should().ThrowExactly<FileNotFoundException>();
     }
 
     [Fact]
@@ -54,7 +32,7 @@ public class ZipHelperTests : IDisposable
     [Fact]
     public void ZipHelper_Compress_SingleFile()
     {
-        var srcFilePath = GetRandomFilePath();
+        var srcFilePath = _ioFixture.GetRandomFilePath();
         var zipPath = Path.ChangeExtension(srcFilePath, ".zip");
 
         ZipHelper.Compress(srcFilePath);
@@ -65,7 +43,7 @@ public class ZipHelperTests : IDisposable
     [Fact]
     public void ZipHelper_Compress_ZipFileExists()
     {
-        var srcFilePath = GetRandomFilePath();
+        var srcFilePath = _ioFixture.GetRandomFilePath();
         var zipPath = Path.ChangeExtension(srcFilePath, ".zip");
         File.Create(zipPath).Dispose();
 
@@ -76,7 +54,7 @@ public class ZipHelperTests : IDisposable
     [Fact]
     public void ZipHelper_Compress_OverwriteZipFile()
     {
-        var srcFilePath = GetRandomFilePath();
+        var srcFilePath = _ioFixture.GetRandomFilePath();
         var zipPath = Path.ChangeExtension(srcFilePath, ".zip");
         File.Create(zipPath).Dispose();
         var createTime = new FileInfo(zipPath).LastWriteTime;
@@ -89,8 +67,8 @@ public class ZipHelperTests : IDisposable
     [Fact]
     public void ZipHelper_Compress_SingleDirectory()
     {
-        var srcDirPath = Path.Combine(_baseDirPath, Path.GetRandomFileName());
-        _ = GetRandomFilePath(srcDirPath);
+        var srcDirPath = Path.Combine(_ioFixture.BaseDirPath, Path.GetRandomFileName());
+        _ = _ioFixture.GetRandomFilePath(srcDirPath);
         var zipPath = $"{srcDirPath}.zip";
 
         ZipHelper.Compress(srcDirPath);
@@ -101,14 +79,14 @@ public class ZipHelperTests : IDisposable
     [Fact]
     public void ZipHelper_Compress_MixedPaths()
     {
-        var subDirPath = Path.Combine(_baseDirPath, Path.GetRandomFileName());
-        GetRandomFilePath(subDirPath);
-        GetRandomFilePath(subDirPath);
+        var subDirPath = _ioFixture.GetRandomDirectoryPath();
+        _ioFixture.GetRandomFilePath(subDirPath);
+        _ioFixture.GetRandomFilePath(subDirPath);
         string[] srcPaths = [
             subDirPath,
-            GetRandomFilePath(),
-            GetRandomFilePath(),
-            GetRandomFilePath(Path.Combine(_baseDirPath, Path.GetRandomFileName()))
+            _ioFixture.GetRandomFilePath(),
+            _ioFixture.GetRandomFilePath(),
+            _ioFixture.GetRandomFilePath(_ioFixture.GetRandomDirectoryPath())
         ];
         var zipPath = GetRandomZipPath();
 
@@ -117,18 +95,6 @@ public class ZipHelperTests : IDisposable
         File.Exists(zipPath).Should().BeTrue();
     }
 
-    private string GetRandomFilePath(string? baseDirPath = null, bool createIfNotExists = true)
-    {
-        baseDirPath = string.IsNullOrWhiteSpace(baseDirPath) ? _baseDirPath : baseDirPath;
-        Directory.CreateDirectory(baseDirPath);
-        var filePath = Path.Combine(baseDirPath, Path.GetRandomFileName());
-
-        if (createIfNotExists && !File.Exists(filePath))
-            File.Create(filePath).Dispose();
-
-        return filePath;
-    }
-
     private string GetRandomZipPath()
-        => Path.Combine(_baseDirPath, Path.ChangeExtension(Path.GetRandomFileName(), ".zip"));
+        => Path.ChangeExtension(_ioFixture.GetRandomFilePath(createIfNotExists: false), ".zip");
 }
