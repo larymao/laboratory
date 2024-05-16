@@ -52,10 +52,9 @@ public static class ZipHelper
     /// </param>
     public static void Compress(IEnumerable<string> srcPaths, string zipPath, bool force = false)
     {
+        Directory.CreateDirectory(Path.GetDirectoryName(zipPath));
         if (force && File.Exists(zipPath))
-        {
             File.Delete(zipPath);
-        }
 
         if (srcPaths == null || !srcPaths.Any())
         {

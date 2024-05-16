@@ -12,7 +12,9 @@ public static class PathHelper
     /// <returns><see langword="true"/> if the file is file; otherwise, false.</returns>
     public static bool IsFile(string path)
     {
-        return !IsDirectory(path);
+        var fileAttr = new FileInfo(path).Attributes;
+
+        return (int)fileAttr > 0 && !IsDirectory(fileAttr);
     }
 
     /// <summary>
@@ -22,21 +24,13 @@ public static class PathHelper
     /// <returns><see langword="true"/> if the file is directory; otherwise, false.</returns>
     public static bool IsDirectory(string path)
     {
-        return FileAttributes.Directory.CanMatchWith(path);
+        var dirAttr = new DirectoryInfo(path).Attributes;
+
+        return (int)dirAttr > 0 && IsDirectory(dirAttr);
     }
 
-    /// <summary>
-    /// Checks whether the given file attribute can be matched with the file/directory of the given path.
-    /// </summary>
-    /// <param name="attr">File/Directory attribute.</param>
-    /// <param name="path">The path to be checked.</param>
-    /// <returns>
-    /// <see langword="true"/> if the attribute can be matched with the file/directory; otherwise, <see langword="false"/>.
-    /// </returns>
-    public static bool CanMatchWith(this FileAttributes attr, string path)
+    private static bool IsDirectory(FileAttributes attr)
     {
-        var fileAttr = File.GetAttributes(path);
-
-        return (fileAttr & attr) == attr;
+        return (attr & FileAttributes.Directory) == FileAttributes.Directory;
     }
 }
