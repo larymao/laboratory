@@ -47,7 +47,23 @@ public static class DictionaryHelper
     /// <returns>A generic dictionary object.</returns>
     public static Dictionary<TKey, TValue> ToGeneric<TKey, TValue>(this IDictionary dic)
     {
-        return dic.GetEntries().ToDictionary(x => (TKey)x.Key, x => (TValue)x.Value);
+        return dic.ToGeneric(key => (TKey)key, val => (TValue)val!);
+    }
+
+    /// <summary>
+    /// Converts the given <see cref="IDictionary"/> object to a generic one.
+    /// </summary>
+    /// <typeparam name="TKey">Key type of the output generic dictionary.</typeparam>
+    /// <typeparam name="TValue">Value type of the output generic dictionary.</typeparam>
+    /// <param name="dic">An <see cref="IDictionary"/> object.</param>
+    /// <param name="keySelector">A function to extract a key from each element.</param>
+    /// <param name="elementSelector">A transform function to produce a result element value from each element.</param>
+    /// <returns>A generic dictionary object.</returns>
+    public static Dictionary<TKey, TValue> ToGeneric<TKey, TValue>(
+        this IDictionary dic, Func<object, TKey> keySelector, Func<object?, TValue> elementSelector)
+    {
+        return dic.GetEntries().ToDictionary(
+            x => keySelector(x.Key), x => elementSelector(x.Value));
     }
 
     /// <summary>
@@ -61,48 +77,6 @@ public static class DictionaryHelper
         {
             yield return entry;
         }
-    }
-
-    /// <summary>
-    /// Converts the given dictionary to an object of the specified type.
-    /// </summary>
-    /// <typeparam name="T">The type of the target object.</typeparam>
-    /// <param name="dic">The dictionary to be converted.</param>
-    /// <returns>An object of the given type.</returns>
-    public static T ToObject<T>(IDictionary<string, object?> dic)
-        where T : class, new()
-    {
-        var obj = new T();
-        var objProps = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance);
-
-        foreach (var prop in objProps)
-        {
-            if (dic.TryGetValue(prop.Name, out var val))
-            {
-                prop.SetValue(obj, val);
-            }
-        }
-
-        return obj;
-    }
-
-    /// <summary>
-    /// Converts the given object to a dictionary.
-    /// </summary>
-    /// <typeparam name="T">The type of the target object.</typeparam>
-    /// <param name="obj">The object to be converted.</param>
-    /// <returns>A dictionary with property name as the entry key, and property value as entry value.</returns>
-    public static Dictionary<string, object?> FromObject<T>(T obj)
-    {
-        var dic = new Dictionary<string, object?>();
-        var objProps = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance);
-
-        foreach (var prop in objProps)
-        {
-            dic[prop.Name] = prop.GetValue(obj);
-        }
-
-        return dic;
     }
 
     internal static Func<Dictionary<string, object?>, T> ToObject<T>()
