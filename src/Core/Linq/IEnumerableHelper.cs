@@ -67,23 +67,11 @@ public static class IEnumerableHelper
     /// <param name="pageIndex">Page index, zero based.</param>
     /// <param name="pageSize">Items number per page.</param>
     /// <returns>A subsequence that is taken from the source with the given pagination config.</returns>
-    public static IEnumerable<T> Page<T>(this IEnumerable<T> source, int pageIndex, int pageSize)
-    {
-        return source.Page(new Pager(pageIndex, pageSize));
-    }
-
-    /// <summary>
-    /// Gets a subsequence of the source sequence with a specified pagination config.
-    /// </summary>
-    /// <typeparam name="T">>The type of the elements of source.</typeparam>
-    /// <param name="source">>A sequence.</param>
-    /// <param name="pager">Pagination config.</param>
-    /// <returns>A subsequence that is taken from the source with the given pagination config.</returns>
-    public static IEnumerable<T> Page<T>(this IEnumerable<T> source, Pager pager)
+    public static IEnumerable<T> Paging<T>(this IEnumerable<T> source, int pageIndex, int pageSize)
     {
         return source
-            .Skip(pager.PageIndex * pager.PageSize)
-            .Take(pager.PageSize);
+            .Skip(pageIndex * pageSize)
+            .Take(pageSize);
     }
 
     /// <summary>
