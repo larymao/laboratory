@@ -41,6 +41,18 @@ public class ZipHelperTests(
     }
 
     [Fact]
+    public void ZipHelper_Compress_MultipleFiles()
+    {
+        var srcFilePaths = Enumerable.Range(0, 5)
+            .Select(_ => _ioFixture.GetRandomFilePath());
+        var zipPath = GetRandomZipPath();
+
+        ZipHelper.Compress(srcFilePaths, zipPath);
+
+        File.Exists(zipPath).Should().BeTrue();
+    }
+
+    [Fact]
     public void ZipHelper_Compress_ZipFileExists()
     {
         var srcFilePath = _ioFixture.GetRandomFilePath();
