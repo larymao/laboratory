@@ -6,8 +6,8 @@ public class StringBuilderHelperTests
 {
     public static readonly TheoryData<string, string, bool, string> AppendLineIfTheoryData = new()
     {
-        {"hello world", "!", false, "hello world" },
-        {"hello world", "!", true, $"hello world!{Environment.NewLine}" }
+        { "hello world", "!", false, "hello world" },
+        { "hello world", "!", true, $"hello world!{Environment.NewLine}" }
     };
 
     [Theory]
