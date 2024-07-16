@@ -43,7 +43,7 @@ public class LogicTreeHelperTests
 
     [Theory, MemberData(nameof(BuildAsTreesTheoryData))]
     public void LogicTreeHelper_BuildAsTrees_ReturnCorrectTrees(
-        int? rootId, TreeInfoValidatorDto[] expected)
+        int? rootId, TreeInfoValidatorDto[] expected)   
     {
         var expectedRootNodeIds = expected.Select(dto => dto.RootNodeId).ToHashSet();
         Func<TreeNode<ListItem>, TreeInfoValidatorDto> treeDto =
