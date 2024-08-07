@@ -1,5 +1,7 @@
 using Lary.Laboratory.Core.Tree;
+using System.Runtime.CompilerServices;
 
+[assembly: InternalsVisibleTo("Lary.Laboratory.EPPlusWrapper.Tests")]
 namespace Lary.Laboratory.EPPlusWrapper;
 
 internal static class ReflectionHelper

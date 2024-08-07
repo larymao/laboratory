@@ -1,7 +1,11 @@
+using Lary.Laboratory.Core.Tree;
+
 namespace Lary.Laboratory.EPPlusWrapper.Tests;
 
 public class ExcelHelperTests
 {
+    private static readonly TreeNode<ExcelProperty?> _fooTree = typeof(Foo).BuildAsExcelPropertyTree();
+    private static readonly int _headerRows = _fooTree.MaxDepth() - 1;
     private static readonly Foo[] _data2Export = [
         new(1, new("Adam", "test data 1", false, DateTime.Now.AddDays(-1), new(1, "inner test data 1"))),
         new(2, new("Bob", "test data 2", true, DateTime.Now.AddDays(-2), new(2, "inner test data 2"))),
@@ -17,9 +21,9 @@ public class ExcelHelperTests
         { 1, 2, nameof(Foo.InnerFoo) },
         { 1, 7, nameof(Foo.InnerFoo) },
         { 3, 7, GetExcelPropertyName<DeepInnerFoo>(nameof(DeepInnerFoo.InnerDescription)) },
-        { 4, 2, _data2Export[0].InnerFoo!.Name },
-        { 5, 4, _data2Export[1].InnerFoo!.IsEnabled.ToString() },
-        { 8, 2, string.Empty }
+        { _headerRows + 1, 2, _data2Export[0].InnerFoo!.Name },
+        { _headerRows + 2, 4, _data2Export[1].InnerFoo!.IsEnabled.ToString() },
+        { _headerRows + 5, 2, string.Empty }
     };
 
     [Fact]
@@ -54,11 +58,16 @@ public class ExcelHelperTests
     [Fact]
     public void ExcelHelper_Export_ReturnCorrectCellRange()
     {
+        var expectedRows = _headerRows + _data2Export.Length;
+        var expectedColumns = _fooTree.AllLeaves()
+            .Where(l => l.Value!.PropertyInfo!.GetCustomAttribute<ExcelIgnoreAttribute>() == null)
+            .Count();
+
         using var excel = ExcelHelper.Export(_data2Export, orientation: Orientation.Horizontal);
         var worksheet = excel.Workbook.Worksheets["Sheet1"];
 
-        worksheet.Rows.Count().Should().Be(8);
-        worksheet.Columns.Count().Should().Be(7);
+        worksheet.Rows.Count().Should().Be(expectedRows);
+        worksheet.Columns.Count().Should().Be(expectedColumns);
     }
 
     [Theory, MemberData(nameof(ExportCellValueTheoryData))]
@@ -110,7 +119,18 @@ public class ExcelHelperTests
 
     internal record DeepInnerFoo(
         int InnerId,
-        [property: ExcelProperty("actual description")] string? InnerDescription = null);
+        [property: ExcelProperty("actual description")] string? InnerDescription = null,
+        [property: ExcelProperty("inner byte")] byte InnerByte = default,
+        [property: ExcelProperty("inner datetimeoffset")] DateTimeOffset InnerDateTimeOffset = default,
+        [property: ExcelProperty("inner decimal")] decimal InnerDecimal = default,
+        [property: ExcelProperty("inner double")] double InnerDouble = default,
+        [property: ExcelProperty("inner int16")] short InnerInt16 = default,
+        [property: ExcelProperty("inner int64")] long InnerInt64 = default,
+        [property: ExcelProperty("inner sbyte")] sbyte InnerSByte = default,
+        [property: ExcelProperty("inner single")] float InnerSingle = default,
+        [property: ExcelProperty("inner uint16")] ushort InnerUInt16 = default,
+        [property: ExcelProperty("inner uint32")] uint InnerUInt32 = default,
+        [property: ExcelProperty("inner unint64")] ulong InnerUInt64 = default);
 
     internal record CellValidatorDto(int XCoordinate, int YCoordinate, bool IsMerged, string Value);
 }
