@@ -99,7 +99,7 @@ public class ExcelHelperTests
     internal record Foo(
         int Id,
         InnerFoo? InnerFoo = null,
-        [property: ExcelIngore, ExcelProperty("won't output")] string? Ignore = null);
+        [property: ExcelIgnore, ExcelProperty("won't output")] string? Ignore = null);
 
     internal record InnerFoo(
         [property: ExcelProperty("say my name")] string Name,

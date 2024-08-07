@@ -10,7 +10,7 @@ internal static class ReflectionHelper
 
         foreach (var prop in allProps)
         {
-            if (prop.GetCustomAttributes<ExcelIngoreAttribute>().Any())
+            if (prop.GetCustomAttributes<ExcelIgnoreAttribute>().Any())
             {
                 continue;
             }
