@@ -10,6 +10,20 @@
     <NoWarn>$(NoWarn);1591;SA1625</NoWarn>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <ShouldPublish>true</ShouldPublish>
+    <PackageId>Lary.Laboratory.Core</PackageId>
+    <Authors>larymao</Authors>
+    <Description>Provides some commonly used helper types for .NET Standard 2.0.</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/larymao/laboratory</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    
+    <Version>0.1.0</Version>
+    <AssemblyVersion>0.1.0.0</AssemblyVersion>
+    <FileVersion>0.1.0.0</FileVersion>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" />
   </ItemGroup>

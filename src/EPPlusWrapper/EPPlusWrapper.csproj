@@ -7,6 +7,20 @@
     <AssemblyName>Lary.Laboratory.EPPlusWrapper</AssemblyName>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <ShouldPublish>true</ShouldPublish>
+    <PackageId>Lary.Laboratory.EPPlusWrapper</PackageId>
+    <Authors>larymao</Authors>
+    <Description>Provides some wrapping methods for EPPlus.</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/larymao/laboratory</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+
+    <Version>0.1.0</Version>
+    <AssemblyVersion>0.1.0.0</AssemblyVersion>
+    <FileVersion>0.1.0.0</FileVersion>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="EPPlus" />
   </ItemGroup>

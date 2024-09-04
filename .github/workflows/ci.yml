@@ -18,6 +18,7 @@ jobs:
   build_and_test:
     name: Build & Test
     runs-on: ubuntu-latest
+
     steps:
     - uses: actions/checkout@v4
 
@@ -52,3 +53,45 @@ jobs:
         name: codecov-umbrella
         token: ${{ secrets.CODECOV_TOKEN }}
         verbose: true
+
+  pack_and_publish:
+    name: Pack & Publish
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Find projects to publish
+      id: find_projects
+      run: |
+        projects_to_publish=$(find . -name '*.csproj' -exec sh -c 'grep -q "<ShouldPublish>true</ShouldPublish>" {} && echo {}' \;)
+        joined_projects=$(echo "$projects_to_publish" | tr '\n' ';' | sed 's/;$//')  # Join with ';' and remove trailing ';'
+        echo "projects_to_publish=$joined_projects" >> $GITHUB_ENV
+
+    - name: Build and Pack
+      if: env.projects_to_publish != ''
+      run: |
+        IFS=';' read -ra ADDR <<< "${{ env.projects_to_publish }}"
+        for proj in "${ADDR[@]}"; do
+          echo "Building and packing $proj"
+          dotnet build --configuration Release --no-restore "$proj"
+          dotnet pack --configuration Release --no-build -o ./nupkg "$proj"
+        done
+
+    - name: Publish to NuGet
+      if: env.projects_to_publish != ''
+      env:
+        NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+      run: |
+        for pkg in ./nupkg/*.nupkg; do
+          echo "Publishing $pkg to NuGet"
+          dotnet nuget push $pkg --api-key $NUGET_API_KEY --source https://api.nuget.org/v3/index.json --skip-duplicate
+        done
