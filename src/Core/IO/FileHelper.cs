@@ -57,19 +57,32 @@ public static class FileHelper
     public static int CountTxtLines(IEnumerable<string> filePaths)
     {
         var totalLines = 0;
-        var locker = new object();
+        Exception? exception = null;
 
-        Parallel.ForEach(filePaths, x =>
-        {
-            using var sr = new StreamReader(x);
-            var counter = 0;
+        Parallel.ForEach(
+            filePaths,
+            () => 0,
+            (x, state, taskTotal) =>
+            {
+                try
+                {
+                    using var sr = new StreamReader(x);
+                    while (sr.ReadLine() != null)
+                        taskTotal++;
+                }
+                catch (Exception ex)
+                {
+                    exception = ex;
+                    state.Break();
+                }
 
-            while (sr.ReadLine() != null)
-                counter++;
+                return taskTotal;
+            },
+            taskTotal => Interlocked.Add(ref totalLines, taskTotal)
+        );
 
-            lock (locker)
-                totalLines += counter;
-        });
+        if (exception != null)
+            ExceptionDispatchInfo.Capture(exception).Throw();
 
         return totalLines;
     }

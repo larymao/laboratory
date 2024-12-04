@@ -36,12 +36,24 @@ public class FileHelperTests(
     [Fact]
     public void FileHelper_CountTxtLines_ShouldWork()
     {
-        var lines = Enumerable.Range(1, 10).Select(i => Guid.NewGuid().ToString()).ToArray();
-        var txtFilePaths = Enumerable.Range(1, 10).Select(i => _ioFixture.CreateRandomTxtFile(lines));
+        var lines = Enumerable.Range(1, 10000).Select(i => Guid.NewGuid().ToString()).ToArray();
+        var txtFilePaths = Enumerable.Range(1, 100).Select(i => _ioFixture.CreateRandomTxtFile(lines));
 
         var lineCount = FileHelper.CountTxtLines(txtFilePaths);
 
         lineCount.Should().Be(txtFilePaths.Count() * lines.Length);
+    }
+
+    [Fact]
+    public void FileHelper_CountTxtLines_ShouldErrorIfFileNotExists()
+    {
+        var lines = Enumerable.Range(1, 10000).Select(i => Guid.NewGuid().ToString()).ToArray();
+        var txtFilePaths = Enumerable.Range(1, 100).Select(i => _ioFixture.CreateRandomTxtFile(lines)).ToArray();
+        var deleteAt = new Random().Next(50, 99);
+        FileHelper.DeleteIfExists(txtFilePaths[deleteAt]);
+
+        FluentActions.Invoking(() => FileHelper.CountTxtLines(txtFilePaths))
+            .Should().ThrowExactly<FileNotFoundException>();
     }
 
     [Fact]
