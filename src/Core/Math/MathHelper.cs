@@ -14,9 +14,7 @@ public static class MathHelper
     /// <param name="digits">The number of decimal places in the return value.</param>
     /// <returns>An object with all decimal properties been rounded.</returns>
     public static object? Round(object? obj, int digits = 2)
-    {
-        return Round(obj, FractionTypes.All, digits);
-    }
+        => Round(obj, FractionTypes.All, digits);
 
     /// <summary>
     /// Rounds all fractional properties of the given object to a specified number of fractional digits.
@@ -28,45 +26,33 @@ public static class MathHelper
     public static object? Round(object? obj, FractionTypes fractionTypes, int digits = 2)
     {
         if (obj == null)
-        {
             return null;
-        }
 
         var type = obj.GetType();
 
         if (type == typeof(object)
             || type.FullName!.Contains("IGrouping"))
-        {
             return obj;
-        }
 
         // round straight
         if (obj is decimal m)
-        {
             return fractionTypes.HasFlag(FractionTypes.Decimal)
                 ? Convert.ChangeType(System.Math.Round(m, digits), type)
                 : obj;
-        }
 
         if (obj is double d)
-        {
             return fractionTypes.HasFlag(FractionTypes.Double)
                 ? Convert.ChangeType(System.Math.Round(d, digits), type)
                 : obj;
-        }
 
         if (obj is float f)
-        {
             return fractionTypes.HasFlag(FractionTypes.Single)
                 ? Convert.ChangeType(System.Math.Round(f, digits), type)
                 : obj;
-        }
 
         if (obj is string)
-        {
             // string is derived from IEnumerable
             return obj;
-        }
 
         // list
         if (obj is IEnumerable ie)
@@ -74,9 +60,7 @@ public static class MathHelper
             var list = new List<object?>();
 
             foreach (var x in ie)
-            {
                 list.Add(Round(x, fractionTypes, digits));
-            }
 
             return JsonConvert.DeserializeObject(JsonConvert.SerializeObject(list), type);
         }
@@ -87,16 +71,12 @@ public static class MathHelper
         foreach (var prop in props)
         {
             if (!prop.CanWrite)
-            {
                 continue;
-            }
 
             var currentData = prop.GetValue(obj);
 
             if (currentData == null)
-            {
                 continue;
-            }
 
             var fixedDigits = GetPropDigits(prop, digits);
 
@@ -108,9 +88,7 @@ public static class MathHelper
 
                 if (!fractionTypes.HasFlag(FractionTypes.Decimal)
                     || !decimalData.HasValue)
-                {
                     continue;
-                }
 
                 prop.SetValue(obj, System.Math.Round(decimalData!.Value, fixedDigits));
             }
@@ -122,9 +100,7 @@ public static class MathHelper
 
                 if (!fractionTypes.HasFlag(FractionTypes.Double)
                     || !doubleData.HasValue)
-                {
                     continue;
-                }
 
                 prop.SetValue(obj, System.Math.Round(doubleData!.Value, fixedDigits));
             }
@@ -136,9 +112,7 @@ public static class MathHelper
 
                 if (!fractionTypes.HasFlag(FractionTypes.Single)
                     || !floatData.HasValue)
-                {
                     continue;
-                }
 
                 prop.SetValue(obj, (float)System.Math.Round(floatData!.Value, fixedDigits));
             }
@@ -148,10 +122,6 @@ public static class MathHelper
             {
                 currentData = Round(currentData, fractionTypes, fixedDigits);
                 prop.SetValue(obj, currentData);
-            }
-            else
-            {
-                continue;
             }
         }
 
@@ -163,9 +133,7 @@ public static class MathHelper
         var decimalAttr = prop.GetCustomAttributes(typeof(FractionAttribute), false).SingleOrDefault();
 
         if (decimalAttr == null)
-        {
             return defaultDigits;
-        }
 
         var attr = decimalAttr as FractionAttribute;
 

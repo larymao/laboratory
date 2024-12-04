@@ -29,14 +29,10 @@ internal static class NaturalSorter
     }
 
     private static int MaxPaddingWidth<T>(IEnumerable<T> source, Func<T, string> selector)
-    {
-        return source
+        => source
             .SelectMany(x => _regex.Matches(selector(x)).Cast<Match>().Select(m => (int?)m.Value.Length))
             .Max() ?? 0;
-    }
 
     private static string PaddedKey<T>(T item, Func<T, string> selector, int maxPaddingWidth)
-    {
-        return _regex.Replace(selector(item), m => m.Value.PadLeft(maxPaddingWidth, '0'));
-    }
+        => _regex.Replace(selector(item), m => m.Value.PadLeft(maxPaddingWidth, '0'));
 }

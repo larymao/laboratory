@@ -77,9 +77,7 @@ public class TreeNode<T>(T value)
     /// <param name="values">Values of child nodes to be added.</param>
     /// <returns>An <see cref="Array"/> whose elements are the child nodes being added.</returns>
     public TreeNode<T>[] AddChildren(params T[] values)
-    {
-        return values.Select(AddChild).ToArray();
-    }
+        => values.Select(AddChild).ToArray();
 
     /// <summary>
     /// Adds multiple child nodes to current node.
@@ -87,9 +85,7 @@ public class TreeNode<T>(T value)
     /// <param name="children">The child nodes to be added.</param>
     /// <returns>An <see cref="Array"/> whose elements are the child nodes being added.</returns>
     public TreeNode<T>[] AddChildren(params TreeNode<T>[] children)
-    {
-        return children.Select(AddChild).ToArray();
-    }
+        => children.Select(AddChild).ToArray();
 
     /// <summary>
     /// Removes a child node from current node.
@@ -97,18 +93,14 @@ public class TreeNode<T>(T value)
     /// <param name="node">The child node to be removed.</param>
     /// <returns><see langword="true"/> if current operation succeeded; otherwise, <see langword="false"/>.</returns>
     public bool RemoveChild(TreeNode<T> node)
-    {
-        return _children.Remove(node);
-    }
+        => _children.Remove(node);
 
     /// <summary>
     /// Gets all leaf nodes.
     /// </summary>
     /// <returns>A collection of all leaf nodes.</returns>
     public IEnumerable<TreeNode<T>> AllLeaves()
-    {
-        return Flatten().Where(n => n.IsLeaf);
-    }
+        => Flatten().Where(n => n.IsLeaf);
 
     /// <summary>
     /// Traverses the tree from current tree node.
@@ -119,9 +111,7 @@ public class TreeNode<T>(T value)
         action(this);
 
         foreach (var child in _children)
-        {
             child.Traverse(action);
-        }
     }
 
     /// <summary>
@@ -129,47 +119,36 @@ public class TreeNode<T>(T value)
     /// </summary>
     /// <returns>The flattened tree node collection.</returns>
     public IEnumerable<TreeNode<T>> Flatten()
-    {
-        return new[] { this }.Concat(_children.SelectMany(x => x.Flatten()));
-    }
+        => new[] { this }.Concat(_children.SelectMany(x => x.Flatten()));
 
     /// <summary>
     /// Calculates the max depth of the tree built from current node.
     /// </summary>
     /// <returns>The max depth of the tree built from current node.</returns>
     public int MaxDepth()
-    {
-        return MaxDepth(this, 1);
-    }
+        => MaxDepth(this, 1);
 
     /// <summary>
     /// Calculates the level of the current node of the full tree.
     /// </summary>
     /// <returns>The level of the current node of the full tree.</returns>
     public int CurrentLevel()
-    {
-        return ParentLevel(this) + 1;
-    }
+        => ParentLevel(this) + 1;
 
     private int MaxDepth(TreeNode<T> currentNode, int currentDepth)
     {
         var maxDepth = currentDepth;
 
         foreach (var node in currentNode.Children)
-        {
             maxDepth = System.Math.Max(maxDepth, MaxDepth(node, currentDepth + 1));
-        }
 
         return maxDepth;
     }
 
     private int ParentLevel(TreeNode<T> currentNode)
     {
-        if (currentNode.Parent == null)
-        {
-            return -1;
-        }
-
-        return ParentLevel(currentNode.Parent) + 1;
+        return currentNode.Parent == null
+            ? -1
+            : ParentLevel(currentNode.Parent) + 1;
     }
 }

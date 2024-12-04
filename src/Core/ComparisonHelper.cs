@@ -14,8 +14,7 @@ public static class ComparisonHelper
     /// Thrown if the given <see cref="StringComparison"/> object is invalid.
     /// </exception>
     public static StringComparer ToComparer(this StringComparison comparison)
-    {
-        return comparison switch
+        => comparison switch
         {
             StringComparison.CurrentCulture => StringComparer.CurrentCulture,
             StringComparison.CurrentCultureIgnoreCase => StringComparer.CurrentCultureIgnoreCase,
@@ -25,5 +24,4 @@ public static class ComparisonHelper
             StringComparison.OrdinalIgnoreCase => StringComparer.OrdinalIgnoreCase,
             _ => throw new NotImplementedException("Unknown StringComparison"),
         };
-    }
 }

@@ -25,9 +25,7 @@ public static class FileHelper
     public static void DeleteIfExists(string filePath)
     {
         if (File.Exists(filePath))
-        {
             File.Delete(filePath);
-        }
     }
 
     /// <summary>
@@ -43,14 +41,12 @@ public static class FileHelper
         try
         {
             using var stream = file.Open(FileMode.Open, FileAccess.Read, FileShare.None);
-            stream.Close();
+            return false;
         }
         catch (IOException)
         {
             return true;
         }
-
-        return false;
     }
 
     /// <summary>
@@ -69,14 +65,10 @@ public static class FileHelper
             var counter = 0;
 
             while (sr.ReadLine() != null)
-            {
                 counter++;
-            }
 
             lock (locker)
-            {
                 totalLines += counter;
-            }
         });
 
         return totalLines;

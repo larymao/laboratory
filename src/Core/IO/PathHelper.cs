@@ -30,7 +30,5 @@ public static class PathHelper
     }
 
     private static bool IsDirectory(FileAttributes attr)
-    {
-        return (attr & FileAttributes.Directory) == FileAttributes.Directory;
-    }
+        => (attr & FileAttributes.Directory) == FileAttributes.Directory;
 }

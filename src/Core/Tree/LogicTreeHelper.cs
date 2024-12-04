@@ -24,9 +24,7 @@ public static class LogicTreeHelper
         var rootItem = collection.SingleOrDefault(c => idSelector(c)!.Equals(rootId));
 
         if (rootItem == null)
-        {
             return BuildSubTrees(collection, idSelector, parentIdSelector, rootId);
-        }
 
         var rootNode = new TreeNode<TNode>(rootItem);
         rootNode.AddChildren(

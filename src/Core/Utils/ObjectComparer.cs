@@ -17,25 +17,21 @@ public static class ObjectComparer
         where T : class
     {
         if (obj1 == null || obj2 == null)
-        {
             return obj1 == obj2;
-        }
 
         var type = typeof(T);
         var ignoreSet = new HashSet<string>(ignores);
 
         foreach (var prop in type.GetProperties(BindingFlags.Public | BindingFlags.Instance))
         {
-            if (!ignoreSet.Contains(prop.Name))
-            {
-                var val1 = type.GetProperty(prop.Name).GetValue(obj1, null);
-                var val2 = type.GetProperty(prop.Name).GetValue(obj2, null);
+            if (ignoreSet.Contains(prop.Name))
+                continue;
 
-                if (val1 != val2 && (val1 == null || !val1.Equals(val2)))
-                {
-                    return false;
-                }
-            }
+            var val1 = type.GetProperty(prop.Name).GetValue(obj1, null);
+            var val2 = type.GetProperty(prop.Name).GetValue(obj2, null);
+
+            if (val1 != val2 && (val1 == null || !val1.Equals(val2)))
+                return false;
         }
 
         return true;

@@ -6,11 +6,11 @@ namespace Lary.Laboratory.Core.IO;
 public static class DirectoryHelper
 {
     /// <summary>
-    /// Copies entire direcotry recursively.
+    /// Copies entire direcotry. Include sub-directories and files.
     /// </summary>
     /// <param name="srcPath">Source directory path.</param>
     /// <param name="destPath">Destination directory path.</param>
-    public static void CopyRecursively(string srcPath, string destPath)
+    public static void CopyAll(string srcPath, string destPath)
     {
         var srcDirs = Directory.GetDirectories(srcPath, "*", SearchOption.AllDirectories);
         var srcFiles = Directory.GetFiles(srcPath, "*.*", SearchOption.AllDirectories);
@@ -19,14 +19,10 @@ public static class DirectoryHelper
         Directory.CreateDirectory(destPath);
 
         foreach (var dirPath in srcDirs)
-        {
             Directory.CreateDirectory(dirPath.Replace(srcPath, destPath));
-        }
 
         foreach (var filePath in srcFiles)
-        {
             File.Copy(filePath, filePath.Replace(srcPath, destPath), true);
-        }
     }
 
     /// <summary>
@@ -38,9 +34,7 @@ public static class DirectoryHelper
     public static void DeleteIfExists(string dirPath, bool recursive)
     {
         if (Directory.Exists(dirPath))
-        {
             Directory.Delete(dirPath, recursive);
-        }
     }
 
     /// <summary>

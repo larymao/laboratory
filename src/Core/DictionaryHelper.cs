@@ -18,9 +18,7 @@ public static class DictionaryHelper<T>
     /// <param name="dic">The dictionary to be converted.</param>
     /// <returns>An object of the given type.</returns>
     public static T ToObject(Dictionary<string, object?> dic)
-    {
-        return _funcToObject(dic);
-    }
+        => _funcToObject(dic);
 
     /// <summary>
     /// Converts the given object to a dictionary.
@@ -28,9 +26,7 @@ public static class DictionaryHelper<T>
     /// <param name="obj">The object to be converted.</param>
     /// <returns>A dictionary with property name as the entry key, and property value as entry value.</returns>
     public static Dictionary<string, object?> FromObject(T obj)
-    {
-        return _funcFromObject(obj);
-    }
+        => _funcFromObject(obj);
 }
 
 /// <summary>
@@ -46,9 +42,7 @@ public static class DictionaryHelper
     /// <param name="dic">An <see cref="IDictionary"/> object.</param>
     /// <returns>A generic dictionary object.</returns>
     public static Dictionary<TKey, TValue> ToGeneric<TKey, TValue>(this IDictionary dic)
-    {
-        return dic.ToGeneric(key => (TKey)key, val => (TValue)val!);
-    }
+        => dic.ToGeneric(key => (TKey)key, val => (TValue)val!);
 
     /// <summary>
     /// Converts the given <see cref="IDictionary"/> object to a generic one.
@@ -61,10 +55,7 @@ public static class DictionaryHelper
     /// <returns>A generic dictionary object.</returns>
     public static Dictionary<TKey, TValue> ToGeneric<TKey, TValue>(
         this IDictionary dic, Func<object, TKey> keySelector, Func<object?, TValue> elementSelector)
-    {
-        return dic.GetEntries().ToDictionary(
-            x => keySelector(x.Key), x => elementSelector(x.Value));
-    }
+        => dic.GetEntries().ToDictionary(x => keySelector(x.Key), x => elementSelector(x.Value));
 
     /// <summary>
     /// Gets entries of a dictionary.
@@ -74,9 +65,7 @@ public static class DictionaryHelper
     public static IEnumerable<DictionaryEntry> GetEntries(this IDictionary dic)
     {
         foreach (DictionaryEntry entry in dic)
-        {
             yield return entry;
-        }
     }
 
     internal static Func<Dictionary<string, object?>, T> ToObject<T>()
@@ -97,9 +86,7 @@ public static class DictionaryHelper
         {
             // 确保可写、有效
             if (!prop.CanWrite || prop.GetIndexParameters().Length != 0)
-            {
                 continue;
-            }
 
             var key = Expression.Constant(prop.Name);
             var val = Expression.Property(param, "Item", key);
@@ -138,9 +125,7 @@ public static class DictionaryHelper
         foreach (var prop in objProps)
         {
             if (prop.GetIndexParameters().Length != 0)
-            {
                 continue;
-            }
 
             var key = Expression.Constant(prop.Name);
             var val = Expression.Property(obj, prop);

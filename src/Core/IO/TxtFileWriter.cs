@@ -35,9 +35,7 @@ public static class TxtFileWriter
     public static void AppendLinesTo(string filePath, IEnumerable<string> lines)
     {
         foreach (var line in lines)
-        {
             AppendLineTo(filePath, line);
-        }
     }
 
     private static void InvokeWritter(string filePath, Action<StreamWriter> writter)

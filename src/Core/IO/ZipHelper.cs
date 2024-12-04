@@ -38,7 +38,7 @@ public static class ZipHelper
     /// </param>
     public static void Compress(string srcPath, string zipPath, bool force = false)
     {
-        Compress(new[] { srcPath }, zipPath, force);
+        Compress([srcPath], zipPath, force);
     }
 
     /// <summary>
@@ -88,7 +88,7 @@ public static class ZipHelper
                 }
                 else
                 {
-                    DirectoryHelper.CopyRecursively(path, destPath);
+                    DirectoryHelper.CopyAll(path, destPath);
                 }
             }
 
@@ -114,8 +114,6 @@ public static class ZipHelper
         using var zip = ZipFile.Open(zipPath, ZipArchiveMode.Create);
 
         foreach (var filePath in filePaths)
-        {
             zip.CreateEntryFromFile(filePath, Path.GetFileName(filePath));
-        }
     }
 }

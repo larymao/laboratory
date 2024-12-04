@@ -15,9 +15,7 @@ public static class IEnumerableHelper
     /// <param name="selector">A function to extract a key from an element.</param>
     /// <returns>An <see cref="IOrderedEnumerable{TElement}"/>> whose elements are sorted according to a key.</returns>
     public static IOrderedEnumerable<T> OrderByNatural<T>(this IEnumerable<T> source, Func<T, string> selector)
-    {
-        return NaturalSorter.Sort(source, selector, true, StringComparer.Ordinal);
-    }
+        => NaturalSorter.Sort(source, selector, true, StringComparer.Ordinal);
 
     /// <summary>
     /// Natural sorting in descending order.
@@ -27,9 +25,7 @@ public static class IEnumerableHelper
     /// <param name="selector">A function to extract a key from an element.</param>
     /// <returns>An <see cref="IOrderedEnumerable{TElement}"/>> whose elements are sorted according to a key.</returns>
     public static IOrderedEnumerable<T> OrderByNaturalDescending<T>(this IEnumerable<T> source, Func<T, string> selector)
-    {
-        return NaturalSorter.Sort(source, selector, false, StringComparer.Ordinal);
-    }
+        => NaturalSorter.Sort(source, selector, false, StringComparer.Ordinal);
 
     /// <summary>
     /// Natural sorting in ascending order.
@@ -41,9 +37,7 @@ public static class IEnumerableHelper
     /// <returns>An <see cref="IOrderedEnumerable{TElement}"/>> whose elements are sorted according to a key.</returns>
     public static IOrderedEnumerable<T> OrderByNatural<T>(
         this IEnumerable<T> source, Func<T, string> selector, StringComparer comparer)
-    {
-        return NaturalSorter.Sort(source, selector, true, comparer);
-    }
+        => NaturalSorter.Sort(source, selector, true, comparer);
 
     /// <summary>
     /// Natural sorting in descending order.
@@ -55,9 +49,7 @@ public static class IEnumerableHelper
     /// <returns>An <see cref="IOrderedEnumerable{TElement}"/>> whose elements are sorted according to a key.</returns>
     public static IOrderedEnumerable<T> OrderByNaturalDescending<T>(
         this IEnumerable<T> source, Func<T, string> selector, StringComparer comparer)
-    {
-        return NaturalSorter.Sort(source, selector, false, comparer);
-    }
+        => NaturalSorter.Sort(source, selector, false, comparer);
 
     /// <summary>
     /// Gets a subsequence of the source sequence with a specified pagination config.
@@ -68,11 +60,7 @@ public static class IEnumerableHelper
     /// <param name="pageSize">Items number per page.</param>
     /// <returns>A subsequence that is taken from the source with the given pagination config.</returns>
     public static IEnumerable<T> Paging<T>(this IEnumerable<T> source, int pageIndex, int pageSize)
-    {
-        return source
-            .Skip(pageIndex * pageSize)
-            .Take(pageSize);
-    }
+        => source.Skip(pageIndex * pageSize).Take(pageSize);
 
     /// <summary>
     /// Filters a sequence of values based on a predicate once the judgement passed; otherwise, skips.
@@ -86,12 +74,5 @@ public static class IEnumerableHelper
     /// </returns>
     public static IEnumerable<TSource> WhereIf<TSource>(
         this IEnumerable<TSource> source, bool judgement, Func<TSource, bool> predicate)
-    {
-        if (!judgement)
-        {
-            return source;
-        }
-
-        return source.Where(predicate);
-    }
+        => judgement ? source.Where(predicate) : source;
 }

@@ -17,9 +17,7 @@ public static class StringBuilderHelper
     /// A reference to the given <see cref="StringBuilder"/> object after the append operation has completed.
     /// </returns>
     public static StringBuilder AppendIf(this StringBuilder builder, bool predicate, string? value)
-    {
-        return predicate ? builder.Append(value) : builder;
-    }
+        => predicate ? builder.Append(value) : builder;
 
     /// <summary>
     /// Appends a copy of the specified string followed by the default line terminator to
@@ -32,7 +30,5 @@ public static class StringBuilderHelper
     /// A reference to the given <see cref="StringBuilder"/> object after the append operation has completed.
     /// </returns>
     public static StringBuilder AppendLineIf(this StringBuilder builder, bool predicate, string? value)
-    {
-        return predicate ? builder.AppendLine(value) : builder;
-    }
+        => predicate ? builder.AppendLine(value) : builder;
 }

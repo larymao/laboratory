@@ -21,7 +21,7 @@ public class DirectoryHelperTests(
         _ioFixture.GetRandomDirectoryPath(srcDirPath);
         _ioFixture.GetRandomDirectoryPath(srcSubDirPath);
 
-        DirectoryHelper.CopyRecursively(srcDirPath, destDirPath);
+        DirectoryHelper.CopyAll(srcDirPath, destDirPath);
         var dirInfo = new DirectoryInfo(destDirPath);
 
         dirInfo.EnumerateDirectories("*", SearchOption.TopDirectoryOnly).Count().Should().Be(2);
