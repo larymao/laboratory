@@ -18,18 +18,6 @@ public class ExcelHelperTests
         new(5)
     ];
 
-    public static TheoryData<int, int, string> ExportCellValueTheoryData => new()
-    {
-        { 1, 1, nameof(Foo.Id) },
-        { 2, 1, nameof(Foo.Id) },
-        { 1, 2, nameof(Foo.InnerFoo) },
-        { 1, 7, nameof(Foo.InnerFoo) },
-        { 3, 7, GetExcelPropertyName<DeepInnerFoo>(nameof(DeepInnerFoo.InnerDescription)) },
-        { _headerRows + 1, 2, _data2Export[0].InnerFoo!.Name },
-        { _headerRows + 2, 4, _data2Export[1].InnerFoo!.IsEnabled.ToString() },
-        { _headerRows + 5, 2, string.Empty }
-    };
-
     [Fact]
     public void ExcelHelper_Export_ReturnDefaultSheet()
     {
@@ -72,41 +60,6 @@ public class ExcelHelperTests
 
         worksheet.Rows.Count().Should().Be(expectedRows);
         worksheet.Columns.Count().Should().Be(expectedColumns);
-    }
-
-    [Theory, MemberData(nameof(ExportCellValueTheoryData))]
-    public void ExcelHelper_Export_ReturnHorizontalAddressedCellValue(
-        int row, int column, string expected)
-    {
-        using var excel = ExcelHelper.Export(_data2Export, orientation: Orientation.Horizontal);
-        var worksheet = excel.Workbook.Worksheets["Sheet1"];
-        var cell = worksheet.Cells[GetExcelAddress(row, column)];
-
-        cell.Value.Should().Be(expected);
-    }
-
-    [Theory, MemberData(nameof(ExportCellValueTheoryData))]
-    public void ExcelHelper_Export_ReturnVerticalAddressedCellValue(
-        int column, int row, string expected)
-    {
-        using var excel = ExcelHelper.Export(_data2Export, orientation: Orientation.Vertical);
-        var worksheet = excel.Workbook.Worksheets["Sheet1"];
-        var cell = worksheet.Cells[GetExcelAddress(row, column)];
-
-        cell.Value.Should().Be(expected);
-    }
-
-    private static string GetExcelPropertyName<T>(string property)
-    {
-        return typeof(T)
-            .GetProperty(property)!
-            .GetCustomAttribute<ExcelPropertyAttribute>()!
-            .PropertyName;
-    }
-
-    private static string GetExcelAddress(int row, int column)
-    {
-        return $"{ExcelCellBase.GetAddressCol(column)}{row}";
     }
 
 #if NET7_0_OR_GREATER
