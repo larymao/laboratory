@@ -1,8 +1,8 @@
 using Lary.Laboratory.Core.Tree;
+using System.Linq;
 
 namespace Lary.Laboratory.Core.Tests.Tree;
 
-#pragma warning disable xUnit1045 // Avoid using TheoryData type arguments that might not be serializable
 public class LogicTreeHelperTests
 {
     private readonly ListItem[] _items = [
@@ -45,7 +45,11 @@ public class LogicTreeHelperTests
     public void LogicTreeHelper_BuildAsTrees_ReturnCorrectTrees(
         int? rootId, TreeInfoValidatorDto[] expected)   
     {
+#if NET48_OR_GREATER || NET6_0_OR_GREATER
         var expectedRootNodeIds = expected.Select(dto => dto.RootNodeId).ToHashSet();
+#else
+        var expectedRootNodeIds = new HashSet<int>(expected.Select(dto => dto.RootNodeId));
+#endif
         Func<TreeNode<ListItem>, TreeInfoValidatorDto> treeDto =
                 x => expected.Single(dto => dto.RootNodeId == x.Value.Id);
 
@@ -56,7 +60,11 @@ public class LogicTreeHelperTests
         trees.Count().Should().Be(expected.Length);
         trees.Select(x => x.Value.Id)
             .Should().OnlyContain(rootNodeId => expectedRootNodeIds.Contains(rootNodeId));
+#if NET7_0_OR_GREATER
         trees.Should().OnlyContain(x => x.AllLeaves().Select(node => node.Value.Id).Order().SequenceEqual(treeDto(x).LeafNodeIds));
+#else
+        trees.Should().OnlyContain(x => x.AllLeaves().Select(node => node.Value.Id).OrderBy(x => x).SequenceEqual(treeDto(x).LeafNodeIds));
+#endif
         trees.Should().OnlyContain(x => x.MaxDepth() == treeDto(x).MaxDepth);
     }
 
@@ -74,7 +82,11 @@ public class LogicTreeHelperTests
     public void LogicTreeHelper_BuildSubTrees_ReturnCorrectTrees(
         int? rootId, TreeInfoValidatorDto[] expected)
     {
+#if NET48_OR_GREATER || NET6_0_OR_GREATER
         var expectedRootNodeIds = expected.Select(dto => dto.RootNodeId).ToHashSet();
+#else
+        var expectedRootNodeIds = new HashSet<int>(expected.Select(dto => dto.RootNodeId));
+#endif
         Func<TreeNode<ListItem>, TreeInfoValidatorDto> treeDto =
                 x => expected.Single(dto => dto.RootNodeId == x.Value.Id);
 
@@ -85,12 +97,31 @@ public class LogicTreeHelperTests
         trees.Count().Should().Be(expected.Length);
         trees.Select(x => x.Value.Id)
             .Should().OnlyContain(rootNodeId => expectedRootNodeIds.Contains(rootNodeId));
+#if NET7_0_OR_GREATER
         trees.Should().OnlyContain(x => x.AllLeaves().Select(node => node.Value.Id).Order().SequenceEqual(treeDto(x).LeafNodeIds));
+#else
+        trees.Should().OnlyContain(x => x.AllLeaves().Select(node => node.Value.Id).OrderBy(x => x).SequenceEqual(treeDto(x).LeafNodeIds));
+#endif
         trees.Should().OnlyContain(x => x.MaxDepth() == treeDto(x).MaxDepth);
     }
 
+#if NET7_0_OR_GREATER
     internal record ListItem(int Id, string? Desc, int ParentId);
 
     public record TreeInfoValidatorDto(int RootNodeId, int[] LeafNodeIds, int MaxDepth);
+#else
+    internal class ListItem(int id, string? desc, int parentId)
+    {
+        public int Id { get; } = id;
+        public string? Desc { get; } = desc;
+        public int ParentId { get; } = parentId;
+    }
+
+    public class TreeInfoValidatorDto(int rootNodeId, int[] leafNodeIds, int maxDepth)
+    {
+        public int RootNodeId { get; } = rootNodeId;
+        public int[] LeafNodeIds { get; } = leafNodeIds;
+        public int MaxDepth { get; } = maxDepth;
+    }
+#endif
 }
-#pragma warning restore xUnit1045 // Avoid using TheoryData type arguments that might not be serializable

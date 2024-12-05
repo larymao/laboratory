@@ -3,7 +3,11 @@ namespace Lary.Laboratory.Core.Tests.IO;
 public class IOFixture : IDisposable
 {
     private bool isDisposed;
+#if NET7_0_OR_GREATER
     private readonly string _baseDirPath = Directory.CreateTempSubdirectory(nameof(ZipHelperTests)).FullName;
+#else
+    private readonly string _baseDirPath = CreateTemporaryDirectory(nameof(ZipHelperTests)).FullName;
+#endif
 
     public string BaseDirPath => _baseDirPath;
 
@@ -63,4 +67,17 @@ public class IOFixture : IDisposable
 
         return filePath;
     }
+
+#if !NET7_0_OR_GREATER
+    public static DirectoryInfo CreateTemporaryDirectory(string? prefix = null)
+    {
+        var tempDirectory = Path.Combine(Path.GetTempPath(), $"{prefix}{Path.GetRandomFileName()}");
+
+        if (File.Exists(tempDirectory))
+            return CreateTemporaryDirectory();
+
+        Directory.CreateDirectory(tempDirectory);
+        return new DirectoryInfo(tempDirectory);
+    }
+#endif
 }

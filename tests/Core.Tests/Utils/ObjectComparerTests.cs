@@ -11,9 +11,7 @@ public class ObjectComparerTests
         { new Foo(null, 1, 1.23), new Foo(null, 1, 1.23), [], true }
     };
 
-#pragma warning disable xUnit1045 // Avoid using TheoryData type arguments that might not be serializable
     [Theory, MemberData(nameof(PropertiesEqualTheoryData))]
-#pragma warning restore xUnit1045 // Avoid using TheoryData type arguments that might not be serializable
     public void ObjectComparer_PropertiesEqual_ShouldWork(
         Foo obj1, Foo obj2, string[] ignores, bool expected)
     {
@@ -21,5 +19,14 @@ public class ObjectComparerTests
             .Should().Be(expected);
     }
 
+#if NET7_0_OR_GREATER
     public record class Foo(string? PropA, int PropB, double PropC);
+#else
+    public class Foo(string? propA, int propB, double propC)
+    {
+        public string? PropA { get; } = propA;
+        public int PropB { get; } = propB;
+        public double PropC { get; } = propC;
+    }
+#endif
 }

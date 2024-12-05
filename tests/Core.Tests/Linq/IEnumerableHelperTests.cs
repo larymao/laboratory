@@ -52,7 +52,11 @@ public class IEnumerableHelperTests
     public void IEnumerableHelper_Paging_ShouldWork()
     {
         var src = Enumerable.Range(0, 16).ToArray();
+#if NET6_0_OR_GREATER
         var expected = src[^6..];
+#else
+        var expected = src.Skip(10).Take(6).ToArray();
+#endif
 
         var result = src.Paging(1, 10);
 
@@ -64,7 +68,11 @@ public class IEnumerableHelperTests
     {
         var src = Enumerable.Range(0, 16).ToArray();
         var judgement = true;
+#if NET6_0_OR_GREATER
         var expected = src[^6..];
+#else
+        var expected = src.Skip(10).Take(6).ToArray();
+#endif
 
         var result = src.WhereIf(judgement, i => i >= 10);
 
