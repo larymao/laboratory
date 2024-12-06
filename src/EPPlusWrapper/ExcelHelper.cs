@@ -49,9 +49,7 @@ public static class ExcelHelper
         propertyTree.Traverse(node =>
         {
             if (node.Parent == null)
-            {
                 return;
-            }
 
             var levelIndex = node.CurrentLevel();
             var depthIndex = headerDepth - node.MaxDepth() + 1;
@@ -104,9 +102,7 @@ public static class ExcelHelper
     private static object? BuildExportCellValue(object? data, Type type)
     {
         if (data == null)
-        {
             return string.Empty;
-        }
 
         return type.Name.ToLower() switch
         {

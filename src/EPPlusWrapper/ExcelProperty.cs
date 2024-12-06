@@ -28,29 +28,19 @@ internal class ExcelProperty
     public int CellLength { get; set; }
 
     public object? GetValue()
-    {
-        if (ValueProvider == null || PropertyInfo == null)
-        {
-            return null;
-        }
-
-        return PropertyInfo.GetValue(ValueProvider);
-    }
+        => ValueProvider == null || PropertyInfo == null
+            ? null
+            : PropertyInfo.GetValue(ValueProvider);
 
     private string? GetCellKey()
     {
         if (_propertyInfo == null)
-        {
             return null;
-        }
 
         var excelPropertyAttrs = _propertyInfo.GetCustomAttributes<ExcelPropertyAttribute>();
 
-        if (excelPropertyAttrs.Any())
-        {
-            return excelPropertyAttrs.Single().PropertyName;
-        }
-
-        return _propertyInfo.Name;
+        return excelPropertyAttrs.Any()
+            ? excelPropertyAttrs.Single().PropertyName
+            : _propertyInfo.Name;
     }
 }

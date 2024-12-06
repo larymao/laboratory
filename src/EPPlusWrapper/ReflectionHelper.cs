@@ -13,9 +13,7 @@ internal static class ReflectionHelper
         foreach (var prop in allProps)
         {
             if (prop.GetCustomAttributes<ExcelIgnoreAttribute>().Any())
-            {
                 continue;
-            }
 
             yield return prop;
         }
@@ -30,9 +28,7 @@ internal static class ReflectionHelper
         rootNode.Traverse(node =>
         {
             if (node.Value == null)
-            {
                 return;
-            }
 
             var firstLeaf = node.AllLeaves().First();
             node.Value.CellIndex = rootNodeLeaves.IndexOf(firstLeaf);
@@ -47,9 +43,7 @@ internal static class ReflectionHelper
             || type == typeof(string)
             || type == typeof(DateTime)
             || type == typeof(DateTimeOffset))
-        {
             return [];
-        }
 
         var result = new List<TreeNode<ExcelProperty?>>();
         var props = type.GetValidProperties().ToArray();

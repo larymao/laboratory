@@ -37,9 +37,7 @@ public static class ZipHelper
     /// <see langword="false"/>.
     /// </param>
     public static void Compress(string srcPath, string zipPath, bool force = false)
-    {
-        Compress([srcPath], zipPath, force);
-    }
+        => Compress([srcPath], zipPath, force);
 
     /// <summary>
     /// Compresses multiple files or directories.
@@ -56,45 +54,21 @@ public static class ZipHelper
         if (force && File.Exists(zipPath))
             File.Delete(zipPath);
 
-        if (srcPaths == null || !srcPaths.Any())
+        var count = srcPaths?.Count() ?? 0;
+        Action action = (count, srcPaths) switch
         {
-            using var _ = ZipFile.Open(zipPath, ZipArchiveMode.Create);
-            return;
-        }
-        else if (srcPaths.Count() == 1)
-        {
-            CompressSingleSource(srcPaths.First(), zipPath, true);
-            return;
-        }
-        else if (srcPaths.All(PathHelper.IsFile))
-        {
-            CompressFiles(srcPaths, zipPath);
-            return;
-        }
-        else
-        {
-            // 1. copies the selected files and directories to a new temp directory
-            // 2. compresses the temp directory
-            var tempDirName = $"{DateTime.Now:yyyyMMddHHmmss}_{Guid.NewGuid():N}";
-            Directory.CreateDirectory(tempDirName);
+            (0, _) => () => CreateEmptyPack(zipPath),
+            (1, _) => () => CompressSingleSource(srcPaths.First(), zipPath, true),
+            (_, var p) when p.All(PathHelper.IsFile) => () => CompressFiles(p!, zipPath),
+            _ => () => CompressMixtures(srcPaths!, zipPath)
+        };
 
-            foreach (var path in srcPaths)
-            {
-                var destPath = Path.Combine(tempDirName, Path.GetFileName(path));
+        action.Invoke();
+    }
 
-                if (PathHelper.IsFile(path))
-                {
-                    File.Copy(path, destPath);
-                }
-                else
-                {
-                    DirectoryHelper.CopyAll(path, destPath);
-                }
-            }
-
-            CompressSingleSource(tempDirName, zipPath, false);
-            Directory.Delete(tempDirName, true);
-        }
+    private static void CreateEmptyPack(string zipPath)
+    {
+        using var _ = ZipFile.Open(zipPath, ZipArchiveMode.Create);
     }
 
     private static void CompressSingleSource(string srcPath, string zipPath, bool includeBaseDir)
@@ -115,5 +89,30 @@ public static class ZipHelper
 
         foreach (var filePath in filePaths)
             zip.CreateEntryFromFile(filePath, Path.GetFileName(filePath));
+    }
+
+    private static void CompressMixtures(IEnumerable<string> srcPaths, string zipPath)
+    {
+        // 1. copies the selected files and directories to a new temp directory
+        // 2. compresses the temp directory
+        var tempDirName = $"{DateTime.Now:yyyyMMddHHmmss}_{Guid.NewGuid():N}";
+        Directory.CreateDirectory(tempDirName);
+
+        foreach (var path in srcPaths)
+        {
+            var destPath = Path.Combine(tempDirName, Path.GetFileName(path));
+
+            if (PathHelper.IsFile(path))
+            {
+                File.Copy(path, destPath);
+            }
+            else
+            {
+                DirectoryHelper.CopyAll(path, destPath);
+            }
+        }
+
+        CompressSingleSource(tempDirName, zipPath, false);
+        Directory.Delete(tempDirName, true);
     }
 }
