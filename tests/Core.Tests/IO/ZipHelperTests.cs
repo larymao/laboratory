@@ -71,6 +71,7 @@ public class ZipHelperTests(
         File.Create(zipPath).Dispose();
         var createTime = new FileInfo(zipPath).LastWriteTime;
 
+        Thread.Sleep(100);
         ZipHelper.Compress(srcFilePath, true);
 
         new FileInfo(zipPath).LastWriteTime.Should().BeAfter(createTime);
