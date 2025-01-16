@@ -16,16 +16,29 @@ permissions:
 
 jobs:
   build_and_test:
-    name: Build & Test
-    runs-on: ubuntu-latest
-
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        include:
+          - os: ubuntu-latest
+            framework: 'net6.0;net7.0;net8.0;net9.0'
+          - os: windows-latest
+            framework: 'net462;net47;net48;net6.0;net7.0;net8.0;net9.0'
+    
+    runs-on: ${{ matrix.os }}
+    name: Test (${{ matrix.os }})
+    
     steps:
     - uses: actions/checkout@v4
 
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 9.0.x
+        dotnet-version: |
+          6.0.x
+          7.0.x
+          8.0.x
+          9.0.x
 
     - name: Restore dependencies
       run: dotnet restore
@@ -34,13 +47,17 @@ jobs:
       run: dotnet build --no-restore --configuration Release
 
     - name: Test
-      run: dotnet test --no-build --configuration Release --verbosity normal --collect:"XPlat Code Coverage"
+      run: |
+        for framework in $(echo "${{ matrix.framework }}" | tr ';' '\n'); do
+          dotnet test --no-build --configuration Release --framework $framework --verbosity normal --collect:"XPlat Code Coverage"
+        done
+      shell: bash
 
     - name: Test Report
       uses: dorny/test-reporter@v1
       if: success() || failure()
       with:
-        name: Test Report
+        name: Test Report (${{ matrix.os }})
         path: "TestResults/*.trx"
         reporter: dotnet-trx
         fail-on-error: true
