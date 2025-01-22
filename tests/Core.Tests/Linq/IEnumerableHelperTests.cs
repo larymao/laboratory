@@ -90,4 +90,130 @@ public class IEnumerableHelperTests
 
         result.SequenceEqual(expected).Should().BeTrue();
     }
+
+    [Fact]
+    public void IEnumerableHelper_MoveToTop_ByIndex_ShouldWork()
+    {
+        int[] src = [1, 2, 3, 4, 5];
+        int[] expected = [3, 1, 2, 4, 5];
+
+        var result = src.MoveToTopByIndex(2);
+
+        result.SequenceEqual(expected).Should().BeTrue();
+    }
+
+    [Fact]
+    public void IEnumerableHelper_MoveToTop_ByIndex_ShouldThrowOnNullSource()
+    {
+        int[] src = null!;
+
+        FluentActions.Invoking(() => src.MoveToTopByIndex(0).ToArray())
+            .Should().ThrowExactly<ArgumentNullException>();
+    }
+
+    [Fact]
+    public void IEnumerableHelper_MoveToTop_ByIndex_ShouldThrowOnInvalidIndex()
+    {
+        int[] src = [1, 2, 3];
+
+        FluentActions.Invoking(() => src.MoveToTopByIndex(-1).ToArray())
+            .Should().ThrowExactly<ArgumentOutOfRangeException>();
+        FluentActions.Invoking(() => src.MoveToTopByIndex(3).ToArray())
+            .Should().ThrowExactly<ArgumentOutOfRangeException>();
+    }
+
+    [Fact]
+    public void IEnumerableHelper_MoveToTop_ByIndex_ShouldWorkWithEmptySource()
+    {
+        var src = Array.Empty<int>();
+
+        FluentActions.Invoking(() => src.MoveToTopByIndex(0).ToArray())
+            .Should().ThrowExactly<ArgumentOutOfRangeException>();
+    }
+
+    [Fact]
+    public void IEnumerableHelper_MoveToTop_ByPredicate_ShouldWork()
+    {
+        int[] src = [1, 2, 3, 4, 5];
+        int[] expected = [4, 5, 1, 2, 3];
+
+        var result = src.MoveToTop(x => x > 3);
+
+        result.SequenceEqual(expected).Should().BeTrue();
+    }
+
+    [Fact]
+    public void IEnumerableHelper_MoveToTop_ByPredicate_ShouldThrowOnNullSource()
+    {
+        int[] src = null!;
+
+        FluentActions.Invoking(() => src.MoveToTop(x => x > 0).ToArray())
+            .Should().ThrowExactly<ArgumentNullException>();
+    }
+
+    [Fact]
+    public void IEnumerableHelper_MoveToTop_ByPredicate_ShouldReturnEmptyForEmptySource()
+    {
+        var src = Array.Empty<int>();
+        var expected = Array.Empty<int>();
+
+        var result = src.MoveToTop(x => x > 0);
+
+        result.SequenceEqual(expected).Should().BeTrue();
+    }
+
+    [Fact]
+    public void IEnumerableHelper_MoveToTop_ByPredicate_ShouldReturnEmptyForNullPredicate()
+    {
+        int[] src = [1, 2, 3, 4, 5];
+        int[] expected = src;
+
+        var result = src.MoveToTop((Func<int, bool>)null!);
+
+        FluentActions.Invoking(() => result.ToArray())
+            .Should().ThrowExactly<ArgumentNullException>();
+    }
+
+    [Fact]
+    public void IEnumerableHelper_MoveToTop_ByItem_ShouldWork()
+    {
+        int[] src = [1, 2, 3, 4, 5];
+        int[] expected = [3, 1, 2, 4, 5];
+
+        var result = src.MoveToTop(3);
+
+        result.SequenceEqual(expected).Should().BeTrue();
+    }
+
+    [Fact]
+    public void IEnumerableHelper_MoveToTop_ByItem_ShouldThrowOnNullSource()
+    {
+        int[] src = null!;
+
+        FluentActions.Invoking(() => src.MoveToTop(1).ToArray())
+            .Should().ThrowExactly<ArgumentNullException>();
+    }
+
+    [Fact]
+    public void IEnumerableHelper_MoveToTop_ByItem_ShouldReturnOriginalWhenItemNotFound()
+    {
+        int[] src = [1, 2, 3, 4, 5];
+        int[] expected = src;
+
+        var result = src.MoveToTop(6);
+
+        result.SequenceEqual(expected).Should().BeTrue();
+    }
+
+    [Fact]
+    public void IEnumerableHelper_MoveToTop_ByItem_ShouldWorkWithNullItem()
+    {
+        string?[] src = ["a", null, "b", "c"];
+        string?[] expected = [null, "a", "b", "c"];
+        string? item = null;
+
+        var result = src.MoveToTop(item);
+
+        result.SequenceEqual(expected).Should().BeTrue();
+    }
 }
