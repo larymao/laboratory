@@ -1,0 +1,15 @@
+{
+  "tables": [
+    "table_with_dt_partition",
+    "table_with_pt_partition",
+    "table_without_partition"
+  ],
+  "partition_config": {
+    "dt": [
+      "table_with_dt_partition"
+    ],
+    "pt": [
+      "table_with_pt_partition"
+    ]
+  }
+}
