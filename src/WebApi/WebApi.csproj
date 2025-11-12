@@ -7,7 +7,6 @@
     <AssemblyName>Lary.Laboratory.WebApi</AssemblyName>
 
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <NoWarn>$(NoWarn);1591;SA1625</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

@@ -1,19 +1,19 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>$(LibraryTargetFrameworks)</TargetFramework>
     
-    <RootNamespace>Lary.Laboratory.Core</RootNamespace>
-    <AssemblyName>Lary.Laboratory.Core</AssemblyName>
+    <RootNamespace>Lary.Laboratory.Data</RootNamespace>
+    <AssemblyName>Lary.Laboratory.Data</AssemblyName>
 
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup>
     <ShouldPublish>true</ShouldPublish>
-    <PackageId>Lary.Laboratory.Core</PackageId>
+    <PackageId>Lary.Laboratory.Data</PackageId>
     <Authors>larymao</Authors>
-    <Description>Provides some commonly used helper types for .NET Standard 2.0.</Description>
+    <Description>DDD-based data access layer core abstractions and patterns.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/larymao/laboratory</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
@@ -22,9 +22,5 @@
     <AssemblyVersion>0.1.1.0</AssemblyVersion>
     <FileVersion>0.1.1.0</FileVersion>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" />
-  </ItemGroup>
 
 </Project>
